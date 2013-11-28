@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "T3D", "T3D\T3D.vcxproj", "{A41C2D2A-C0C1-4EE8-9B5A-00EDD049DC2F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A41C2D2A-C0C1-4EE8-9B5A-00EDD049DC2F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A41C2D2A-C0C1-4EE8-9B5A-00EDD049DC2F}.Debug|Win32.Build.0 = Debug|Win32
+		{A41C2D2A-C0C1-4EE8-9B5A-00EDD049DC2F}.Release|Win32.ActiveCfg = Release|Win32
+		{A41C2D2A-C0C1-4EE8-9B5A-00EDD049DC2F}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
