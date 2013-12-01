@@ -12,7 +12,6 @@
 #ifndef T3DAPPLICATION_H
 #define T3DAPPLICATION_H
 
-#include "Task.h"
 #include "Transform.h"
 #include "renderer.h"
 #include <vector>
@@ -21,6 +20,7 @@ using namespace std;
 
 namespace T3D
 {
+	class Task;
 
 	class T3DApplication
 	{

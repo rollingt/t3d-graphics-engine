@@ -18,7 +18,7 @@ namespace T3D{
 		public Task
 	{
 	public:
-		PerfLogTask(void);
+		PerfLogTask(T3DApplication *app);
 		virtual ~PerfLogTask(void);
 
 		virtual void update(float dt);

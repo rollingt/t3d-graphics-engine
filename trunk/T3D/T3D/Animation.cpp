@@ -4,7 +4,7 @@
 
 namespace T3D
 {
-	Animation::Animation(int frames, float duration) : frames(frames), duration(duration)
+	Animation::Animation(float duration) : duration(duration)
 	{
 		time = 0;
 		looping = false;
@@ -16,7 +16,7 @@ namespace T3D
 	{
 	}
 
-	void Animation::addKey(std::string n, int frame, Quaternion rot, Vector3 pos){
+	void Animation::addKey(std::string n, float time, Quaternion rot, Vector3 pos){
 		BoneMap::iterator it = bones.find(n);
 
 		if(it == bones.end())
@@ -24,8 +24,8 @@ namespace T3D
 		   addBone(n);
 		}
 
-		KeyFrame f = {frame,rot,pos};
-		bones[n]->keyframes.push_back(f);
+		KeyFrame f = {time,rot,pos};
+		bones[n]->addFrame(f);
 	}
 
 	void Animation::addBone(std::string n)
@@ -36,14 +36,6 @@ namespace T3D
 			bones.insert(BoneEntry(n,b));
 		} else {
 			std::cout << "ERROR: bone not found in addBone(" << n << ")\n)";
-		}
-	}
-
-	void Animation::interpolate(){
-		BoneMap::iterator it;
-		for (it = bones.begin(); it!= bones.end(); it++){
-			Bone *b = it->second;
-			b->interpolate(frames);
 		}
 	}
 
@@ -58,12 +50,11 @@ namespace T3D
 				playing = false;
 			}
 		}
-		float frame = time/duration * (frames-1);
 		
 		BoneMap::iterator it;
 		for (it = bones.begin(); it!= bones.end(); it++){
 			Bone *b = it->second;
-			b->update(frame);
+			b->update(time);
 		}
 	}
 }

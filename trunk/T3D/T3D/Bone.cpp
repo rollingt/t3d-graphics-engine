@@ -3,7 +3,7 @@
 namespace T3D
 {	
 	bool frameCompare (KeyFrame f1, KeyFrame f2) { 
-		return (f1.frame<f2.frame); 
+		return (f1.time<f2.time); 
 	}
 
 	Bone::Bone(void)
@@ -15,56 +15,39 @@ namespace T3D
 	{
 	}
 
-	void Bone::interpolate(int numFrames){		
-		keyframes.sort(frameCompare);
-		frames.resize(numFrames);
-
-		std::list<KeyFrame>::iterator kfi = keyframes.begin();
-		KeyFrame previous = *kfi;
-		int f;
-		Frame newFrame = {previous.rotation,previous.position};
-		// pad to first frame
-		for (f=0; f<previous.frame; f++){
-			frames[f] = newFrame;
-		}
-		//start interpolating
-		kfi++;
-		while (kfi!=keyframes.end()){
-			while (f < kfi->frame){
-				float a = float(f-previous.frame)/(kfi->frame - previous.frame);
-				Quaternion rot = Quaternion::slerp(previous.rotation, kfi->rotation, a);
-				Vector3 pos = Vector3::lerp(previous.position, kfi->position, a);				
-				newFrame.rotation = rot; newFrame.position = pos;
-				frames[f] = newFrame;
-				f++;
+	
+	void Bone::addFrame(KeyFrame f){
+		if (keyframes.empty()){
+			keyframes.push_back(f);
+		} else {			
+			std::vector<KeyFrame>::iterator kfi = keyframes.begin();
+			while (kfi!=keyframes.end() && f.time>(*kfi).time){
+				kfi++;
 			}
-			previous = *kfi;
-			kfi++;
-		}
-		// pad to last frame
-		newFrame.rotation = previous.rotation; newFrame.position = previous.position;
-		for (; f<numFrames; f++){
-			frames[f] = newFrame;
+			keyframes.insert(kfi,f);
 		}
 	}
+	
 
-	void Bone::update(float frame){
-		int pFrame = int(floor(frame));
-		int nFrame = int(ceil(frame));
-		transform->setLocalPosition(Vector3::lerp(frames[pFrame].position,frames[nFrame].position,frame-pFrame));
-		transform->setLocalRotation(Quaternion::slerp(frames[pFrame].rotation,frames[nFrame].rotation,frame-pFrame));
-	}
-
-	void Bone::printFrames(){
-		for (unsigned int i=0; i<frames.size(); i++){
-			std::cout << i << ": " << frames[i].rotation << frames[i].position << "\n";
+	void Bone::update(float time){
+		int frame = 0;
+		while (time>=keyframes[frame].time){
+			frame++;
+		}
+		if (frame==keyframes.size()){
+			transform->setLocalPosition(keyframes[keyframes.size()-1].position);
+			transform->setLocalRotation(keyframes[keyframes.size()-1].rotation);
+		} else {
+			float alpha = (time-keyframes[frame-1].time)/(keyframes[frame].time-keyframes[frame-1].time);
+			transform->setLocalPosition(Vector3::lerp(keyframes[frame-1].position,keyframes[frame].position,alpha));
+			transform->setLocalRotation(Quaternion::slerp(keyframes[frame-1].rotation,keyframes[frame].rotation,alpha));
 		}
 	}
 
 	void Bone::printKeyFrames(){
-		std::list<KeyFrame>::iterator kfi;
+		std::vector<KeyFrame>::iterator kfi;
 		for (kfi=keyframes.begin(); kfi!=keyframes.end(); kfi++){
-			std::cout << kfi->frame << ": " << kfi->rotation << kfi->position << "\n";
+			std::cout << kfi->time << ": " << kfi->rotation << kfi->position << "\n";
 		}
 	}
 }

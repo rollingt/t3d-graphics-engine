@@ -13,7 +13,7 @@
 
 namespace T3D{
 
-	PerfLogTask::PerfLogTask(void)
+	PerfLogTask::PerfLogTask(T3DApplication *app) : Task(app)
 	{		
 		frameCount = 0;
 		elapsedTime = 0;

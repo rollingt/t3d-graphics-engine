@@ -133,6 +133,12 @@ namespace T3D
 				Input::onKeyDown(e->key.keysym.sym);
 				if (Input::keyDown[KEY_ESCAPE])
 					running = false;
+				if (Input::keyDown[KEY_F1])
+					renderer->toggleWireframe();
+				if (Input::keyDown[KEY_F2])
+					renderer->toggleAxes();
+				if (Input::keyDown[KEY_F3])
+					renderer->toggleGrid();
 				break;
 			case SDL_KEYUP:
 				Input::onKeyUp(e->key.keysym.sym);
