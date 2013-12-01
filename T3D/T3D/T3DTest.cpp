@@ -137,43 +137,38 @@ namespace T3D{
 		billboard->getTransform()->name = "Billboard";
 
 		cout << "creating sweep\n";
-		SweepPath p;
-		Transform a,b,c,d;
-		a.setLocalPosition(Vector3(0,0,0));
-		b.setLocalPosition(Vector3(1,0,0));
-		c.setLocalPosition(Vector3(2,0,0));
-		d.setLocalPosition(Vector3(3,0,0));
-		p.addTransform(a);
-		p.addTransform(b);
-		p.addTransform(c);
-		p.addTransform(d);
+		SweepPath sp;
+		sp.makeCirclePath(5,32);
 		GameObject *sweep = new GameObject(this);
 		vector<Vector3> points;
+		points.push_back(Vector3(1,0,0));
+		points.push_back(Vector3(0.7,0.7,0));
 		points.push_back(Vector3(0,1,0));
-		points.push_back(Vector3(0,0,1));
+		points.push_back(Vector3(-0.7,0.7,0));
+		points.push_back(Vector3(-1,0,0));
+		points.push_back(Vector3(-0.7,-0.7,0));
 		points.push_back(Vector3(0,-1,0));
-		points.push_back(Vector3(0,0,-1));
-		sweep->setMesh(new Sweep(points,p));
+		points.push_back(Vector3(0.7,-0.7,0));
+		sweep->setMesh(new Sweep(points,sp,true));
 		sweep->getTransform()->setLocalPosition(Vector3(0,10,0));
 		sweep->getTransform()->setParent(root);
 		sweep->getTransform()->name = "Sweep";
 		
 		cube->addComponent(new LookAtBehaviour(sphere2->getTransform()));
 
-		addTask(new PerfLogTask());
+		addTask(new PerfLogTask(this));
 
-		Animation *anim = new Animation(10,5);
+		Animation *anim = new Animation(10.0);
 		sphere->addComponent(anim);
-		anim->addKey("Child",9,Quaternion(),Vector3(1,0,0));
+		anim->addKey("Child",10.0,Quaternion(),Vector3(1,0,0));
 		anim->addKey("Child",0,Quaternion(),Vector3(1,0,0));
-		anim->addKey("Child",7,Quaternion(),Vector3(3,0,0));
-		anim->addKey("Child",5,Quaternion(),Vector3(10,0,0));
-		anim->addKey("Sphere",9,Quaternion(),Vector3(5,0,0));
+		anim->addKey("Child",7.0,Quaternion(),Vector3(3,0,0));
+		anim->addKey("Child",5.0,Quaternion(),Vector3(10,0,0));
+		anim->addKey("Sphere",10.0,Quaternion(),Vector3(5,0,0));
 		anim->addKey("Sphere",0,Quaternion(),Vector3(5,0,0));
-		anim->addKey("Sphere",7,Quaternion(),Vector3(5,0,10));
-		anim->addKey("Sphere",5,Quaternion(Vector3(0,0,Math::HALF_PI)),Vector3(5,0,5));
-		anim->loop(true);
-		anim->interpolate();		
+		anim->addKey("Sphere",7.0,Quaternion(),Vector3(5,0,10));
+		anim->addKey("Sphere",5.0,Quaternion(Vector3(0,0,Math::HALF_PI)),Vector3(5,0,5));
+		anim->loop(true);	
 
 		/*
 		Animation *b = new Animation(10,5);

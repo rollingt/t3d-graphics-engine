@@ -14,7 +14,7 @@
 namespace T3D
 {
 
-	Task::Task(void)
+	Task::Task(T3DApplication* app) :app(app)
 	{
 	}
 

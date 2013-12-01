@@ -7,15 +7,9 @@
 
 namespace T3D
 {
-	struct Frame
-	{
-		Quaternion rotation;
-		Vector3 position;
-	};
-
 	struct KeyFrame
 	{
-		int frame;
+		float time;
 		Quaternion rotation;
 		Vector3 position;
 	};
@@ -27,14 +21,15 @@ namespace T3D
 		~Bone(void);
 
 		void interpolate(int numFrames);
-		void update(float frame);
+		void update(float time);
+
+		void addFrame(KeyFrame f);
 
 		void printFrames();
 		void printKeyFrames();
 
 		Transform* transform;
-		std::list<KeyFrame> keyframes;
-		std::vector<Frame> frames;
+		std::vector<KeyFrame> keyframes;
 	};
 }
 

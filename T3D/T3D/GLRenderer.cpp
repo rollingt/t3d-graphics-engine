@@ -110,7 +110,7 @@ namespace T3D
 		
 		// draw the global grid and axes if necessary		
 		glEnable(GL_DEPTH_TEST);	
-		if (true)
+		if (showAxes)
 		{
 			// +ve axes
 			glLineWidth(2);	
@@ -140,7 +140,7 @@ namespace T3D
 			glDisable (GL_LINE_STIPPLE);	
 		}
 
-		if (true)
+		if (showGrid)
 		{
 			glEnable (GL_LINE_STIPPLE);
 			glLineStipple (1, 0x5555); /* dotted */
@@ -171,9 +171,13 @@ namespace T3D
 		} else {
 			glDisable(GL_FOG);
 		}
-
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	
-		glEnable(GL_CULL_FACE);
+		if (showWireframe){
+			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+			glDisable(GL_CULL_FACE);
+		} else {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	
+			glEnable(GL_CULL_FACE);
+		}
 		glEnable(GL_LIGHTING);
 		glShadeModel(GL_SMOOTH);
 		glEnable(GL_DEPTH_TEST);		

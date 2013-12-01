@@ -20,14 +20,13 @@ namespace T3D
 		public Component
 	{
 	public:
-		Animation(int frames, float duration);
+		Animation(float duration);
 		virtual ~Animation();
 		
 		virtual void update(float dt);
 
 		void addBone(std::string n);
-		void addKey(std::string n, int frame, Quaternion rot, Vector3 pos);
-		void interpolate();
+		void addKey(std::string n, float time, Quaternion rot, Vector3 pos);
 
 		void play(){ time = 0; playing = true; }
 		void pause(){ playing = false; }

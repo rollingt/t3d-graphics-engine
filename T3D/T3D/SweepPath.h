@@ -17,6 +17,8 @@ namespace T3D
 		void addTransform(Transform &t);
 		int size(){ return path.size(); }
 
+		void makeCirclePath(float radius, int density);
+
 	protected:
 		std::vector<Transform> path;
 	};

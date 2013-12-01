@@ -11,6 +11,7 @@
 
 #include "T3DApplication.h"
 #include "Input.h"
+#include "Task.h"
 
 namespace T3D 
 {

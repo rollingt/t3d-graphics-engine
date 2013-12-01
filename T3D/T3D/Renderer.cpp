@@ -32,6 +32,10 @@ namespace T3D
 		ambient[1] = 0.1;
 		ambient[2] = 0.1;
 		ambient[3] = 1;
+
+		showWireframe = false;
+		showGrid = false;
+		showAxes = false;
 	}
 
 

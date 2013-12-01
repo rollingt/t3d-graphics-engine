@@ -38,6 +38,9 @@ namespace T3D
 		
 		void setFog(float d, float r, float g, float b, float a);
 		void toggleFog(){ showFog = !showFog; }
+		void toggleWireframe(){ showWireframe = !showWireframe; }
+		void toggleGrid(){ showGrid = !showGrid; }
+		void toggleAxes(){ showAxes = !showAxes; }
 
 	private:		
 		virtual void drawMesh(Mesh *mesh) = 0;
@@ -54,6 +57,8 @@ namespace T3D
 		bool showFog;
 		float fogDensity;
 		float fogColour[4];
+
+		bool showWireframe,showGrid,showAxes;
 	};
 }
 
