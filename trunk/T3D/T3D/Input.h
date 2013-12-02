@@ -121,6 +121,8 @@ namespace T3D
 	#define KEY_END			279 
 	#define KEY_PAGEUP		280 
 	#define KEY_PAGEDOWN	281 
+	#define KEY_LEFT_SHIFT	304 
+	#define KEY_LEFT_CONTROL 306
 
 	// Function keys 
 	#define KEY_F1			282 
