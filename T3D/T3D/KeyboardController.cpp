@@ -49,6 +49,12 @@ namespace T3D
 		if (Input::keyDown[KEY_DOWN] || Input::keyDown[KEY_S]){
 			gameObject->getTransform()->move(back*dt*keySensitivity);
 		}
+		if (Input::keyDown[KEY_LEFT_SHIFT]){
+			gameObject->getTransform()->move(up*dt*keySensitivity);
+		}
+		if (Input::keyDown[KEY_LEFT_CONTROL]){
+			gameObject->getTransform()->move(-up*dt*keySensitivity);
+		}
 
 		Vector3 rotation = gameObject->getTransform()->getEulerAngles();
 
