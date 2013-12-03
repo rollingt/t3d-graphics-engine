@@ -17,9 +17,6 @@ namespace T3D{
 	/// @fn	Terrain::Terrain()
 	///
 	/// @brief	Default constructor.
-	///
-	/// @author	Rollingt
-	/// @date	2/10/2013
 
 	Terrain::Terrain()
 	{
@@ -29,9 +26,6 @@ namespace T3D{
 	/// @fn	Terrain::~Terrain(void)
 	///
 	/// @brief	Destructor.
-	///
-	/// @author	Rollingt
-	/// @date	2/10/2013
 
 	Terrain::~Terrain(void)
 	{
@@ -41,9 +35,6 @@ namespace T3D{
 	/// @fn	float Terrain::getHeight(Vector3 pos)
 	///
 	/// @brief	Calculates the interpolated terrain height.
-	///
-	/// @author	Rollingt
-	/// @date	2/10/2013
 	///
 	/// @param	pos	The position (y coordinate is ignored).
 	///
@@ -78,9 +69,6 @@ namespace T3D{
 	/// @fn	void Terrain::createTerrain(std::string tex, float horizScale, float vertScale)
 	///
 	/// @brief	Creates a terrain from an image file.
-	///
-	/// @author	Rollingt
-	/// @date	2/10/2013
 	///
 	/// @param	tex			Filename of the image to use.
 	/// @param	horizScale	The horiz scale.
@@ -128,9 +116,6 @@ namespace T3D{
 	/// 	float roughness)
 	///
 	/// @brief	Creates fractal terrain using the midpoint method.
-	///
-	/// @author	Rollingt
-	/// @date	2/10/2013
 	///
 	/// @param	resolution	The resolution (number of points).
 	/// @param	horizScale	The horiz scale.

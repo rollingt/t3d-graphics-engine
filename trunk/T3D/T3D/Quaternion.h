@@ -1,17 +1,8 @@
 // =========================================================================================
 // KXG363 - Advanced Games Programming, 2012
 // =========================================================================================
-//
-// Author: Robert Ollington
-//
-// Quaternion.h
-//
-// Quaternion class
-// Adapted from http://willperone.net/Code/Quaternion.php
-// For more information about Quaternions and the theory behind them can be found here:
-//                http://www.ogre3d.org/tikiwiki/Quaternion+and+Rotation+Primer
-//                http://www.cprogramming.com/tutorial/3d/quaternions.html
-//                http://www.gamedev.net/page/resources/_/reference/programming/math-and-physics/quaternions/Quaternion-powers-r1095
+
+
 
 #ifndef QUATERNION_H
 #define QUATERNION_H
@@ -23,6 +14,14 @@
 
 namespace T3D {
 
+	//! A quaternion class adapted from http://willperone.net/Code/Quaternion.php
+	/*!
+      More information about Quaternions and the theory behind them can be found here:
+	  - http://www.ogre3d.org/tikiwiki/Quaternion+and+Rotation+Primer
+      - http://www.cprogramming.com/tutorial/3d/quaternions.html
+	  - http://www.gamedev.net/page/resources/_/reference/programming/math-and-physics/quaternions/Quaternion-powers-r1095
+      \author	Robert Ollington
+      */
 	class Quaternion
 	{
 	public:
@@ -35,12 +34,28 @@ namespace T3D {
 		};
 
 
-		//! constructors
+		/*! Default Quaternion constructor*/
 		Quaternion() {s=1; v = Vector3(0,0,0); }
+
+		/*! Construct a Quaternion from real and imaginary parts
+		  \param real		the real part
+		  \param x			the imaginary x coord
+		  \param y			the imaginary y coord
+		  \param z			the imaginary z coord
+		  */
 		Quaternion(float real, float x, float y, float z): s(real), v(x,y,z) {}
+
+		/*! Construct a Quaternion from real and imaginary parts
+		  \param real		the real part
+		  \param i			the imaginary part
+		  */
 		Quaternion(float real, const Vector3 &i): s(real), v(i) {}
 
-		//! from 3 euler angles
+		/*! Construct a Quaternion from Euler angles
+		  \param theta_x	rotation around x axis (pitch)
+		  \param theta_y	rotation around y axis (yaw)
+		  \param theta_z	rotation around z axis (roll)
+		  */
 		Quaternion(float theta_x, float theta_y, float theta_z)
 		{
 			float cos_z_2 = cosf(0.5f*theta_z);
@@ -58,7 +73,9 @@ namespace T3D {
 			v.z = sin_z_2*cos_y_2*cos_x_2 - cos_z_2*sin_y_2*sin_x_2;
 		}
 	
-		//! from 3 euler angles 
+		/*! Construct a Quaternion from Euler angles
+		  \param angles		rotation around x, y and z axes (pitch, yaw, roll)
+		  */
 		Quaternion(const Vector3 &angles)
 		{	
 			float cos_z_2 = cosf(0.5f*angles.z);
@@ -76,7 +93,9 @@ namespace T3D {
 			v.z = sin_z_2*cos_y_2*cos_x_2 - cos_z_2*sin_y_2*sin_x_2;		
 		} 
 
-		//! from rotation matrix
+		/*! Construct a Quaternion from a rotation matrix
+		  \param m			the rotation matrix
+		  */
 		Quaternion(const Matrix3x3 &m)
 		{	
 			float t = m[0][0]+m[1][1]+m[2][2];
@@ -146,19 +165,26 @@ namespace T3D {
 		{ v/=scale; s/=scale; return *this; }
 	
 
-		//! gets the length of this Quaternion
+		/*! gets the length of this Quaternion
+		  \return	the length
+		  */
 		float length() const
 		{ return (float)sqrt(s*s + v.dot(v)); }
 
-		//! gets the squared length of this Quaternion
+		/*! gets the squared length of this Quaternion
+		  \remark	Note that this is faster than the length() method
+		  \return	the squared length
+		  */
 		float squaredLength() const
 		{ return (float)(s*s + v.dot(v)); }
 
-		//! normalizes this Quaternion
+		//! normalizes this Quaternion 
 		void normalise()
 		{ *this/=length(); }
 
-		//! returns the normalized version of this Quaternion
+		/*! gets a normalized version of this Quaternion
+		  \return the new normalized Quaternion
+		  */
 		Quaternion normalised() const
 		{ return  *this/length(); }
 
@@ -166,11 +192,14 @@ namespace T3D {
 		void conjugate()
 		{ v=-v; }
 
-		//! inverts this Quaternion
+		//! inverts this Quaternion 
 		void invert()
 		{ conjugate(); *this/=squaredLength(); }
 	
-		//! returns the logarithm of a Quaternion = v*a where q = [cos(a),v*sin(a)]
+		/*! returns the logarithm of a Quaternion = v*a where q = [cos(a),v*sin(a)]
+		  \todo		this method needs to be checked for correctness
+		  \return	the new Quaternion
+		  */
 		Quaternion log() const
 		{
 			float a = (float)acos(s);
@@ -189,7 +218,10 @@ namespace T3D {
 			return ret;
 		}
 
-		//! returns e^Quaternion = exp(v*a) = [cos(a),vsin(a)]
+		/*! returns e^Quaternion = exp(v*a) = [cos(a),vsin(a)]
+		  \todo		this method needs to be checked for correctness
+		  \return	the new Quaternion
+		  */
 		Quaternion exp() const
 		{
 			float a = (float)v.length();
@@ -209,7 +241,7 @@ namespace T3D {
 			return ret;
 		}
 
-		//! casting to a 4x4 isomorphic matrix for right multiplication with vector
+		//! casting to a 4x4 isomorphic matrix for right multiplication with vector 
 		operator Matrix4x4() const
 		{			
 			return Matrix4x4(s,  -v.x, -v.y,-v.z,
@@ -229,15 +261,31 @@ namespace T3D {
 					2*(v.x*v.z-s*v.y),   2*(v.y*v.z+s*v.x),   1-2*(v.x*v.x+v.y*v.y));
 		}
 
-		//! computes the dot product of 2 quaternions
+		/*! computes the dot product of 2 quaternions
+		  \param q1		the first quaternion
+		  \param q2		the second quaternion
+		  \return		the dot product 
+		  */
 		static inline float dot(const Quaternion &q1, const Quaternion &q2) 
 		{ return q1.v.dot(q2.v) + q1.s*q2.s; }
 
-		//! linear Quaternion interpolation
+		/*! calculates a linear interpolation between 2 quaternions
+		  \param q1		the first quaternion
+		  \param q2		the second quaternion
+		  \param t		the interpolatin parameter. range: 0(q1)..1(q2)
+		  \return		the interpolated quaternion 
+		  */
 		static Quaternion lerp(const Quaternion &q1, const Quaternion &q2, float t) 
 		{ return (q1*(1-t) + q2*t).normalised(); }
 
-		//! spherical linear interpolation
+		/*! calculates a spherical interpolation between 2 quaternions
+		  slerp is slower than lerp, but may produce a better looking result
+		  probably best not to use this for small angles
+		  \param q1		the first quaternion
+		  \param q2		the second quaternion
+		  \param t		the interpolatin parameter. range: 0(q1)..1(q2)
+		  \return		the interpolated quaternion 
+		  */
 		static Quaternion slerp(const Quaternion &q1, const Quaternion &q2, float t) 
 		{
 			Quaternion q3;
@@ -260,50 +308,19 @@ namespace T3D {
 				return lerp(q1,q3,t);		
 		}
 
-		//! This version of slerp, used by squad, does not check for theta > 90.
-		static Quaternion slerpNoInvert(const Quaternion &q1, const Quaternion &q2, float t) 
-		{
-			float dot = Quaternion::dot(q1, q2);
-
-			if (dot > -0.95f && dot < 0.95f)
-			{
-				float angle = acosf(dot);			
-				return (q1*sinf(angle*(1-t)) + q2*sinf(angle*t))/sinf(angle);
-			} else  // if the angle is small, use linear interpolation								
-				return lerp(q1,q2,t);			
-		}
-
-		//! spherical cubic interpolation
-		static Quaternion squad(const Quaternion &q1,const Quaternion &q2,const Quaternion &a,const Quaternion &b,float t)
-		{
-			Quaternion c= slerpNoInvert(q1,q2,t),
-					   d= slerpNoInvert(a,b,t);		
-			return slerpNoInvert(c,d,2*t*(1-t));
-		}
-
-		//! Shoemake-Bezier interpolation using De Castlejau algorithm
-		static Quaternion bezier(const Quaternion &q1,const Quaternion &q2,const Quaternion &a,const Quaternion &b,float t)
-		{
-			// level 1
-			Quaternion q11= slerpNoInvert(q1,a,t),
-					q12= slerpNoInvert(a,b,t),
-					q13= slerpNoInvert(b,q2,t);		
-			// level 2 and 3
-			return slerpNoInvert(slerpNoInvert(q11,q12,t), slerpNoInvert(q12,q13,t), t);
-		}
-
-		//! Given 3 quaternions, qn-1,qn and qn+1, calculate a control point to be used in spline interpolation
-		static Quaternion spline(const Quaternion &qnm1,const Quaternion &qn,const Quaternion &qnp1)
-		{
-			Quaternion qni(qn.s, -qn.v);	
-			return qn * (( (qni*qnm1).log()+(qni*qnp1).log() )/-4).exp();
-		}
-
-		//! converts from a normalized axis - angle pair rotation to a Quaternion
+		/*! converts from a normalized axis - angle pair rotation to a Quaternion
+		  \remark	note that we can't make this a constructor because it would clash
+		  \param angle	the angle of rotation around the axis
+		  \param axis	the axis of rotation
+		  \return		the calculated Quaternion
+		  */
 		static inline Quaternion fromAngleAxis(float angle, const Vector3 &axis)
 		{ return Quaternion(cosf(angle/2), axis*sinf(angle/2)); }
 
-		//! returns the axis and angle of this unit Quaternion
+		/*! computes the angle and axis of rotation for this Quaternion
+		  \param[out] angle	the angle of rotation around the axis
+		  \param[out] axis	the axis of rotation
+		  */
 		void toAngleAxis(float &angle, Vector3 &axis) 
 		{
 			if (s>1) normalise();
@@ -328,7 +345,9 @@ namespace T3D {
 			return (*this * V * conjugate).v;
 		}
 
-		//! returns the euler angles from a rotation Quaternion
+		/*! gets the euler angles from a rotation Quaternion
+		  \return	the rotation around the x,y and z axes (pitch, yaw, roll)
+		  */
 		Vector3 eulerAngles() const
 		{
 			float sqw = s*s;    
@@ -364,8 +383,7 @@ namespace T3D {
 			return euler;
 		}
 
-		/** Function for writing to a stream.
-        */
+		//! Function for writing to a stream.
         inline friend std::ostream& operator <<
             ( std::ostream& o, const Quaternion& q )
         {

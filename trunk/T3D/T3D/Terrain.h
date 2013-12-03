@@ -7,13 +7,12 @@
 
 namespace T3D{
 
-	///-------------------------------------------------------------------------------------------------
-	/// @class	Terrain
-	///
-	/// @brief	Generates a terrain mesh.
-	///
-	/// @author	Rollingt
-	/// @date	2/10/2013
+	//! A triangle mesh terrain class
+	/*! Can create a terrain from a texture or procudurally generate a fractal terrain
+	  \todo		Consider refactoring this class so that it is a subclass of Mesh
+	  
+	  \author	Robert Ollington
+	  */
 
 	class Terrain :
 		public Component
