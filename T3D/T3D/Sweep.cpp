@@ -3,6 +3,11 @@
 namespace T3D
 {
 
+	/*! Constructs a mesh from a (usually 2D) profile by sweeping the profile along a SweepPath
+		\param points		The points defining the profile
+		\param path		Defines the path to sweep along
+		\param closed		If true, the last profile along the path will be connected back to the first profile
+		*/
 	Sweep::Sweep(std::vector<Vector3> points, SweepPath &path, bool closed)
 	{
 		numVerts = path.size()*points.size();
@@ -43,7 +48,8 @@ namespace T3D
 		}
 	}
 
-
+	
+	//! Destructor
 	Sweep::~Sweep(void)
 	{
 	}
