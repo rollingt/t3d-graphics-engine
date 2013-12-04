@@ -31,7 +31,7 @@
   <td style="padding-left: 0.5em;">
    <div id="projectname">T3D
    </div>
-   <div id="projectbrief">A simple graphics engine for educational use</div>
+   <div id="projectbrief">A simple graphics education for educational use</div>
   </td>
  </tr>
  </tbody>
@@ -102,6 +102,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="#index_r"><span>r</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
       <li><a href="#index_t"><span>t</span></a></li>
+      <li><a href="#index_u"><span>u</span></a></li>
       <li><a href="#index_0x7e"><span>~</span></a></li>
     </ul>
   </div>
@@ -138,6 +139,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 &#160;
 
 <h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
+<li>addComponent()
+: <a class="el" href="class_t3_d_1_1_game_object.html#aac8822a022b16a89fcbe6c7ecac53b31">T3D::GameObject</a>
+</li>
 <li>angleBetween()
 : <a class="el" href="class_t3_d_1_1_vector3.html#ae31951331ffa4d0bdb00f61cfd2ca84f">T3D::Vector3</a>
 </li>
@@ -196,17 +200,35 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 
 <h3><a class="anchor" id="index_g"></a>- g -</h3><ul>
+<li>GameObject()
+: <a class="el" href="class_t3_d_1_1_game_object.html#a3da415b07696c726f2f31317651a94a6">T3D::GameObject</a>
+</li>
+<li>getCamera()
+: <a class="el" href="class_t3_d_1_1_game_object.html#ae32ea9a7098873ae9095b63aa04898a7">T3D::GameObject</a>
+</li>
 <li>getDistance()
 : <a class="el" href="class_t3_d_1_1_plane.html#a53d62abf549b68b0db8bb33fb8223bbc">T3D::Plane</a>
 </li>
 <li>getHeight()
 : <a class="el" href="class_t3_d_1_1_terrain.html#a45fcda9775e6ef302eacc23b2a774af4">T3D::Terrain</a>
 </li>
+<li>getLight()
+: <a class="el" href="class_t3_d_1_1_game_object.html#ae5e6f7e78b0ec27f4397b6111bf32741">T3D::GameObject</a>
+</li>
+<li>getMaterial()
+: <a class="el" href="class_t3_d_1_1_game_object.html#a85d6efb9b3e09e6f29e9166a3711ea44">T3D::GameObject</a>
+</li>
+<li>getMesh()
+: <a class="el" href="class_t3_d_1_1_game_object.html#af17beeed70f39f2bdfb346ecdbc7a5a7">T3D::GameObject</a>
+</li>
 <li>getScale()
-: <a class="el" href="class_t3_d_1_1_matrix4x4.html#a702e2fba4ea6d997a06924bde0300f65">T3D::Matrix4x4</a>
+: <a class="el" href="class_t3_d_1_1_matrix4x4.html#a9f4d4874aeeb949257ac5c5d010e9878">T3D::Matrix4x4</a>
 </li>
 <li>getTrans()
-: <a class="el" href="class_t3_d_1_1_matrix4x4.html#ab79ab2cbea297e23922bea347e5c88f5">T3D::Matrix4x4</a>
+: <a class="el" href="class_t3_d_1_1_matrix4x4.html#a40963b5eb0d6228036c8a3971378e287">T3D::Matrix4x4</a>
+</li>
+<li>getTransform()
+: <a class="el" href="class_t3_d_1_1_game_object.html#a84e7a2f11afebcccb89157eefc13956e">T3D::GameObject</a>
 </li>
 </ul>
 
@@ -335,11 +357,26 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
+<li>setCamera()
+: <a class="el" href="class_t3_d_1_1_game_object.html#a5a68bd2f90384e3600e5499adf6a29c1">T3D::GameObject</a>
+</li>
+<li>setLight()
+: <a class="el" href="class_t3_d_1_1_game_object.html#a90c2f7555471dbe3f96441670f5ca164">T3D::GameObject</a>
+</li>
+<li>setMaterial()
+: <a class="el" href="class_t3_d_1_1_game_object.html#a5fd225023e438aa3c53c80fcc5b7b37d">T3D::GameObject</a>
+</li>
+<li>setMesh()
+: <a class="el" href="class_t3_d_1_1_game_object.html#ac4b0c0c8bbcf09c316c46bc9bc6d7fa4">T3D::GameObject</a>
+</li>
 <li>setScale()
 : <a class="el" href="class_t3_d_1_1_matrix4x4.html#a09417efd46dfd51207acc43dc19199e6">T3D::Matrix4x4</a>
 </li>
 <li>setTrans()
 : <a class="el" href="class_t3_d_1_1_matrix4x4.html#afd7c913d2721c0dc400b131f0a39e9a6">T3D::Matrix4x4</a>
+</li>
+<li>setTransform()
+: <a class="el" href="class_t3_d_1_1_game_object.html#ae65331cd89f97f7064b89829b8c0f1a6">T3D::GameObject</a>
 </li>
 <li>slerp()
 : <a class="el" href="class_t3_d_1_1_quaternion.html#ad73ecf570146978e1811f60fa63374b3">T3D::Quaternion</a>
@@ -353,8 +390,8 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 </li>
 <li>swap()
 : <a class="el" href="class_t3_d_1_1_vector4.html#af2556c6c4898e7adc59a44c1d88c5713">T3D::Vector4</a>
-, <a class="el" href="class_t3_d_1_1_vector3.html#a4fbe97c91a8fc9b655ad0b9f3604427e">T3D::Vector3</a>
 , <a class="el" href="class_t3_d_1_1_matrix4x4.html#aed6a154def1111e3e8a2a9bd9a35d024">T3D::Matrix4x4</a>
+, <a class="el" href="class_t3_d_1_1_vector3.html#a4fbe97c91a8fc9b655ad0b9f3604427e">T3D::Vector3</a>
 , <a class="el" href="class_t3_d_1_1_matrix3x3.html#a6215a407faa9e455349e3fdde4a9a864">T3D::Matrix3x3</a>
 </li>
 <li>Sweep()
@@ -376,7 +413,17 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 </ul>
 
 
+<h3><a class="anchor" id="index_u"></a>- u -</h3><ul>
+<li>update()
+: <a class="el" href="class_t3_d_1_1_game_object.html#a53b1349aa04ebd6e643286bdd6ce0167">T3D::GameObject</a>
+</li>
+</ul>
+
+
 <h3><a class="anchor" id="index_0x7e"></a>- ~ -</h3><ul>
+<li>~GameObject()
+: <a class="el" href="class_t3_d_1_1_game_object.html#a5ebb97ddcd82ac6f6e7baf06c6509afa">T3D::GameObject</a>
+</li>
 <li>~Sweep()
 : <a class="el" href="class_t3_d_1_1_sweep.html#ac29054733a70e4aff582fd6864de2686">T3D::Sweep</a>
 </li>
@@ -389,7 +436,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 3 2013 14:46:42 for T3D by
+    <li class="footer">Generated on Wed Dec 4 2013 16:30:58 for T3D by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

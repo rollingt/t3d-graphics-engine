@@ -24,6 +24,7 @@ var dir_7937090e6e20bd4cc6d6a628ff72bc50 =
     [ "Quaternion.h", "_quaternion_8h_source.html", null ],
     [ "Renderer.h", "_renderer_8h_source.html", null ],
     [ "RotateBehaviour.h", "_rotate_behaviour_8h_source.html", null ],
+    [ "SoundManager.h", "_sound_manager_8h_source.html", null ],
     [ "Sphere.h", "_sphere_8h_source.html", null ],
     [ "Sweep.h", "_sweep_8h_source.html", null ],
     [ "SweepPath.h", "_sweep_path_8h_source.html", null ],
