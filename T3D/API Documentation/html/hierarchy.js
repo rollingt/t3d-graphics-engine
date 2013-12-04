@@ -27,11 +27,14 @@ var hierarchy =
     [ "T3D::Math", "class_t3_d_1_1_math.html", null ],
     [ "T3D::Matrix3x3", "class_t3_d_1_1_matrix3x3.html", null ],
     [ "T3D::Matrix4x4", "class_t3_d_1_1_matrix4x4.html", null ],
+    [ "T3D::Music", "class_t3_d_1_1_music.html", null ],
     [ "T3D::Plane", "class_t3_d_1_1_plane.html", null ],
     [ "T3D::Quaternion", "class_t3_d_1_1_quaternion.html", null ],
     [ "T3D::Renderer", "class_t3_d_1_1_renderer.html", [
       [ "T3D::GLRenderer", "class_t3_d_1_1_g_l_renderer.html", null ]
     ] ],
+    [ "T3D::Sound", "class_t3_d_1_1_sound.html", null ],
+    [ "T3D::SoundManager", "class_t3_d_1_1_sound_manager.html", null ],
     [ "T3D::SweepPath", "class_t3_d_1_1_sweep_path.html", null ],
     [ "T3D::T3DApplication", "class_t3_d_1_1_t3_d_application.html", [
       [ "T3D::WinGLApplication", "class_t3_d_1_1_win_g_l_application.html", [

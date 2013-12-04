@@ -1,15 +1,3 @@
-// =========================================================================================
-// KXG363 - Advanced Games Programming, 2012
-// =========================================================================================
-//
-// Author: Robert Ollington
-//
-// gameobject.h
-//
-// Everything that exists in the scene has a corresponding GameObject
-// Alter functionality by attaching components
-// Position in scene is defined by Transform
-
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
@@ -24,6 +12,12 @@ namespace T3D
 	class Component;
 	class Camera;
 	class Light;
+
+	//! Generic class for all objects that exist in the world
+	/*! A GameObject's location is defined by the attached Transform.  The behaviour of a GameObject is customised by adding one or more Component's.  
+	    Special Component's such as Light's, Camera's and Material's, should be added using the appropriate method.
+	  \author  Robert Ollington
+	  */
 
 	class GameObject
 	{

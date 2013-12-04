@@ -31,7 +31,7 @@
   <td style="padding-left: 0.5em;">
    <div id="projectname">T3D
    </div>
-   <div id="projectbrief">A simple graphics engine for educational use</div>
+   <div id="projectbrief">A simple graphics education for educational use</div>
   </td>
  </tr>
  </tbody>
@@ -101,11 +101,23 @@ $(document).ready(function(){initNavTree('todo.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt><a class="anchor" id="_todo000002"></a>Member <a class="el" href="class_t3_d_1_1_quaternion.html#a61eaf3b0493547b96702789d214c62be">T3D::Quaternion::exp</a>  () const </dt>
+<dt><a class="anchor" id="_todo000003"></a>Member <a class="el" href="class_t3_d_1_1_game_object.html#a5a68bd2f90384e3600e5499adf6a29c1">T3D::GameObject::setCamera</a>  (Camera *s)</dt>
+<dd>Should the camera also be added to the list of Component's? If not, why is Camera a Component?  </dd>
+<dt><a class="anchor" id="_todo000004"></a>Member <a class="el" href="class_t3_d_1_1_game_object.html#a90c2f7555471dbe3f96441670f5ca164">T3D::GameObject::setLight</a>  (Light *l)</dt>
+<dd>Should the light also be added to the list of Component's? If not, why is Light a Component?  </dd>
+<dt><a class="anchor" id="_todo000005"></a>Member <a class="el" href="class_t3_d_1_1_game_object.html#a5fd225023e438aa3c53c80fcc5b7b37d">T3D::GameObject::setMaterial</a>  (Material *m)</dt>
+<dd>Should Material be a Component?  </dd>
+<dt><a class="anchor" id="_todo000006"></a>Member <a class="el" href="class_t3_d_1_1_game_object.html#ac4b0c0c8bbcf09c316c46bc9bc6d7fa4">T3D::GameObject::setMesh</a>  (Mesh *m)</dt>
+<dd>Should the mesh also be added to the list of Component's? If not, why is Mesh a Component?  </dd>
+<dt><a class="anchor" id="_todo000002"></a>Member <a class="el" href="class_t3_d_1_1_game_object.html#ae65331cd89f97f7064b89829b8c0f1a6">T3D::GameObject::setTransform</a>  (Transform *t)</dt>
+<dd>Should this method also update the gameObject of the old Transform?  </dd>
+<dt><a class="anchor" id="_todo000001"></a>Member <a class="el" href="class_t3_d_1_1_game_object.html#a5ebb97ddcd82ac6f6e7baf06c6509afa">T3D::GameObject::~GameObject</a>  (void)</dt>
+<dd>Finish deleting components  </dd>
+<dt><a class="anchor" id="_todo000008"></a>Member <a class="el" href="class_t3_d_1_1_quaternion.html#a61eaf3b0493547b96702789d214c62be">T3D::Quaternion::exp</a>  () const </dt>
 <dd>this method needs to be checked for correctness  </dd>
-<dt><a class="anchor" id="_todo000001"></a>Member <a class="el" href="class_t3_d_1_1_quaternion.html#a15193f0c7b6344c850355fcd252010bd">T3D::Quaternion::log</a>  () const </dt>
+<dt><a class="anchor" id="_todo000007"></a>Member <a class="el" href="class_t3_d_1_1_quaternion.html#a15193f0c7b6344c850355fcd252010bd">T3D::Quaternion::log</a>  () const </dt>
 <dd>this method needs to be checked for correctness  </dd>
-<dt><a class="anchor" id="_todo000003"></a>Class <a class="el" href="class_t3_d_1_1_terrain.html">T3D::Terrain</a>  </dt>
+<dt><a class="anchor" id="_todo000009"></a>Class <a class="el" href="class_t3_d_1_1_terrain.html">T3D::Terrain</a>  </dt>
 <dd>Consider refactoring this class so that it is a subclass of Mesh</dd>
 </dl>
 </div></div><!-- contents -->
@@ -113,7 +125,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 3 2013 14:46:41 for T3D by
+    <li class="footer">Generated on Wed Dec 4 2013 16:30:57 for T3D by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>
