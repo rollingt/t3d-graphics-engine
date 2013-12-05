@@ -24,6 +24,9 @@ namespace T3D
 		virtual ~KeyboardController(void);
 
 		virtual void update(float dt);
+		void keyDownResolve(float dt);
+		void keyUpResolve(float dt);
+		void mouseMoveResolve();
 
 	private:
 		float keySensitivity;
