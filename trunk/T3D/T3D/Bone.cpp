@@ -29,18 +29,28 @@ namespace T3D
 	}
 	
 
+
 	void Bone::update(float time){
 		int frame = 0;
-		while (time>=keyframes[frame].time){
-			frame++;
-		}
-		if (frame==keyframes.size()){
-			transform->setLocalPosition(keyframes[keyframes.size()-1].position);
-			transform->setLocalRotation(keyframes[keyframes.size()-1].rotation);
-		} else {
-			float alpha = (time-keyframes[frame-1].time)/(keyframes[frame].time-keyframes[frame-1].time);
-			transform->setLocalPosition(Vector3::lerp(keyframes[frame-1].position,keyframes[frame].position,alpha));
-			transform->setLocalRotation(Quaternion::slerp(keyframes[frame-1].rotation,keyframes[frame].rotation,alpha));
+
+		if (!keyframes.empty())
+		{
+			if (time >= keyframes[keyframes.size()-1].time) {		// reached end of sequence?
+				// set to last keyframe
+				transform->setLocalPosition(keyframes[keyframes.size()-1].position);
+				transform->setLocalRotation(keyframes[keyframes.size()-1].rotation);
+			}
+			else
+			{
+				// find position in sequence
+				while (time>=keyframes[frame].time){
+					frame++;
+				}
+				// Set to interpolated state bequence keyframes
+				float alpha = (time-keyframes[frame-1].time)/(keyframes[frame].time-keyframes[frame-1].time);
+				transform->setLocalPosition(Vector3::lerp(keyframes[frame-1].position,keyframes[frame].position,alpha));
+				transform->setLocalRotation(Quaternion::slerp(keyframes[frame-1].rotation,keyframes[frame].rotation,alpha));
+			}
 		}
 	}
 
