@@ -25,6 +25,15 @@ namespace T3D
 
 		virtual void update(float dt) = 0;
 
+		bool getFinished() { return finished; }
+		void setFinsihed(bool finished) { this->finished = finished; }
+		std::string& getName() { return name; }
+		void setName(const char *name) { this->name = name; }
+
+	private:
+		std::string name;					// task name
+		bool finished;						// task has finished and can be removed and deleted from tasks
+
 	protected:
 		T3DApplication *app;
 	};

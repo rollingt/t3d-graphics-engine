@@ -16,6 +16,7 @@ namespace T3D
 
 	Task::Task(T3DApplication* app) :app(app)
 	{
+		finished = false;
 	}
 
 
