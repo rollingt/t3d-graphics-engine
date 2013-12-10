@@ -14,6 +14,7 @@
 #include <sdl\SDL.h>
 
 #include "t3dapplication.h"
+#include "FontCache.h"
 
 namespace T3D 
 {
@@ -23,6 +24,7 @@ namespace T3D
 	{
 	private:
 		SDL_Surface *surf;
+		FontCache fonts;
 
 	public:
 		WinGLApplication(void);
@@ -33,6 +35,9 @@ namespace T3D
 		void quit(void);
 
 		void handleEvent(SDL_Event *e);
+
+		font *getFont(const char *filename, int pointSize) { return fonts.getFont(filename, pointSize); }
+
 	};
 
 }

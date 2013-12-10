@@ -12,6 +12,7 @@
 #include <gl/glew.h>
 #include <GL/GL.h>
 #include <GL/GLU.h>
+#include <sdl\SDL_ttf.h>
 
 #include "WinGLApplication.h"
 #include "GLRenderer.h"
@@ -20,6 +21,10 @@
 #include "Mesh.h"
 #include "Vector3.h"
 #include "Input.h"
+#include "PerfLogTask.h"
+#include "DiagMessageTask.h"
+
+
 
 namespace T3D 
 {
@@ -36,7 +41,9 @@ namespace T3D
 	WinGLApplication::~WinGLApplication(void)
 	{
 		delete root;
+		root = NULL;
 		delete renderer;
+		renderer = NULL;
 	}
 
 	bool WinGLApplication::init(){
@@ -62,13 +69,13 @@ namespace T3D
 
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,  2);
 
-		if((surf = SDL_SetVideoMode(1024, 640, 32, SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER | SDL_OPENGL)) == NULL) {
+		if((surf = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32, SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER | SDL_OPENGL)) == NULL) {
 			return false;
 		}
 		glewInit();
 		glClearColor(0, 0, 0, 0);
 		glClearDepth(1.0f);
-		glViewport(0, 0, 1024, 640);
+		glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		// TODO: Fix this so that camera projection is used (probably move to pre-render)
 		glMatrixMode(GL_PROJECTION);
@@ -81,9 +88,17 @@ namespace T3D
 
 		glLoadIdentity();
 
-		SDL_WM_GrabInput(SDL_GRAB_ON);
+		// Initialize SDL_ttf library
+		if (TTF_Init() != 0)
+		{
+			std::cout << "TTF_Init() Failed: " << TTF_GetError() << endl;
+			SDL_Quit();
+			exit(1);
+		}
 
-		SDL_ShowCursor(SDL_DISABLE);
+		//SDL_WM_GrabInput(SDL_GRAB_ON);
+
+		//SDL_ShowCursor(SDL_DISABLE);
 
 		return true;
 	}
@@ -106,12 +121,14 @@ namespace T3D
 				handleEvent(&sdlEvent);
 			}
 
+
 			updateTasks();
 
 			updateComponents(root);
 
 			renderer->prerender();
 			renderer->render(root);
+
 			renderer->postrender();
 		}
 
@@ -139,6 +156,26 @@ namespace T3D
 					renderer->toggleAxes();
 				if (Input::keyDown[KEY_F3])
 					renderer->toggleGrid();
+				if (Input::keyDown[KEY_F9])
+				{
+					int line = 0;
+					addTask(new DiagMessageTask(this, "ESCAPE     quit", 2, 600-(line++*20), true, 5.0));
+					addTask(new DiagMessageTask(this, "F1         wireframe", 2, 600-(line++*20), true, 5.0));
+					addTask(new DiagMessageTask(this, "F2         axes", 2, 600-(line++*20), true, 5.0));
+					addTask(new DiagMessageTask(this, "F3         grid", 2, 600-(line++*20), true, 5.0));
+					addTask(new DiagMessageTask(this, "F9         show help", 2, 600-(line++*20), true, 5.0));
+					addTask(new DiagMessageTask(this, "F10        show stats", 2, 600-(line++*20), true, 5.0));
+				}
+				if (Input::keyDown[KEY_F10])
+				{
+					// find log task
+					PerfLogTask *task = (PerfLogTask *)findTask("PerfLogTask");
+					if (task)
+					{
+						// toggle on screen diagnostics
+						task->setDiagDisplay(!task->getDiagDisplay());
+					}
+				}
 				break;
 			case SDL_KEYUP:
 				Input::onKeyUp(e->key.keysym.sym);
