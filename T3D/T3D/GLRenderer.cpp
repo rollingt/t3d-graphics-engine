@@ -10,6 +10,7 @@
 // Some code adapted from KXG262
 
 #include <sdl\SDL.h>
+#include <sdl\SDL_ttf.h>
 #include <gl\glew.h>
 #include <gl\GL.h>
 #include <gl\GLU.h>
@@ -22,16 +23,16 @@
 namespace T3D
 {
 	GLRenderer::GLRenderer(void)
-	{			
+	{
 	}
-
 
 	GLRenderer::~GLRenderer(void)
 	{
 	}
-	
+
 	void GLRenderer::prerender()
 	{
+
 		// set up lighting
 		glEnable(GL_NORMALIZE);
 
@@ -160,7 +161,7 @@ namespace T3D
 			glEnd();
 			glDisable (GL_LINE_STIPPLE);	
 		}
-		
+
 		//fog?
 		if (showFog){
 			glEnable(GL_FOG);
@@ -171,6 +172,7 @@ namespace T3D
 		} else {
 			glDisable(GL_FOG);
 		}
+
 		if (showWireframe){
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 			glDisable(GL_CULL_FACE);
@@ -181,10 +183,16 @@ namespace T3D
 		glEnable(GL_LIGHTING);
 		glShadeModel(GL_SMOOTH);
 		glEnable(GL_DEPTH_TEST);		
+		glDisable(GL_BLEND);
+
 	}
+
+
 
 	void GLRenderer::postrender()
 	{
+		showD2DOverlays();
+
 		SDL_GL_SwapBuffers();
 	}
 
@@ -355,6 +363,11 @@ namespace T3D
 		tex->setID(texture);
 	}
 
+	void GLRenderer::unloadTexture(unsigned int textureID)
+	{
+		glDeleteTextures(1, &textureID);
+	}
+
 	void GLRenderer::loadSkybox(std::string tex){
 		skyboxup = new Texture(tex+"_up.bmp");
 		loadTexture(skyboxup);
@@ -370,6 +383,133 @@ namespace T3D
 		loadTexture(skyboxback);
 
 		renderSkybox = true;
+	}
+
+	// 2D overlay (used for on screen diagnostic messages mainly)
+	void GLRenderer::add2DOverlay(Texture *texture, int x, int y)
+	{
+		overlay2D *overlay = new overlay2D;
+		overlay->texture = texture;
+		overlay->x = x;
+		overlay->y = y;
+		overlays.push_back(overlay);
+	}
+
+	// remove overlay
+	void GLRenderer::remove2DOverlay(Texture *texture)
+	{
+		std::list<overlay2D *>::iterator i = overlays.begin();
+		while (i != overlays.end())
+		{
+			overlay2D *overlay = *i;
+			if (overlay->texture == texture)
+			{
+				overlays.remove(overlay);
+				return;
+			}
+			i++;
+		}
+	}
+
+	void GLRenderer::enable2D()
+	{
+		int vPort[4];
+  
+		glGetIntegerv(GL_VIEWPORT, vPort);
+  
+		glMatrixMode(GL_PROJECTION);
+		glPushMatrix();
+		glLoadIdentity();
+  
+		glOrtho(0, vPort[2], 0, vPort[3], -1, 1);
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		glLoadIdentity();
+
+		glDisable(GL_DEPTH_TEST);		
+		glDisable(GL_LIGHTING);
+		glDisable(GL_FOG);
+
+	}
+
+	void GLRenderer::disable2D()
+	{
+		glMatrixMode(GL_PROJECTION);
+		glPopMatrix();   
+		glMatrixMode(GL_MODELVIEW);
+		glPopMatrix();
+
+		glEnable(GL_DEPTH_TEST);		
+		glEnable(GL_LIGHTING);
+		if (showFog){
+			glEnable(GL_FOG);
+		}
+	}
+
+	// Render overlay as a simple 2D Mesh
+	// It is assumed that a 2D orthographic rendering context is in effect (enable2D)
+	// based on code from http://www.gamedev.net/topic/284259-for-reference-using-sdl_ttf-with-opengl/
+	void GLRenderer::draw2DMesh(overlay2D *overlay)
+	{
+		int x = overlay->x;
+		int y = overlay->y;
+		int w = overlay->texture->getWidth();
+		int h = overlay->texture->getHeight();
+
+		unsigned int texture = overlay->texture->getID();
+	
+		/* GL_NEAREST looks horrible, if scaled... */
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	
+
+		/* prepare to render our texture */
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glColor3f(1.0f, 1.0f, 1.0f);
+
+		//glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_BLEND);                         // Enable Blending
+		glBlendFunc(GL_SRC_COLOR,GL_ONE);			// transparent background
+
+		/* Draw a quad at location */
+		glBegin(GL_QUADS);
+		/* Recall that the origin is in the lower-left corner
+			That is why the TexCoords specify different corners
+			than the Vertex coors seem to. */
+		glTexCoord2f(0.0f, 1.0f); 
+		glVertex2f(x    , y);
+		glTexCoord2f(1.0f, 1.0f); 
+		glVertex2f(x + w, y);
+		glTexCoord2f(1.0f, 0.0f); 
+		glVertex2f(x + w, y + h);
+		glTexCoord2f(0.0f, 0.0f); 
+		glVertex2f(x    , y + h);
+		glEnd();
+	
+		/* Bad things happen if we delete the texture before it finishes */
+		glFinish();
+	
+		glDisable(GL_BLEND);
+
+	}
+
+
+	// Show all diagnostic messages
+	// Messages are rendered and then deleted. A persistant message must be added every frame
+	// This isn't ideal but a better soloution would be to implement 2D sprites withing
+	void GLRenderer::showD2DOverlays()
+	{
+		if (!overlays.empty())
+		{
+			enable2D();
+			std::list<overlay2D *>::iterator i;
+			for (i = overlays.begin(); i != overlays.end(); i++)
+			{
+				overlay2D *overlay = *i;
+				draw2DMesh(overlay);
+			}
+			disable2D();
+		}
 	}
 
 }
