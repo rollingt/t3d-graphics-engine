@@ -22,6 +22,7 @@
 #include "Terrain.h"
 #include "Camera.h"
 #include "PerfLogTask.h"
+#include "DiagMessageTask.h"
 #include "Material.h"
 #include "Animation.h"
 #include "Billboard.h"
@@ -62,7 +63,6 @@ namespace T3D{
 				
 		Texture *proctex = new Texture(512,512);
 		proctex->createFractal(Colour(40,150,50,255),Colour(120,220,100,255),25.0f,false);
-
 		renderer->loadTexture(proctex, true);		
 		Material *procmat = new Material(1,1,1,1);
 		procmat->setTexture(proctex,50);
@@ -85,7 +85,7 @@ namespace T3D{
 		light->setDiffuse(1,1,1);
 		light->setSpecular(1,1,1);
 		lightObj->setLight(light);
-		lightObj->getTransform()->setLocalRotation(Vector3(-45*Math::DEG2RAD,135*Math::DEG2RAD,0));
+		lightObj->getTransform()->setLocalRotation(Vector3(-45*Math::DEG2RAD,70*Math::DEG2RAD,0));
 		lightObj->getTransform()->setParent(root);
 
 		cout << "creating cube\n";
@@ -117,7 +117,6 @@ namespace T3D{
 		sphere->getTransform()->setParent(root);
 		sphere->getTransform()->name = "Sphere";
 
-
 		cout << "creating sphere2 as child\n";
 		GameObject *sphere2 = new GameObject(this);
 		sphere2->setMesh(new Sphere(1.0,32));
@@ -126,12 +125,33 @@ namespace T3D{
 		sphere2->getTransform()->setParent(sphere->getTransform());
 		sphere2->getTransform()->name = "Child";
 
+		cout << "creating text \"Hello World\" texture\n";
+		Texture *texttex = new Texture(64,64);
+		texttex->clear(Colour(255,255,255,255));
+		font *f = getFont("resources/FreeSans.ttf", 24);
+		if (f != NULL) {
+			texttex->writeText(2, 2, "Hello", Colour(0,255,0,255), f->getFont());
+			texttex->writeText(0, 30, "World", Colour(255,0,0,0), f->getFont());
+		}
+		renderer->loadTexture(texttex, true);		
+		Material *textmat = new Material(1,1,1,1);
+		textmat->setTexture(texttex,1);
+
+		/*GameObject *plane = new GameObject(this);
+		plane->setMesh(new PlaneMesh(1));
+		plane->setMaterial(textmat);
+		plane->getTransform()->setLocalPosition(Vector3(3,0,0));
+		plane->getTransform()->setLocalRotation(Vector3(90*Math::DEG2RAD,0,0));
+		plane->getTransform()->setParent(root);
+		plane->getTransform()->name = "Plane";
+		*/
+
 		cout << "creating billboard\n";
 		GameObject *billboard = new GameObject(this);
 		Billboard *billboardComponent = new Billboard(renderer->camera->gameObject->getTransform(),true);
 		billboard->addComponent(billboardComponent);
-		billboard->setMaterial(smiley);
-		billboard->getTransform()->setLocalPosition(Vector3(-10,0,0));
+		billboard->setMaterial(textmat);			// hello world
+		billboard->getTransform()->setLocalPosition(Vector3(-10,-3,0));
 		billboard->getTransform()->setLocalScale(Vector3(2,2,2));
 		billboard->getTransform()->setParent(root);
 		billboard->getTransform()->name = "Billboard";
@@ -158,6 +178,8 @@ namespace T3D{
 
 		addTask(new PerfLogTask(this));
 
+		addTask(new DiagMessageTask(this, "Press F9 for help", 2, 32, true, 5.0));
+
 		Animation *anim = new Animation(10.0);
 		sphere->addComponent(anim);
 		anim->addKey("Child",10.0,Quaternion(),Vector3(1,0,0));
@@ -169,6 +191,7 @@ namespace T3D{
 		anim->addKey("Sphere",7.0,Quaternion(),Vector3(5,0,10));
 		anim->addKey("Sphere",5.0,Quaternion(Vector3(0,0,Math::HALF_PI)),Vector3(5,0,5));
 		anim->loop(true);	
+
 
 		/*
 		Animation *b = new Animation(10,5);
