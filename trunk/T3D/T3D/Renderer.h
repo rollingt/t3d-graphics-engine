@@ -33,8 +33,13 @@ namespace T3D
 
 		virtual void draw(GameObject *object) = 0;
 
-		virtual void loadTexture(Texture *tex, bool repeat = false) = 0; // returns texture id
+		virtual void loadTexture(Texture *tex, bool repeat = false) = 0;	// returns texture id
+		virtual void unloadTexture(unsigned int textureID) = 0;				// unload from GL
+
 		virtual void loadSkybox(std::string tex) = 0; 
+
+		virtual void add2DOverlay(Texture *texture, int x, int y) = 0;	// 2D overlay (used for on screen diagnostic messages mainly)
+		virtual void remove2DOverlay(Texture *texture) = 0;				// remove overlay
 		
 		void setFog(float d, float r, float g, float b, float a);
 		void toggleFog(){ showFog = !showFog; }
