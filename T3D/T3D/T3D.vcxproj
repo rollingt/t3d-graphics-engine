@@ -18,6 +18,9 @@
     <ClCompile Include="Colour.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="DiagMessageTask.cpp" />
+    <ClCompile Include="Font.cpp" />
+    <ClCompile Include="FontCache.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -36,7 +39,6 @@
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RotateBehaviour.cpp" />
-    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Sweep.cpp" />
     <ClCompile Include="SweepPath.cpp" />
@@ -57,6 +59,9 @@
     <ClInclude Include="Colour.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="DiagMessageTask.h" />
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="FontCache.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GLRenderer.h" />
     <ClInclude Include="Input.h" />
@@ -137,8 +142,11 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;glew32.lib;glew32mx.lib;glew32s.lib;glew32mxs.lib;sdl.lib;sdlmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glew32.lib;SDL_ttf.lib;glew32mx.lib;glew32s.lib;glew32mxs.lib;sdl.lib;sdlmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)lib\*.dll" "$(TargetDir)" /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -155,6 +163,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glew32.lib;SDL_ttf.lib;glew32mx.lib;glew32s.lib;glew32mxs.lib;sdl.lib;sdlmain.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
