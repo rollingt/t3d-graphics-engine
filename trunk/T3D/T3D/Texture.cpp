@@ -92,6 +92,29 @@ namespace T3D
 			delete []bdata;
 		}
 	}
+
+	void Texture::writeText(int x, int y, const char *text, Colour c, TTF_Font *font)
+	{
+		SDL_Surface *temp;
+		SDL_Color color;
+
+		color.r = c.r;
+		color.g = c.g;
+		color.b = c.b;
+	
+		/* Use SDL_TTF to render our text */
+		temp = TTF_RenderText_Blended(font, text, color);
+	
+		SDL_Rect destRect;
+		destRect.x = x;
+		destRect.y = y;
+		destRect.w = temp->w;
+		destRect.h = temp->h;
+
+		SDL_BlitSurface(temp, 0, image, &destRect);
+	
+		SDL_FreeSurface(temp);
+	}
 	
 	Colour Texture::getPixel(int x, int y){
 		return Colour(((Uint32 *)image->pixels)[x*(image->pitch/sizeof(unsigned int)) + y]); 

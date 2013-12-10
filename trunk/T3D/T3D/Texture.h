@@ -3,6 +3,7 @@
 
 #include <string>
 #include "sdl\sdl.h"
+#include <sdl\SDL_ttf.h>
 #include "Colour.h"
 
 namespace T3D
@@ -16,6 +17,7 @@ namespace T3D
 		virtual ~Texture(void);
 
 		void createFractal(Colour low, Colour high, float roughness, bool conserveHue = false);
+		void writeText(int x, int y, const char *text, Colour c, TTF_Font *font);
 
 		int getWidth(){ return image->w; }
 		int getHeight(){ return image->h; }
