@@ -12,9 +12,11 @@
 #ifndef T3DAPPLICATION_H
 #define T3DAPPLICATION_H
 
+
 #include "Transform.h"
 #include "renderer.h"
-#include <vector>
+#include "Font.h"
+#include <list>
 
 using namespace std;
 
@@ -33,12 +35,15 @@ namespace T3D
 		virtual void quit() = 0;
 		virtual void updateTasks();
 		virtual void updateComponents(Transform *t);
+		virtual font *getFont(const char *filename, int pointSize) { return NULL; }
 
 		Transform* getRoot(){return root;};
 		Renderer* getRenderer(){return renderer;};
 
 		void addTask(Task *t);
 		void removeTask(Task *t);
+		Task *findTask(const char *name);
+		bool validTask(Task *t);				// test that task is still alive
 
 	protected:
 		bool running;
@@ -47,7 +52,7 @@ namespace T3D
 		float lastFrame, dt;
 
 	private:
-		vector<Task*> tasks;
+		list<Task*> tasks;
 	};
 
 }

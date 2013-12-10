@@ -25,9 +25,9 @@ namespace T3D
 
 	T3DApplication::~T3DApplication(void)
 	{
-		vector<Task*>::iterator it;
+		list<Task*>::iterator it;
 
-		for ( it=tasks.begin() ; it < tasks.end(); it++ )
+		for ( it=tasks.begin() ; it != tasks.end(); it++ )
 		{
 			delete (*it);
 		}
@@ -36,6 +36,28 @@ namespace T3D
 
 	void T3DApplication::addTask(Task *t){
 		tasks.push_back(t);
+	}
+
+	void T3DApplication::removeTask(Task *t){
+		tasks.remove(t);
+	}
+
+	Task *T3DApplication::findTask(const char *name)
+	{
+		list<Task*>::iterator it;
+
+		for ( it=tasks.begin() ; it != tasks.end(); it++ )
+		{
+			if ((*it)->getName().compare(name) == 0)
+				return (*it);
+		}
+		return NULL;			// task not found
+	}
+
+	bool T3DApplication::validTask(Task *t)				// test that task is still alive
+	{
+		std::list<Task*>::iterator it = std::find(tasks.begin(), tasks.end(), t);
+		return it != tasks.end();
 	}
 
 	void T3DApplication::updateComponents(Transform *t){
@@ -51,11 +73,27 @@ namespace T3D
 	}
 
 	void T3DApplication::updateTasks(){
-		vector<Task*>::iterator it;
+		list<Task*>::iterator it=tasks.begin();
+		bool taskFinished;
+		Task *task;
 
-		for ( it=tasks.begin() ; it < tasks.end(); it++ )
+		while (it != tasks.end())
 		{
-			(*it)->update(dt);
+			task = (*it);
+
+			taskFinished = task->getFinished();
+
+			if (!taskFinished)
+				task->update(dt);			// only update still active tasks (not finished)
+
+			it++;							// next (must be before deleting any finished task)
+
+			if (taskFinished)
+			{
+				// remove and delete finished task
+				tasks.remove(task);
+				delete task;
+			}
 		}
 	}
 
