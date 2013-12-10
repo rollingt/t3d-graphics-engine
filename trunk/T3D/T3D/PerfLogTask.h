@@ -23,11 +23,17 @@ namespace T3D{
 
 		virtual void update(float dt);
 
+		bool getDiagDisplay() { return diagDisplay; };
+		void setDiagDisplay(bool state) { diagDisplay = state; };
+
 	protected:
 		long int frameCount;
 		float elapsedTime;
 		float dtmin;
 		float dtmax;
+		bool diagDisplay;
+
+		Texture *diagOverlay;
 
 		virtual void log();
 	};
