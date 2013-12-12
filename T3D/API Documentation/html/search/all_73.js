@@ -2,6 +2,7 @@ var searchData=
 [
   ['s',['s',['../class_t3_d_1_1_quaternion.html#a5cca6c63059d5dc4206092fabdf67740',1,'T3D::Quaternion']]],
   ['setcamera',['setCamera',['../class_t3_d_1_1_game_object.html#a5a68bd2f90384e3600e5499adf6a29c1',1,'T3D::GameObject']]],
+  ['setfog',['setFog',['../class_t3_d_1_1_renderer.html#af3b0617b0485608e1537f1b053288358',1,'T3D::Renderer']]],
   ['setlight',['setLight',['../class_t3_d_1_1_game_object.html#a90c2f7555471dbe3f96441670f5ca164',1,'T3D::GameObject']]],
   ['setmaterial',['setMaterial',['../class_t3_d_1_1_game_object.html#a5fd225023e438aa3c53c80fcc5b7b37d',1,'T3D::GameObject']]],
   ['setmesh',['setMesh',['../class_t3_d_1_1_game_object.html#ac4b0c0c8bbcf09c316c46bc9bc6d7fa4',1,'T3D::GameObject']]],
