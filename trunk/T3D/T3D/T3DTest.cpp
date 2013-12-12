@@ -51,20 +51,23 @@ namespace T3D{
 		renderer->setFog(0.007,0.8,0.8,0.8,1.0);
 		renderer->toggleFog();
 
-		Material *red = new Material(1,0,0,1);
-		Material *green = new Material(0,1,0,1);
+		Material *red = renderer->createMaterial(Renderer::PR_OPAQUE);
+		red->setDiffuse(1,0,0,1);
+		Material *green = renderer->createMaterial(Renderer::PR_OPAQUE);
+		green->setDiffuse(0,1,0,1);
 		green->setSpecular(0,0,0,0);
-		Material *blue = new Material(0,0,1,1);
+		Material *blue = renderer->createMaterial(Renderer::PR_OPAQUE);
+		blue->setDiffuse(0,0,1,1);
 
 		Texture *smileytex = new Texture("Resources/Smiley.bmp");
 		renderer->loadTexture(smileytex);
-		Material *smiley = new Material(1,1,1,1);
+		Material *smiley = renderer->createMaterial(Renderer::PR_OPAQUE);
 		smiley->setTexture(smileytex);
 				
 		Texture *proctex = new Texture(512,512);
 		proctex->createFractal(Colour(40,150,50,255),Colour(120,220,100,255),25.0f,false);
 		renderer->loadTexture(proctex, true);		
-		Material *procmat = new Material(1,1,1,1);
+		Material *procmat = renderer->createMaterial(Renderer::PR_TERRAIN);
 		procmat->setTexture(proctex,50);
 		procmat->setSpecular(0,0,0,0);
 
@@ -134,7 +137,7 @@ namespace T3D{
 			texttex->writeText(0, 30, "World", Colour(255,0,0,0), f->getFont());
 		}
 		renderer->loadTexture(texttex, true);		
-		Material *textmat = new Material(1,1,1,1);
+		Material *textmat = renderer->createMaterial(Renderer::PR_OPAQUE);
 		textmat->setTexture(texttex,1);
 
 		/*GameObject *plane = new GameObject(this);

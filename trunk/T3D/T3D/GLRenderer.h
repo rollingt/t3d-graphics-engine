@@ -41,6 +41,7 @@ namespace T3D
 		void postrender();
 
 		void draw(GameObject* object);
+		void loadMaterial(Material* mat);
 		
 		void loadTexture(Texture *tex, bool repeat = false);
 		void unloadTexture(unsigned int textureID);

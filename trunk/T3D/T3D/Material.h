@@ -11,10 +11,13 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
+#include <vector>
 #include "Texture.h"
 
 namespace T3D
 {
+	class GameObject;
+
 	class Material
 	{
 	public:
@@ -34,6 +37,10 @@ namespace T3D
 		void setTextureScale(float s){ textureScale = s; }
 		float getTextureScale(){ return textureScale; }
 
+		void addToQueue(GameObject* gameObject){ renderQueue.push_back(gameObject); }
+		void clearQueue(){ renderQueue.clear(); }
+		std::vector<GameObject*> getQueue(){ return renderQueue; }
+
 		float* getDiffuse(){ return diffuse; }
 		float* getSpecular(){ return specular; }
 		float* getEmissive(){ return emissive; }
@@ -48,6 +55,8 @@ namespace T3D
 		bool textured;
 		Texture *texture;
 		float textureScale;
+
+		std::vector<GameObject*> renderQueue; // TODO: Change this to a priority queue
 	};
 }
 

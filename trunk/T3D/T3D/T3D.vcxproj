@@ -143,6 +143,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;glu32.lib;glew32.lib;SDL_ttf.lib;glew32mx.lib;glew32s.lib;glew32mxs.lib;sdl.lib;sdlmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>/NODEFAULTLIB:library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)lib\*.dll" "$(TargetDir)" /Y</Command>

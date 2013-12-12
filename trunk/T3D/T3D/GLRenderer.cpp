@@ -184,10 +184,7 @@ namespace T3D
 		glShadeModel(GL_SMOOTH);
 		glEnable(GL_DEPTH_TEST);		
 		glDisable(GL_BLEND);
-
 	}
-
-
 
 	void GLRenderer::postrender()
 	{
@@ -196,29 +193,29 @@ namespace T3D
 		SDL_GL_SwapBuffers();
 	}
 
+	void GLRenderer::loadMaterial(Material* mat){
+		if (mat != NULL){
+			glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat->getDiffuse());
+			glMaterialfv(GL_FRONT, GL_SPECULAR, mat->getSpecular());
+			glMaterialfv(GL_FRONT, GL_EMISSION, mat->getEmissive());
+			glMaterialf(GL_FRONT,GL_SHININESS, mat->getShininess());
+				
+			if (mat->isTextured()){
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D,mat->getTexID());
+				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+				glMatrixMode(GL_TEXTURE);
+				glLoadIdentity();
+				float s = mat->getTextureScale();
+				glScalef(s,s,s);
+			}
+		}	
+	}
+
 	void GLRenderer::draw(GameObject* object){
 		Mesh *mesh = object->getMesh();
-		Material *mat = object->getMaterial();
-		if (mesh != NULL){			
-			if (mat != NULL){
-				glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat->getDiffuse());
-				glMaterialfv(GL_FRONT, GL_SPECULAR, mat->getSpecular());
-				glMaterialfv(GL_FRONT, GL_EMISSION, mat->getEmissive());
-				glMaterialf(GL_FRONT,GL_SHININESS, mat->getShininess());
-				
-				if (mat->isTextured()){
-					glEnable(GL_TEXTURE_2D);
-					glBindTexture(GL_TEXTURE_2D,mat->getTexID());
-					glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-					glTexCoordPointer(2, GL_FLOAT, 0, mesh->getUVs());
-
-					glMatrixMode(GL_TEXTURE);
-					glLoadIdentity();
-					float s = mat->getTextureScale();
-					glScalef(s,s,s);
-				}
-			}			
-			
+		if (mesh != NULL){	
 			glMatrixMode(GL_MODELVIEW);
 			glPushMatrix();
 			glMultTransposeMatrixf((object->getTransform()->getWorldMatrix()).getData());
@@ -238,6 +235,7 @@ namespace T3D
 
 		glVertexPointer(3,GL_FLOAT,0,mesh->getVertices());
 		glNormalPointer(GL_FLOAT,0,mesh->getNormals());
+		glTexCoordPointer(2, GL_FLOAT, 0, mesh->getUVs());
 		//glColorPointer(4,GL_FLOAT,0,mesh->getColors());
 		glDrawElements(GL_TRIANGLES,3*mesh->getNumTris(),GL_UNSIGNED_INT,mesh->getTriIndices());
 		glDrawElements(GL_QUADS,4*mesh->getNumQuads(),GL_UNSIGNED_INT,mesh->getQuadIndices());
