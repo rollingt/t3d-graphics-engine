@@ -96,9 +96,9 @@ namespace T3D
 			exit(1);
 		}
 
-		//SDL_WM_GrabInput(SDL_GRAB_ON);
+		SDL_WM_GrabInput(SDL_GRAB_ON);
 
-		//SDL_ShowCursor(SDL_DISABLE);
+		SDL_ShowCursor(SDL_DISABLE);
 
 		return true;
 	}

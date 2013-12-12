@@ -32,7 +32,6 @@ namespace T3D
 
 	void Bone::update(float time){
 		int frame = 0;
-
 		if (!keyframes.empty())
 		{
 			if (time >= keyframes[keyframes.size()-1].time) {		// reached end of sequence?
