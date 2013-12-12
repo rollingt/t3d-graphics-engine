@@ -14,5 +14,6 @@ var class_t3_d_1_1_texture =
     [ "getWidth", "class_t3_d_1_1_texture.html#a2fbac0eb679afb668b6c6cfec37ab3d3", null ],
     [ "isRGB", "class_t3_d_1_1_texture.html#a72434a5cf6a0579000fce0faebfbd755", null ],
     [ "plotPixel", "class_t3_d_1_1_texture.html#a43e3cc0d1d0aacc80c8caf5d837eb9ee", null ],
-    [ "setID", "class_t3_d_1_1_texture.html#a7110d62ddf79b6cb96764cab2c2ab8e4", null ]
+    [ "setID", "class_t3_d_1_1_texture.html#a7110d62ddf79b6cb96764cab2c2ab8e4", null ],
+    [ "writeText", "class_t3_d_1_1_texture.html#a0d7e778b8b6fa4ca2943e8d945398762", null ]
 ];

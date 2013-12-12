@@ -20,6 +20,8 @@ var hierarchy =
       [ "T3D::TerrainFollower", "class_t3_d_1_1_terrain_follower.html", null ],
       [ "T3D::Transform", "class_t3_d_1_1_transform.html", null ]
     ] ],
+    [ "T3D::font", "class_t3_d_1_1font.html", null ],
+    [ "T3D::FontCache", "class_t3_d_1_1_font_cache.html", null ],
     [ "T3D::GameObject", "class_t3_d_1_1_game_object.html", null ],
     [ "T3D::Input", "class_t3_d_1_1_input.html", null ],
     [ "T3D::KeyFrame", "struct_t3_d_1_1_key_frame.html", null ],
@@ -28,6 +30,7 @@ var hierarchy =
     [ "T3D::Matrix3x3", "class_t3_d_1_1_matrix3x3.html", null ],
     [ "T3D::Matrix4x4", "class_t3_d_1_1_matrix4x4.html", null ],
     [ "T3D::Music", "class_t3_d_1_1_music.html", null ],
+    [ "T3D::overlay2D", "struct_t3_d_1_1overlay2_d.html", null ],
     [ "T3D::Plane", "class_t3_d_1_1_plane.html", null ],
     [ "T3D::Quaternion", "class_t3_d_1_1_quaternion.html", null ],
     [ "T3D::Renderer", "class_t3_d_1_1_renderer.html", [
@@ -42,6 +45,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "T3D::Task", "class_t3_d_1_1_task.html", [
+      [ "T3D::DiagMessageTask", "class_t3_d_1_1_diag_message_task.html", null ],
       [ "T3D::PerfLogTask", "class_t3_d_1_1_perf_log_task.html", null ]
     ] ],
     [ "T3D::Texture", "class_t3_d_1_1_texture.html", null ],

@@ -110,55 +110,58 @@ $(document).ready(function(){initNavTree('_texture_8h_source.html','');});
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;sdl\sdl.h&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;Colour.h&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>T3D</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="class_t3_d_1_1_texture.html">   11</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_t3_d_1_1_texture.html">Texture</a></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <a class="code" href="class_t3_d_1_1_texture.html">Texture</a>(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <a class="code" href="class_t3_d_1_1_texture.html">Texture</a>(std::string filename);</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keyword">virtual</span> ~<a class="code" href="class_t3_d_1_1_texture.html">Texture</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keywordtype">void</span> createFractal(<a class="code" href="class_t3_d_1_1_colour.html">Colour</a> low, <a class="code" href="class_t3_d_1_1_colour.html">Colour</a> high, <span class="keywordtype">float</span> roughness, <span class="keywordtype">bool</span> conserveHue = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keywordtype">int</span> getWidth(){ <span class="keywordflow">return</span> image-&gt;w; }</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordtype">int</span> getHeight(){ <span class="keywordflow">return</span> image-&gt;h; }</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <a class="code" href="class_t3_d_1_1_colour.html">Colour</a> getPixel(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keywordtype">void</span> plotPixel(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <a class="code" href="class_t3_d_1_1_colour.html">Colour</a> c);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keywordtype">void</span> clear(<a class="code" href="class_t3_d_1_1_colour.html">Colour</a> c);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> getID(){ <span class="keywordflow">return</span> texid; }</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordtype">void</span> setID(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <span class="keywordtype">id</span>){ texid = id; }</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordtype">int</span> getNumberOfColors(){ <span class="keywordflow">return</span> image-&gt;format-&gt;BytesPerPixel; }</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keywordtype">void</span>* getPtr() { <span class="keywordflow">return</span> image-&gt;pixels; }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        SDL_Surface* getSurface() { <span class="keywordflow">return</span> image; }</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordtype">bool</span> isRGB(){ <span class="keywordflow">return</span> (image-&gt;format-&gt;Rmask == 0x000000FF); }</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;sdl\SDL_ttf.h&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;Colour.h&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>T3D</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="class_t3_d_1_1_texture.html">   12</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_t3_d_1_1_texture.html">Texture</a></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <a class="code" href="class_t3_d_1_1_texture.html">Texture</a>(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <a class="code" href="class_t3_d_1_1_texture.html">Texture</a>(std::string filename);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <span class="keyword">virtual</span> ~<a class="code" href="class_t3_d_1_1_texture.html">Texture</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keywordtype">void</span> createFractal(<a class="code" href="class_t3_d_1_1_colour.html">Colour</a> low, <a class="code" href="class_t3_d_1_1_colour.html">Colour</a> high, <span class="keywordtype">float</span> roughness, <span class="keywordtype">bool</span> conserveHue = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keywordtype">void</span> writeText(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keyword">const</span> <span class="keywordtype">char</span> *text, <a class="code" href="class_t3_d_1_1_colour.html">Colour</a> c, TTF_Font *<a class="code" href="class_t3_d_1_1font.html">font</a>);</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordtype">int</span> getWidth(){ <span class="keywordflow">return</span> image-&gt;w; }</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keywordtype">int</span> getHeight(){ <span class="keywordflow">return</span> image-&gt;h; }</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <a class="code" href="class_t3_d_1_1_colour.html">Colour</a> getPixel(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordtype">void</span> plotPixel(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <a class="code" href="class_t3_d_1_1_colour.html">Colour</a> c);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keywordtype">void</span> clear(<a class="code" href="class_t3_d_1_1_colour.html">Colour</a> c);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> getID(){ <span class="keywordflow">return</span> texid; }</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordtype">void</span> setID(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <span class="keywordtype">id</span>){ texid = id; }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keywordtype">int</span> getNumberOfColors(){ <span class="keywordflow">return</span> image-&gt;format-&gt;BytesPerPixel; }</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordtype">void</span>* getPtr() { <span class="keywordflow">return</span> image-&gt;pixels; }</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        SDL_Surface* getSurface() { <span class="keywordflow">return</span> image; }</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        SDL_Surface *image;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> texid;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    };</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordtype">bool</span> isRGB(){ <span class="keywordflow">return</span> (image-&gt;format-&gt;Rmask == 0x000000FF); }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        SDL_Surface *image;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> texid;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    };</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor"></span></div>
 <div class="ttc" id="class_t3_d_1_1_colour_html"><div class="ttname"><a href="class_t3_d_1_1_colour.html">T3D::Colour</a></div><div class="ttdef"><b>Definition:</b> Colour.h:8</div></div>
-<div class="ttc" id="class_t3_d_1_1_texture_html"><div class="ttname"><a href="class_t3_d_1_1_texture.html">T3D::Texture</a></div><div class="ttdef"><b>Definition:</b> Texture.h:11</div></div>
+<div class="ttc" id="class_t3_d_1_1font_html"><div class="ttname"><a href="class_t3_d_1_1font.html">T3D::font</a></div><div class="ttdef"><b>Definition:</b> Font.h:19</div></div>
+<div class="ttc" id="class_t3_d_1_1_texture_html"><div class="ttname"><a href="class_t3_d_1_1_texture.html">T3D::Texture</a></div><div class="ttdef"><b>Definition:</b> Texture.h:12</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_7937090e6e20bd4cc6d6a628ff72bc50.html">T3D</a></li><li class="navelem"><b>Texture.h</b></li>
-    <li class="footer">Generated on Wed Dec 4 2013 16:30:57 for T3D by
+    <li class="navelem"><a class="el" href="dir_3d1127c0ed484a3823411b7e1748de30.html">M:</a></li><li class="navelem"><a class="el" href="dir_17302a016ecc8d149ac5e024f1f85bce.html">T3Dwin</a></li><li class="navelem"><a class="el" href="dir_06d866d1911e3591636cb70b8cbaa029.html">SVNCheckout</a></li><li class="navelem"><a class="el" href="dir_4c8a213659aa653623b1ea42e4e6ab84.html">T3D</a></li><li class="navelem"><a class="el" href="dir_bd338fa539f3892340e4a878c370c8a2.html">T3D</a></li><li class="navelem"><b>Texture.h</b></li>
+    <li class="footer">Generated on Thu Dec 12 2013 16:37:16 for T3D by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>
