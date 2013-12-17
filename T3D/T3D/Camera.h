@@ -25,8 +25,15 @@ namespace T3D
 		Camera(void);
 		virtual ~Camera(void);
 
+		void setView(double fovy, double aspect, double near, double far);	// set camera pespective
+
 	public:
-		float far;
+		double far;			// far z plane (distance from viewer)
+		double near;		// near Z plane (distance from viewer)
+		double fovy;		// field of view (angle in degrees)
+		double aspect;		// field of view in X direction - ratio of x(width) to y(height)
+
+
 	};
 }
 
