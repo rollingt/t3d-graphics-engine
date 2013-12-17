@@ -336,7 +336,7 @@ namespace T3D
 			// this error should not go unhandled
 		}
 
-		std::cout << "Mode: " << texture_format << " GL_RGBA: " << GL_RGBA << " GL_RGB: " << GL_RGB << " GL_BGRA: " << GL_BGRA << " GL_BGR: " << GL_BGR << "\n";
+		//std::cout << "Mode: " << texture_format << " GL_RGBA: " << GL_RGBA << " GL_RGB: " << GL_RGB << " GL_BGRA: " << GL_BGRA << " GL_BGR: " << GL_BGR << "\n";
 
 		// Have OpenGL generate a texture object handle for us
 		glGenTextures( 1, &texture );

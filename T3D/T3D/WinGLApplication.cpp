@@ -100,6 +100,8 @@ namespace T3D
 
 		SDL_ShowCursor(SDL_DISABLE);
 
+		std::cout<<glGetString(GL_VERSION)<<"\n";
+
 		return true;
 	}
 		
