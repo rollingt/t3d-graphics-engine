@@ -40,6 +40,10 @@ namespace T3D
 		void prerender();
 		void postrender();
 
+		void setRenderContext(int renderPriority);				// set render context corresponding to PR_??? priority level
+
+
+
 		void draw(GameObject* object);
 		void loadMaterial(Material* mat);
 		
@@ -55,10 +59,11 @@ namespace T3D
 		void drawMesh(Mesh *mesh);
 		void drawSkybox();
 
+		void renderOverlay();									// orthographic rendering for 2D overlay 
+		void renderCameraPerspective();							// standard perspective rendering context for camera
+
 		void showD2DOverlays();
 		void drawText();
-		void enable2D();
-		void disable2D();
 		void draw2DMesh(overlay2D *overlay);
 
 		std::list<overlay2D *> overlays;
