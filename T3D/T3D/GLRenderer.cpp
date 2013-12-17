@@ -75,8 +75,12 @@ namespace T3D
 		
 		// Set up camera
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		if (camera!=NULL){						
+		if (camera!=NULL){
+
+			renderCameraPerspective();
+
 			if (renderSkybox){		
+
 				glDisable(GL_CULL_FACE);
 				glDisable(GL_DEPTH_TEST);
 				glDisable(GL_LIGHTING);
@@ -91,6 +95,7 @@ namespace T3D
 				//glRotatef(-(camAngle*Math::RAD2DEG),camAxis.x,camAxis.y,camAxis.z);
 				
 				glMatrixMode(GL_MODELVIEW);
+				glPushMatrix();
 				glLoadIdentity();
 
 				Matrix3x3 rot3 = Matrix3x3::IDENTITY;
@@ -100,12 +105,10 @@ namespace T3D
 				glLoadTransposeMatrixf(rot4.getData());
 
 				drawSkybox();
+
+				glMatrixMode(GL_MODELVIEW);
+				glPopMatrix();
 			}
-						
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			Matrix4x4 invCamMatrix = (camera->gameObject->getTransform()->getWorldMatrix()).inverse();
-			glLoadTransposeMatrixf(invCamMatrix.getData());
 		}
 
 		
@@ -193,7 +196,78 @@ namespace T3D
 		SDL_GL_SwapBuffers();
 	}
 
+	// set render context corresponding to PR_??? priority level
+	void GLRenderer::setRenderContext(int renderPriority)
+	{
+		switch (renderPriority)
+		{
+			case PR_SKYBOX:
+			case PR_TERRAIN:
+			case PR_OPAQUE:
+				renderCameraPerspective();
+				break;
+
+			case PR_TRANSPARENT:
+				renderCameraPerspective();
+
+				glEnable(GL_BLEND);                         // Enable Blending
+				glBlendFunc(GL_SRC_COLOR,GL_ONE);			// transparent background for black (may be overridden by material)
+				break;
+
+			case PR_OVERLAY:
+				renderOverlay();
+				break;
+		}
+	}
+
+	// Standard camera perspective rendering
+	void GLRenderer::renderCameraPerspective()
+	{
+		if (camera!=NULL){
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
+			gluPerspective(camera->fovy, camera->aspect, camera->near, camera->far);
+
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			Matrix4x4 invCamMatrix = (camera->gameObject->getTransform()->getWorldMatrix()).inverse();
+			glLoadTransposeMatrixf(invCamMatrix.getData());
+
+			if (showFog)
+				glEnable(GL_FOG);			// fog characteristics should be set in prerender
+			else
+				glDisable(GL_FOG);
+
+			glEnable(GL_LIGHTING);
+			glShadeModel(GL_SMOOTH);
+			glEnable(GL_DEPTH_TEST);		
+			glDisable(GL_BLEND);
+		}
+	}
+
+	// 2D overlay rendering using Orthographic procjection
+	void GLRenderer::renderOverlay()
+	{
+		int vPort[4];
+  
+		glGetIntegerv(GL_VIEWPORT, vPort);
+  
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+  
+		glOrtho(0, vPort[2], 0, vPort[3], -1, 1);
+
+		glDisable(GL_DEPTH_TEST);		
+		glDisable(GL_LIGHTING);
+		glDisable(GL_FOG);
+
+		glEnable(GL_BLEND);                         // Enable Blending
+		glBlendFunc(GL_SRC_COLOR,GL_ONE);			// transparent black background
+
+	}
+
 	void GLRenderer::loadMaterial(Material* mat){
+
 		if (mat != NULL){
 			glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat->getDiffuse());
 			glMaterialfv(GL_FRONT, GL_SPECULAR, mat->getSpecular());
@@ -210,6 +284,9 @@ namespace T3D
 				float s = mat->getTextureScale();
 				glScalef(s,s,s);
 			}
+			else {
+				glDisable(GL_TEXTURE_2D);
+			}
 		}	
 	}
 
@@ -223,8 +300,6 @@ namespace T3D
 			drawMesh(mesh);
 
 			glPopMatrix();
-			
-			glDisable(GL_TEXTURE_2D);
 		}
 	}
 	
@@ -409,41 +484,6 @@ namespace T3D
 		}
 	}
 
-	void GLRenderer::enable2D()
-	{
-		int vPort[4];
-  
-		glGetIntegerv(GL_VIEWPORT, vPort);
-  
-		glMatrixMode(GL_PROJECTION);
-		glPushMatrix();
-		glLoadIdentity();
-  
-		glOrtho(0, vPort[2], 0, vPort[3], -1, 1);
-		glMatrixMode(GL_MODELVIEW);
-		glPushMatrix();
-		glLoadIdentity();
-
-		glDisable(GL_DEPTH_TEST);		
-		glDisable(GL_LIGHTING);
-		glDisable(GL_FOG);
-
-	}
-
-	void GLRenderer::disable2D()
-	{
-		glMatrixMode(GL_PROJECTION);
-		glPopMatrix();   
-		glMatrixMode(GL_MODELVIEW);
-		glPopMatrix();
-
-		glEnable(GL_DEPTH_TEST);		
-		glEnable(GL_LIGHTING);
-		if (showFog){
-			glEnable(GL_FOG);
-		}
-	}
-
 	// Render overlay as a simple 2D Mesh
 	// It is assumed that a 2D orthographic rendering context is in effect (enable2D)
 	// based on code from http://www.gamedev.net/topic/284259-for-reference-using-sdl_ttf-with-opengl/
@@ -465,9 +505,8 @@ namespace T3D
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glColor3f(1.0f, 1.0f, 1.0f);
 
-		//glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_BLEND);                         // Enable Blending
-		glBlendFunc(GL_SRC_COLOR,GL_ONE);			// transparent background
+		//glEnable(GL_BLEND);                         // Enable Blending
+		//glBlendFunc(GL_SRC_COLOR,GL_ONE);			// transparent black background
 
 		/* Draw a quad at location */
 		glBegin(GL_QUADS);
@@ -484,11 +523,8 @@ namespace T3D
 		glVertex2f(x    , y + h);
 		glEnd();
 	
-		/* Bad things happen if we delete the texture before it finishes */
 		glFinish();
 	
-		glDisable(GL_BLEND);
-
 	}
 
 
@@ -499,14 +535,22 @@ namespace T3D
 	{
 		if (!overlays.empty())
 		{
-			enable2D();
+			renderOverlay();
 			std::list<overlay2D *>::iterator i;
 			for (i = overlays.begin(); i != overlays.end(); i++)
 			{
+
+				glMatrixMode(GL_MODELVIEW);
+				glPushMatrix();
+				glLoadIdentity();
+
 				overlay2D *overlay = *i;
 				draw2DMesh(overlay);
+
+				glPopMatrix();
 			}
-			disable2D();
+
+
 		}
 	}
 

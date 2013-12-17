@@ -77,17 +77,6 @@ namespace T3D
 		glClearDepth(1.0f);
 		glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-		// TODO: Fix this so that camera projection is used (probably move to pre-render)
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(45,1.6,0.1,500);
-
-		glMatrixMode(GL_MODELVIEW);
-
-		glEnable(GL_TEXTURE_2D);
-
-		glLoadIdentity();
-
 		// Initialize SDL_ttf library
 		if (TTF_Init() != 0)
 		{
