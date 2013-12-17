@@ -173,6 +173,7 @@ namespace T3D{
 		points.push_back(Vector3(0,-1,0));
 		points.push_back(Vector3(0.7,-0.7,0));
 		sweep->setMesh(new Sweep(points,sp,true));
+		sweep->setMaterial(red);
 		sweep->getTransform()->setLocalPosition(Vector3(0,10,0));
 		sweep->getTransform()->setParent(root);
 		sweep->getTransform()->name = "Sweep";
