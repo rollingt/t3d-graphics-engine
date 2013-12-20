@@ -49,7 +49,7 @@ namespace T3D{
 			if (app->getRenderer())		// won't be valid if program exiting
 			{
 				app->getRenderer()->remove2DOverlay(diagOverlay);
-				app->getRenderer()->unloadTexture(diagOverlay->getID());
+				app->getRenderer()->unloadTexture(diagOverlay);
 			}
 			delete diagOverlay;
 			diagOverlay = NULL;
@@ -79,19 +79,29 @@ namespace T3D{
 
 		if (refresh)
 		{
+
 			removeOverlay();
 
 			font *f = app->getFont("resources/FreeSans.ttf", 16);
 			if (f != NULL)
 			{
-				int w = 1024;		// texture width, should be large enough for most diagnostics
-				int h = 32;			// should be enough for single line (text wrap is not supported)
-				diagOverlay = new Texture(w,h);
-				diagOverlay->clear(Colour(0,0,0,255));
-				diagOverlay->writeText(0, 0, message.c_str(), Colour(255,255,255,255), f->getFont());
-				app->getRenderer()->loadTexture(diagOverlay, false);
+				if (diagOverlay == NULL) {
+					// Create and add overlay
+					int w = 1024;		// texture width, should be large enough for most diagnostics
+					int h = 32;			// should be enough for single line (text wrap is not supported)
+					diagOverlay = new Texture(w,h);
 
-				app->getRenderer()->add2DOverlay(diagOverlay, x, y);
+					diagOverlay->clear(Colour(0,0,0,255));
+					diagOverlay->writeText(0, 0, message.c_str(), Colour(255,255,255,255), f->getFont());
+					app->getRenderer()->loadTexture(diagOverlay, false);			// load new texture in renderer
+					app->getRenderer()->add2DOverlay(diagOverlay, x, y);			// add to renderer overlays
+				}
+				else {
+					// refresh overlay
+					diagOverlay->clear(Colour(0,0,0,255));
+					diagOverlay->writeText(0, 0, message.c_str(), Colour(255,255,255,255), f->getFont());
+					app->getRenderer()->reloadTexture(diagOverlay);					// reload texture in renderer
+				}
 			}
 		}
 

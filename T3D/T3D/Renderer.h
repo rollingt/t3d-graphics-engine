@@ -43,11 +43,11 @@ namespace T3D
 		virtual void render(Transform *root);
 		virtual void postrender() = 0;
 		
-		virtual void setRenderContext(int renderPriority) = 0;				// set render context corresponding to PR_??? priority level
 		virtual void draw(GameObject *object) = 0;
 
-		virtual void loadTexture(Texture *tex, bool repeat = false) = 0;	// returns texture id
-		virtual void unloadTexture(unsigned int textureID) = 0;				// unload from GL
+		virtual void loadTexture(Texture *tex, bool repeat = false) = 0;	// load Texture into GL
+		virtual void reloadTexture(Texture *tex) = 0;						// reload previously loaded Texture (refresh)
+		virtual void unloadTexture(Texture *tex) = 0;						// unload Texture from GL
 
 		virtual void loadSkybox(std::string tex) = 0; 
 

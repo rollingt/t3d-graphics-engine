@@ -11,6 +11,8 @@ namespace T3D{
 		textured = false;
 		texture = NULL;
 		textureScale = 1.0;
+
+		smooth = true;
 	}
 
 	Material::Material(float r, float g, float b, float a)
@@ -23,6 +25,8 @@ namespace T3D{
 		textured = false;
 		texture = NULL;
 		textureScale = 1.0;
+
+		smooth = true;
 	}
 
 

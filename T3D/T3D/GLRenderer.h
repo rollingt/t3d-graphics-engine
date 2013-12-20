@@ -40,15 +40,14 @@ namespace T3D
 		void prerender();
 		void postrender();
 
-		void setRenderContext(int renderPriority);				// set render context corresponding to PR_??? priority level
-
-
+		void setCamera(Camera *cam);
 
 		void draw(GameObject* object);
 		void loadMaterial(Material* mat);
 		
 		void loadTexture(Texture *tex, bool repeat = false);
-		void unloadTexture(unsigned int textureID);
+		void reloadTexture(Texture *tex);
+		void unloadTexture(Texture *tex);
 
 		void loadSkybox(std::string tex);
 
@@ -56,11 +55,10 @@ namespace T3D
 		void remove2DOverlay(Texture *texture);					// remove overlay
 
 	private:
+		GLint GLRenderer::getTextureFormat(Texture *tex);
+
 		void drawMesh(Mesh *mesh);
 		void drawSkybox();
-
-		void renderOverlay();									// orthographic rendering for 2D overlay 
-		void renderCameraPerspective();							// standard perspective rendering context for camera
 
 		void showD2DOverlays();
 		void drawText();

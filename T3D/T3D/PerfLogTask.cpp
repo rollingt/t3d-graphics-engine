@@ -55,7 +55,7 @@ namespace T3D{
 			if (diagOverlay)
 			{
 				app->getRenderer()->remove2DOverlay(diagOverlay);
-				app->getRenderer()->unloadTexture(diagOverlay->getID());
+				app->getRenderer()->unloadTexture(diagOverlay);
 				delete diagOverlay;
 				diagOverlay = NULL;
 			}

@@ -29,6 +29,8 @@ namespace T3D
 		void setSpecular(float r, float g, float b, float a){ specular[0] = r;  specular[1] = g; specular[2] = b; specular[3] = a; }
 		void setEmissive(float r, float g, float b, float a){ emissive[0] = r;  emissive[1] = g; emissive[2] = b; emissive[3] = a; }
 		void setShininess(float s){ shininess = s; }
+		void setFlat() { smooth = false; }
+		void setSmooth() { smooth = true; }
 
 		bool isTextured(){ return textured; }
 		unsigned int getTexID(){ return texture->getID(); }
@@ -46,6 +48,8 @@ namespace T3D
 		float* getEmissive(){ return emissive; }
 		float getShininess(){ return shininess; }
 
+		bool getSmoothShading() { return smooth; }
+
 	private:
 		float diffuse[4];
 		float specular[4];
@@ -55,6 +59,8 @@ namespace T3D
 		bool textured;
 		Texture *texture;
 		float textureScale;
+
+		bool smooth;			// or flat shading
 
 		std::vector<GameObject*> renderQueue; // TODO: Change this to a priority queue
 	};
