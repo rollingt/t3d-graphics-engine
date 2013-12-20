@@ -22,17 +22,31 @@ namespace T3D
 		public Component
 	{
 	public:
-		Camera(void);
-		virtual ~Camera(void);
+		typedef enum {
+			PERSPECTIVE,
+			ORTHOGRAPHIC
+		} projectionType;
 
-		void setView(double fovy, double aspect, double near, double far);	// set camera pespective
+		// Safe default perspective camera
+		Camera();
+		// constructor optimised with perspective parameters
+		Camera(projectionType type, double near, double far, double fovy, double aspect);
+		// constructor with orthographic parameters
+		Camera(projectionType type, double near, double far, double left, double right, double bottom, double top);
+		virtual ~Camera();
 
 	public:
-		double far;			// far z plane (distance from viewer)
-		double near;		// near Z plane (distance from viewer)
-		double fovy;		// field of view (angle in degrees)
-		double aspect;		// field of view in X direction - ratio of x(width) to y(height)
+		projectionType type;	// projection type
 
+		double far;				// far z plane (distance from viewer)
+		double near;			// near Z plane (distance from viewer)
+
+		// Perspectve projection only
+		double fovy;			// field of view (angle in degrees)
+		double aspect;			// field of view in X direction - ratio of x(width) to y(height)
+
+		// Orthographic only
+		double left,right,top,bottom;	// view extent
 
 	};
 }

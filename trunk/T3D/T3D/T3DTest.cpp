@@ -74,10 +74,13 @@ namespace T3D{
 
 		cout << "creating camera\n";
 		GameObject *camObj = new GameObject(this);
-		renderer->camera = new Camera();
-		camObj->setCamera(renderer->camera);
+		renderer->camera = new Camera(Camera::PERSPECTIVE, 0.1, 500.0, 45.0, 1.6);
 		camObj->getTransform()->setLocalPosition(Vector3(0,0,20));
 		camObj->getTransform()->setLocalRotation(Vector3(0,0,0));
+		//renderer->camera = new Camera(Camera::ORTHOGRAPHIC, 0.1, 500.0, -16, 16, -10, 10);
+		//camObj->getTransform()->setLocalPosition(Vector3(0,20,0));
+		//camObj->getTransform()->setLocalRotation(Vector3(-90*Math::DEG2RAD,0,0));
+		camObj->setCamera(renderer->camera);
 		camObj->getTransform()->setParent(root);
 		camObj->addComponent(new KeyboardController());
 

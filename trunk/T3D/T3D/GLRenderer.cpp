@@ -77,16 +77,16 @@ namespace T3D
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		if (camera!=NULL){
 
-			renderCameraPerspective();
+			setCamera(camera);
 
 			if (renderSkybox){		
-
 				glDisable(GL_CULL_FACE);
 				glDisable(GL_DEPTH_TEST);
 				glDisable(GL_LIGHTING);
 				glDisable(GL_FOG);
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	
 				glEnable(GL_TEXTURE_2D);				
+				glDisable(GL_BLEND);
 				
 				float camAngle;
 				Vector3 camAxis;
@@ -184,7 +184,6 @@ namespace T3D
 			glEnable(GL_CULL_FACE);
 		}
 		glEnable(GL_LIGHTING);
-		glShadeModel(GL_SMOOTH);
 		glEnable(GL_DEPTH_TEST);		
 		glDisable(GL_BLEND);
 	}
@@ -196,74 +195,28 @@ namespace T3D
 		SDL_GL_SwapBuffers();
 	}
 
-	// set render context corresponding to PR_??? priority level
-	void GLRenderer::setRenderContext(int renderPriority)
+	void GLRenderer::setCamera(Camera *cam)
 	{
-		switch (renderPriority)
-		{
-			case PR_SKYBOX:
-			case PR_TERRAIN:
-			case PR_OPAQUE:
-				renderCameraPerspective();
-				break;
+		if (cam!=NULL){
 
-			case PR_TRANSPARENT:
-				renderCameraPerspective();
-
-				glEnable(GL_BLEND);                         // Enable Blending
-				glBlendFunc(GL_SRC_COLOR,GL_ONE);			// transparent background for black (may be overridden by material)
-				break;
-
-			case PR_OVERLAY:
-				renderOverlay();
-				break;
-		}
-	}
-
-	// Standard camera perspective rendering
-	void GLRenderer::renderCameraPerspective()
-	{
-		if (camera!=NULL){
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
-			gluPerspective(camera->fovy, camera->aspect, camera->near, camera->far);
 
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			Matrix4x4 invCamMatrix = (camera->gameObject->getTransform()->getWorldMatrix()).inverse();
-			glLoadTransposeMatrixf(invCamMatrix.getData());
+			if (cam->type == Camera::PERSPECTIVE) {
+				gluPerspective(cam->fovy, cam->aspect, cam->near, cam->far);
+			}
+			else if (cam->type == Camera::ORTHOGRAPHIC) {
+				glOrtho(cam->left, cam->right, cam->bottom, cam->top, cam->near, cam->far);
+			}
 
-			if (showFog)
-				glEnable(GL_FOG);			// fog characteristics should be set in prerender
-			else
-				glDisable(GL_FOG);
-
-			glEnable(GL_LIGHTING);
-			glShadeModel(GL_SMOOTH);
-			glEnable(GL_DEPTH_TEST);		
-			glDisable(GL_BLEND);
+			if (cam->gameObject != NULL)
+			{
+				glMatrixMode(GL_MODELVIEW);
+				glLoadIdentity();
+				Matrix4x4 invCamMatrix = (cam->gameObject->getTransform()->getWorldMatrix()).inverse();
+				glLoadTransposeMatrixf(invCamMatrix.getData());
+			}
 		}
-	}
-
-	// 2D overlay rendering using Orthographic procjection
-	void GLRenderer::renderOverlay()
-	{
-		int vPort[4];
-  
-		glGetIntegerv(GL_VIEWPORT, vPort);
-  
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-  
-		glOrtho(0, vPort[2], 0, vPort[3], -1, 1);
-
-		glDisable(GL_DEPTH_TEST);		
-		glDisable(GL_LIGHTING);
-		glDisable(GL_FOG);
-
-		glEnable(GL_BLEND);                         // Enable Blending
-		glBlendFunc(GL_SRC_COLOR,GL_ONE);			// transparent black background
-
 	}
 
 	void GLRenderer::loadMaterial(Material* mat){
@@ -273,7 +226,8 @@ namespace T3D
 			glMaterialfv(GL_FRONT, GL_SPECULAR, mat->getSpecular());
 			glMaterialfv(GL_FRONT, GL_EMISSION, mat->getEmissive());
 			glMaterialf(GL_FRONT,GL_SHININESS, mat->getShininess());
-				
+			glShadeModel(mat->getSmoothShading() ? GL_SMOOTH : GL_FLAT);
+
 			if (mat->isTextured()){
 				glEnable(GL_TEXTURE_2D);
 				glBindTexture(GL_TEXTURE_2D,mat->getTexID());
@@ -376,7 +330,37 @@ namespace T3D
 			glTexCoord2f(1, 0); glVertex3f(  0.5f, -0.5f, -0.5f );
 		glEnd();
 	}
-	
+
+	// Helper function to get the GL texture format from a texture
+	GLint GLRenderer::getTextureFormat(Texture *tex){
+
+		GLenum texture_format;
+		GLint  nOfColors;
+
+		// get the number of channels in the SDL surface
+		nOfColors = tex->getSurface()->format->BytesPerPixel;
+
+		if (nOfColors == 4)     // contains an alpha channel
+		{
+			if (tex->getSurface()->format->Rmask == 0x000000ff)
+				texture_format = GL_RGBA;
+			else
+				texture_format = GL_BGRA;
+		} else if (nOfColors == 3)     // no alpha channel
+		{
+			if (tex->getSurface()->format->Rmask == 0x000000ff)
+				texture_format = GL_RGB;
+			else
+				texture_format = GL_BGR;
+		} else {
+			std::cout << "warning: the image is not truecolor..  this will probably break\n";
+			// this error should not go unhandled
+		}
+
+		return texture_format;
+	}
+
+
 	void GLRenderer::loadTexture(Texture *tex, bool repeat){
 		GLuint texture = 0;			// This is a handle to our texture object
 		GLenum texture_format;
@@ -394,22 +378,8 @@ namespace T3D
  
 		// get the number of channels in the SDL surface
 		nOfColors = tex->getSurface()->format->BytesPerPixel;
-		if (nOfColors == 4)     // contains an alpha channel
-		{
-			if (tex->getSurface()->format->Rmask == 0x000000ff)
-				texture_format = GL_RGBA;
-			else
-				texture_format = GL_BGRA;
-		} else if (nOfColors == 3)     // no alpha channel
-		{
-			if (tex->getSurface()->format->Rmask == 0x000000ff)
-				texture_format = GL_RGB;
-			else
-				texture_format = GL_BGR;
-		} else {
-			std::cout << "warning: the image is not truecolor..  this will probably break\n";
-			// this error should not go unhandled
-		}
+		// get the GL texture format
+		texture_format = getTextureFormat(tex);
 
 		//std::cout << "Mode: " << texture_format << " GL_RGBA: " << GL_RGBA << " GL_RGB: " << GL_RGB << " GL_BGRA: " << GL_BGRA << " GL_BGR: " << GL_BGR << "\n";
 
@@ -436,8 +406,32 @@ namespace T3D
 		tex->setID(texture);
 	}
 
-	void GLRenderer::unloadTexture(unsigned int textureID)
+	// Reload the texture from the SDL surface.
+	// It is assumed that the cahracterisics of the texture are unchanged
+	void GLRenderer::reloadTexture(Texture *tex)
 	{
+		GLuint texture = 0;			// This is a handle to our texture object
+		GLenum texture_format;
+		GLint  nOfColors;
+
+		texture = tex->getID();		// texture must have been previously loaded with loadTexture
+
+		// get the number of channels in the SDL surface
+		nOfColors = tex->getSurface()->format->BytesPerPixel;
+		// get the GL texture format
+		texture_format = getTextureFormat(tex);
+
+		// Bind the texture object
+		glBindTexture( GL_TEXTURE_2D, texture );
+		 
+		// Load the image
+		glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, tex->getSurface()->w, tex->getSurface()->h, 0, texture_format, GL_UNSIGNED_BYTE, tex->getSurface()->pixels);
+
+	}
+
+	void GLRenderer::unloadTexture(Texture *tex)
+	{
+		GLuint textureID = tex->getID();
 		glDeleteTextures(1, &textureID);
 	}
 
@@ -505,9 +499,6 @@ namespace T3D
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glColor3f(1.0f, 1.0f, 1.0f);
 
-		//glEnable(GL_BLEND);                         // Enable Blending
-		//glBlendFunc(GL_SRC_COLOR,GL_ONE);			// transparent black background
-
 		/* Draw a quad at location */
 		glBegin(GL_QUADS);
 		/* Recall that the origin is in the lower-left corner
@@ -535,7 +526,19 @@ namespace T3D
 	{
 		if (!overlays.empty())
 		{
-			renderOverlay();
+			// orthographic projection view is fixed to the GL viewport size
+			int vPort[4];
+			glGetIntegerv(GL_VIEWPORT, vPort);
+			Camera overlayCam(Camera::ORTHOGRAPHIC, -1, 1, 0, vPort[2], 0, vPort[3]);		// temp hardwired camera for overlay
+			setCamera(&overlayCam);
+
+			glDisable(GL_DEPTH_TEST);		
+			glDisable(GL_LIGHTING);
+			glDisable(GL_FOG);
+
+			glEnable(GL_BLEND);                         // Enable Blending
+			glBlendFunc(GL_SRC_COLOR,GL_ONE);			// transparent black background (sort of)
+
 			std::list<overlay2D *>::iterator i;
 			for (i = overlays.begin(); i != overlays.end(); i++)
 			{

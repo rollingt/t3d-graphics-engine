@@ -90,7 +90,6 @@ namespace T3D
 		buildRenderQueue(root);
 
 		for (int i=0; i<PRIORITY_LEVELS; i++){
-			setRenderContext(i);
 			for (mit = materials[i].begin(); mit!=materials[i].end(); mit++){
 				loadMaterial(*mit);
 				std::vector<GameObject*> q = (*mit)->getQueue();
