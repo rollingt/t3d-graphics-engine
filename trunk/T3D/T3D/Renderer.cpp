@@ -74,31 +74,71 @@ namespace T3D
 		return m;
 	}
 
+	struct GameObjectCameraDistanceCompare
+	{
+		bool operator()(const GameObject *t1, const GameObject *t2) const {
+			return t1->getDistanceToCamera() < t2->getDistanceToCamera();
+		}
+	};
+
 	/*! Renders the scenegraph
 	  This method is responsible for sorting by material and rendering game objects in material priority order
 	  \param root	The root of the scenegraph to be rendered
 	  */
 	void Renderer::render(Transform *root){
+		Vector3 cameraPos;
+		float distance;
+		GameObject *object;
 		std::vector<Material*>::iterator mit;
-		std::vector<GameObject*>::iterator goit;
-		for (int i=0; i<PRIORITY_LEVELS; i++){
-			for (mit = materials[i].begin(); mit!=materials[i].end(); mit++){
-				(*mit)->clearQueue();
-			}
-		}
+
+		// Single common camera for all rendering
+		cameraPos = camera->gameObject->getTransform()->getWorldPosition();
 
 		buildRenderQueue(root);
 
-		for (int i=0; i<PRIORITY_LEVELS; i++){
+		for (int i=0; i<PRIORITY_LEVELS; i++) {
+
+			// temp list of objects requiring sorted draw order (if any)
+			std::priority_queue<GameObject*, std::vector<GameObject*>, GameObjectCameraDistanceCompare> sorted;
+
 			for (mit = materials[i].begin(); mit!=materials[i].end(); mit++){
-				loadMaterial(*mit);
-				std::vector<GameObject*> q = (*mit)->getQueue();
-				for (goit = q.begin(); goit != q.end(); goit++){
-					draw(*goit);
+				
+				std::queue<GameObject*> &q = (*mit)->getQueue();	// objects to be drawn
+
+				if (!(*mit)->getSortedDraw()) {
+					// objects for normal unsorted materials are drawn immediately
+					loadMaterial(*mit);
+					while (!q.empty()) {
+						draw(q.front());
+						q.pop();
+					}
+				}
+				else {
+					// objects to be sorted and drawn later
+					while (!q.empty()) {
+						object = q.front();
+						// Note using squared distance as we only care about relative distance
+						distance = cameraPos.squaredDistance(object->getTransform()->getWorldPosition());
+						object->setDistanceToCamera(distance);
+						sorted.push(object);
+						q.pop();
+					}
 				}
 			}
-		}
 
+			// Draw sorted objects (if any)
+			Material *loaded = NULL;			// current loaded material
+			while (!sorted.empty()) {
+				object = sorted.top();
+				if (loaded != object->getMaterial()) {
+					// only load material if changed
+					loaded = object->getMaterial();
+					loadMaterial(loaded);
+				}
+				draw(object);
+				sorted.pop();
+			}
+		}
 	}
 
 	/*! Sorts game objects by material

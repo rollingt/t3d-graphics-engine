@@ -55,6 +55,7 @@ namespace T3D{
 		red->setDiffuse(1,0,0,1);
 		Material *green = renderer->createMaterial(Renderer::PR_OPAQUE);
 		green->setDiffuse(0,1,0,1);
+		green->setSmooth();
 		green->setSpecular(0,0,0,0);
 		Material *blue = renderer->createMaterial(Renderer::PR_OPAQUE);
 		blue->setDiffuse(0,0,1,1);
@@ -62,8 +63,6 @@ namespace T3D{
 		Texture *smileytex = new Texture("Resources/Smiley.bmp", true, true);
 		renderer->loadTexture(smileytex);
 		Material *smiley = renderer->createMaterial(Renderer::PR_OPAQUE);
-		//smiley->setBlending(Material::BLEND_DEFAULT);			// alpha blending
-		//smiley->setDiffuse(1,1,1,0.5);							// set alpha to 0.5 (.bmp has no alpha channel)
 		smiley->setTexture(smileytex);
 				
 		Texture *proctex = new Texture(512,512);
@@ -201,6 +200,39 @@ namespace T3D{
 		anim->addKey("Sphere",5.0,Quaternion(Vector3(0,0,Math::HALF_PI)),Vector3(5,0,5));
 		anim->loop(true);	
 
+		// Demonstrate depth sorting
+		// Materials creation order defines normal draw order (drawing is grouped by material)
+		// So draw order will be all objects using tgreen followed by all tblue objects
+		// Without depth sorting the effect of the blue plane, which is behind front of the green
+		// but drawn last will not be seen.
+		// Note that both materials are created with PR_TRANSPARENT priority. This will cause them
+		// to be drawn after all PR_OPAQUE materials so it is not necessary to use depth sorting
+		// unless there are multiple transparent materials that may overlap.
+		Material *tgreen = renderer->createMaterial(Renderer::PR_TRANSPARENT);
+		tgreen->setDiffuse(0,1,0,0.4);
+		tgreen->setBlending(Material::BLEND_DEFAULT);
+		tgreen->setSortedDraw(true, true);
+		// a Transparent Plane
+		GameObject *plane = new GameObject(this);
+		plane->setMesh(new PlaneMesh(1));
+		plane->setMaterial(tgreen);
+		plane->getTransform()->setLocalPosition(Vector3(1,0,17.1));
+		plane->getTransform()->setLocalRotation(Vector3(90*Math::DEG2RAD,0,0));
+		plane->getTransform()->setParent(root);
+		plane->getTransform()->name = "Transparent Green Plane";
+		// transparent blue material
+		Material *tblue = renderer->createMaterial(Renderer::PR_TRANSPARENT);
+		tblue->setDiffuse(0,0,1,0.4);
+		tblue->setBlending(Material::BLEND_DEFAULT);
+		tblue->setSortedDraw(true, true);
+		// another Transparent Plane
+		plane = new GameObject(this);
+		plane->setMesh(new PlaneMesh(1));
+		plane->setMaterial(tblue);
+		plane->getTransform()->setLocalPosition(Vector3(1.3,0,17));
+		plane->getTransform()->setLocalRotation(Vector3(90*Math::DEG2RAD,0,0));
+		plane->getTransform()->setParent(root);
+		plane->getTransform()->name = "Transparent Blue Plane";
 
 		/*
 		Animation *b = new Animation(10,5);
