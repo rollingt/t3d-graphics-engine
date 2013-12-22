@@ -12,8 +12,8 @@ namespace T3D
 	class Texture
 	{
 	public:
-		Texture(int width, int height);
-		Texture(std::string filename);
+		Texture(int width, int height, bool continuousTone = true, bool mipmap = false);
+		Texture(std::string filename, bool continuousTone = true, bool mipmap = false);
 		virtual ~Texture(void);
 
 		void createFractal(Colour low, Colour high, float roughness, bool conserveHue = false);
@@ -36,9 +36,14 @@ namespace T3D
 
 		bool isRGB(){ return (image->format->Rmask == 0x000000FF); }
 
+		bool getCountinuousTone() { return continuousTone; }
+		bool getMipmap() { return mipmap; }
+
 	private:
 		SDL_Surface *image;
 		unsigned int texid;
+		bool continuousTone;			// hint for choosing appropriate texture filtering
+		bool mipmap;					// generate automatic mipmaps when loading
 	};
 
 }

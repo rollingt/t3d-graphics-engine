@@ -5,7 +5,7 @@
 namespace T3D
 {
 
-	Texture::Texture(int width, int height)
+	Texture::Texture(int width, int height, bool continuousTone, bool mipmap)
 	{
 		Uint32 rmask, gmask, bmask, amask;
 
@@ -28,10 +28,13 @@ namespace T3D
 			std::cout << "CreateRGBSurface failed: %s\n" << SDL_GetError() << "\n";
 		}
 
+		this->continuousTone = continuousTone;
+		this->mipmap = mipmap;
+
 		texid = 0; // incorrect
 	}
 
-	Texture::Texture(std::string filename)
+	Texture::Texture(std::string filename, bool continuousTone, bool mipmap)
 	{
 		if ( image = SDL_LoadBMP(filename.c_str()) )
 		{
@@ -39,6 +42,10 @@ namespace T3D
 		} else {
 			std::cout << "could not load: " << filename << "\n";
 		}
+
+		this->continuousTone = continuousTone;
+		this->mipmap = mipmap;
+
 		texid = 0; // incorrect
 	}
 
