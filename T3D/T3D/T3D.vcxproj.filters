@@ -168,6 +168,12 @@
     <ClCompile Include="Font.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleEmitter.cpp">
+      <Filter>Source Files\Mesh\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleBehaviour.cpp">
+      <Filter>Source Files\Mesh\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="T3DTest.h">
@@ -292,6 +298,12 @@
     </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleEmitter.h">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleBehaviour.h">
+      <Filter>Header Files\Component</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
