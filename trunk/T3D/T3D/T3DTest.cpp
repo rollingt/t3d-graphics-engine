@@ -64,7 +64,12 @@ namespace T3D{
 		renderer->loadTexture(smileytex);
 		Material *smiley = renderer->createMaterial(Renderer::PR_OPAQUE);
 		smiley->setTexture(smileytex);
-				
+
+		Texture *flametex = new Texture("Resources/flames.png", true, true);
+		renderer->loadTexture(flametex);
+		Material *flamemat = renderer->createMaterial(Renderer::PR_OPAQUE);
+		flamemat->setTexture(flametex);
+
 		Texture *proctex = new Texture(512,512);
 		proctex->createFractal(Colour(40,150,50,255),Colour(120,220,100,255),25.0f,false);
 		renderer->loadTexture(proctex, true);		
@@ -144,14 +149,14 @@ namespace T3D{
 		Material *textmat = renderer->createMaterial(Renderer::PR_OPAQUE);
 		textmat->setTexture(texttex,1);
 
-		/*GameObject *plane = new GameObject(this);
+		GameObject *plane = new GameObject(this);
 		plane->setMesh(new PlaneMesh(1));
-		plane->setMaterial(textmat);
+		plane->setMaterial(flamemat);
 		plane->getTransform()->setLocalPosition(Vector3(3,0,0));
 		plane->getTransform()->setLocalRotation(Vector3(90*Math::DEG2RAD,0,0));
 		plane->getTransform()->setParent(root);
 		plane->getTransform()->name = "Plane";
-		*/
+
 
 		cout << "creating billboard\n";
 		GameObject *billboard = new GameObject(this);
@@ -213,7 +218,7 @@ namespace T3D{
 		tgreen->setBlending(Material::BLEND_DEFAULT);
 		tgreen->setSortedDraw(true, true);
 		// a Transparent Plane
-		GameObject *plane = new GameObject(this);
+		plane = new GameObject(this);
 		plane->setMesh(new PlaneMesh(1));
 		plane->setMaterial(tgreen);
 		plane->getTransform()->setLocalPosition(Vector3(1,0,17.1));

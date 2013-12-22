@@ -33,6 +33,8 @@
     <ClCompile Include="Matrix3x3.cpp" />
     <ClCompile Include="Matrix4x4.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="ParticleBehaviour.cpp" />
+    <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="PerfLogTask.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="PlaneMesh.cpp" />
@@ -73,6 +75,8 @@
     <ClInclude Include="Matrix3x3.h" />
     <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="ParticleBehaviour.h" />
+    <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="PerfLogTask.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="PlaneMesh.h" />
@@ -142,7 +146,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;glew32.lib;SDL_ttf.lib;glew32mx.lib;glew32s.lib;glew32mxs.lib;sdl.lib;sdlmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glew32.lib;SDL_ttf.lib;SDL_image.lib;glew32mx.lib;glew32s.lib;glew32mxs.lib;sdl.lib;sdlmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>/NODEFAULTLIB:library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
