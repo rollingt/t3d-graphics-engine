@@ -59,9 +59,11 @@ namespace T3D{
 		Material *blue = renderer->createMaterial(Renderer::PR_OPAQUE);
 		blue->setDiffuse(0,0,1,1);
 
-		Texture *smileytex = new Texture("Resources/Smiley.bmp");
+		Texture *smileytex = new Texture("Resources/Smiley.bmp", true, true);
 		renderer->loadTexture(smileytex);
 		Material *smiley = renderer->createMaterial(Renderer::PR_OPAQUE);
+		//smiley->setBlending(Material::BLEND_DEFAULT);			// alpha blending
+		//smiley->setDiffuse(1,1,1,0.5);							// set alpha to 0.5 (.bmp has no alpha channel)
 		smiley->setTexture(smileytex);
 				
 		Texture *proctex = new Texture(512,512);

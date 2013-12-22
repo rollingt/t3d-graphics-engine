@@ -228,6 +228,28 @@ namespace T3D
 			glMaterialf(GL_FRONT,GL_SHININESS, mat->getShininess());
 			glShadeModel(mat->getSmoothShading() ? GL_SMOOTH : GL_FLAT);
 
+			if (mat->getBlending() == Material::BLEND_NONE) {
+				glDisable(GL_BLEND);						// No Blending
+			} 
+			else {
+				glEnable(GL_BLEND);                         // Enable Blending
+
+				// Material only supports a limited number of predefined blending modes
+				if (mat->getBlending() == Material::BLEND_ADD) {
+					// colors are added (values >1 are clipped to 1)
+					glBlendFunc(GL_ONE, GL_ONE);
+				}
+				else if (mat->getBlending() == Material::BLEND_MULTIPLY) {
+					// colors are multiplied (values >1 are clipped to 1)
+					glBlendFunc(GL_ZERO, GL_SRC_COLOR);
+				}
+				else {
+					// Assume Material::BLEND_DEFAULT
+					// transparency: alpha=0 - invisible, alpha=1 - no transparency
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	
+				}
+			}
+
 			if (mat->isTextured()){
 				glEnable(GL_TEXTURE_2D);
 				glBindTexture(GL_TEXTURE_2D,mat->getTexID());
@@ -362,9 +384,8 @@ namespace T3D
 
 
 	void GLRenderer::loadTexture(Texture *tex, bool repeat){
-		GLuint texture = 0;			// This is a handle to our texture object
-		GLenum texture_format;
-		GLint  nOfColors;
+		GLuint textureID = 0;			// This is a handle to our texture object
+		GLint minFilter, magFilter;
 
 		// Check that the image's width is a power of 2
 		if ( (tex->getWidth() & (tex->getWidth() - 1)) != 0 ) {
@@ -376,22 +397,34 @@ namespace T3D
 			std::cout << "warning: " << tex << "'s height is not a power of 2\n";
 		}
  
-		// get the number of channels in the SDL surface
-		nOfColors = tex->getSurface()->format->BytesPerPixel;
-		// get the GL texture format
-		texture_format = getTextureFormat(tex);
-
-		//std::cout << "Mode: " << texture_format << " GL_RGBA: " << GL_RGBA << " GL_RGB: " << GL_RGB << " GL_BGRA: " << GL_BGRA << " GL_BGR: " << GL_BGR << "\n";
-
 		// Have OpenGL generate a texture object handle for us
-		glGenTextures( 1, &texture );
- 
-		// Bind the texture object
-		glBindTexture( GL_TEXTURE_2D, texture );
-		 
+		glGenTextures( 1, &textureID );
+		tex->setID(textureID);
+
+ 		// Bind the texture object
+		glBindTexture( GL_TEXTURE_2D, textureID );
+
+		// Set the texture filtering
+		if (tex->getCountinuousTone()) {
+			// for a continuous-tone image we want bilinear interpolation
+			magFilter = GL_LINEAR;
+			if (tex->getMipmap())	{
+				// linear interpolation on the nearest mipmap for distant objects
+				minFilter = GL_LINEAR_MIPMAP_LINEAR;
+			}
+			else {
+				minFilter = GL_LINEAR;
+			}
+		}
+		else {
+			// a discrete-tone image, we want GL_NEAREST (so the texture doesn't appear out of focus)
+			minFilter = GL_NEAREST;
+			magFilter = GL_NEAREST;
+		}
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter );
+
 		// Set the texture's stretching properties
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 		if (repeat){
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -400,33 +433,40 @@ namespace T3D
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		}
 		
-		// Load the image
-		glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, tex->getSurface()->w, tex->getSurface()->h, 0, texture_format, GL_UNSIGNED_BYTE, tex->getSurface()->pixels);
- 
-		tex->setID(texture);
+		// really loading for the first time but reload works if texture ID has been generated
+		reloadTexture(tex);
 	}
 
 	// Reload the texture from the SDL surface.
 	// It is assumed that the cahracterisics of the texture are unchanged
 	void GLRenderer::reloadTexture(Texture *tex)
 	{
-		GLuint texture = 0;			// This is a handle to our texture object
+		GLuint textureID = 0;			// This is a handle to our texture object
 		GLenum texture_format;
 		GLint  nOfColors;
 
-		texture = tex->getID();		// texture must have been previously loaded with loadTexture
+		textureID = tex->getID();		// texture must have been previously loaded with loadTexture
 
 		// get the number of channels in the SDL surface
 		nOfColors = tex->getSurface()->format->BytesPerPixel;
 		// get the GL texture format
 		texture_format = getTextureFormat(tex);
 
+		//std::cout << "Mode: " << texture_format << " GL_RGBA: " << GL_RGBA << " GL_RGB: " << GL_RGB << " GL_BGRA: " << GL_BGRA << " GL_BGR: " << GL_BGR << "\n";
+
 		// Bind the texture object
-		glBindTexture( GL_TEXTURE_2D, texture );
+		glBindTexture( GL_TEXTURE_2D, textureID );
 		 
 		// Load the image
 		glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, tex->getSurface()->w, tex->getSurface()->h, 0, texture_format, GL_UNSIGNED_BYTE, tex->getSurface()->pixels);
 
+		if (tex->getMipmap()) {
+			// have GLU build mipmaps
+			int err = gluBuild2DMipmaps(GL_TEXTURE_2D, nOfColors, tex->getSurface()->w, tex->getSurface()->h, texture_format, GL_UNSIGNED_BYTE, tex->getSurface()->pixels);
+			if (err != 0) {
+				std::cout << "Failed to generate mipmaps : " << gluErrorString(err) << std::endl;
+			}
+		}
 	}
 
 	void GLRenderer::unloadTexture(Texture *tex)
@@ -537,7 +577,8 @@ namespace T3D
 			glDisable(GL_FOG);
 
 			glEnable(GL_BLEND);                         // Enable Blending
-			glBlendFunc(GL_SRC_COLOR,GL_ONE);			// transparent black background (sort of)
+			//glBlendFunc(GL_SRC_COLOR,GL_ONE);			// transparent black background (sort of)
+			glBlendFunc(GL_ONE,GL_ONE);			// add overlay (works well for white text)
 
 			std::list<overlay2D *>::iterator i;
 			for (i = overlays.begin(); i != overlays.end(); i++)

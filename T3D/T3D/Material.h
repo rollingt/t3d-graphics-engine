@@ -21,6 +21,13 @@ namespace T3D
 	class Material
 	{
 	public:
+		typedef enum {
+			BLEND_NONE,				// no texture blending
+			BLEND_DEFAULT,			// alpha blending (sourcd alpha=0.0 invisible, alpha=1.0 opaque)
+			BLEND_ADD,				// source and destination colour added
+			BLEND_MULTIPLY			// Source and Destination colour multiplied
+		} blendMode;
+
 		Material(void);
 		Material(float r, float g, float b, float a);
 		virtual ~Material(void);
@@ -31,6 +38,7 @@ namespace T3D
 		void setShininess(float s){ shininess = s; }
 		void setFlat() { smooth = false; }
 		void setSmooth() { smooth = true; }
+		void setBlending(blendMode mode) { blending = mode; }
 
 		bool isTextured(){ return textured; }
 		unsigned int getTexID(){ return texture->getID(); }
@@ -49,6 +57,7 @@ namespace T3D
 		float getShininess(){ return shininess; }
 
 		bool getSmoothShading() { return smooth; }
+		blendMode getBlending() { return blending; }
 
 	private:
 		float diffuse[4];
@@ -61,6 +70,7 @@ namespace T3D
 		float textureScale;
 
 		bool smooth;			// or flat shading
+		blendMode blending;		// basic pixel blending
 
 		std::vector<GameObject*> renderQueue; // TODO: Change this to a priority queue
 	};
