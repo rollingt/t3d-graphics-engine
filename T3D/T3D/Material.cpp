@@ -13,6 +13,9 @@ namespace T3D{
 		textureScale = 1.0;
 
 		smooth = true;
+
+		sortedDraw = false;
+		disableDepth = false;
 	}
 
 	Material::Material(float r, float g, float b, float a)
@@ -27,6 +30,9 @@ namespace T3D{
 		textureScale = 1.0;
 
 		smooth = true;
+
+		sortedDraw = false;
+		disableDepth = false;
 	}
 
 

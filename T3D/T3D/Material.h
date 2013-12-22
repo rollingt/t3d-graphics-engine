@@ -12,6 +12,7 @@
 #define MATERIAL_H
 
 #include <vector>
+#include <queue>
 #include "Texture.h"
 
 namespace T3D
@@ -47,9 +48,8 @@ namespace T3D
 		void setTextureScale(float s){ textureScale = s; }
 		float getTextureScale(){ return textureScale; }
 
-		void addToQueue(GameObject* gameObject){ renderQueue.push_back(gameObject); }
-		void clearQueue(){ renderQueue.clear(); }
-		std::vector<GameObject*> getQueue(){ return renderQueue; }
+		void addToQueue(GameObject* gameObject){ renderQueue.push(gameObject); }
+		std::queue<GameObject*> &getQueue(){ return renderQueue; }
 
 		float* getDiffuse(){ return diffuse; }
 		float* getSpecular(){ return specular; }
@@ -58,6 +58,10 @@ namespace T3D
 
 		bool getSmoothShading() { return smooth; }
 		blendMode getBlending() { return blending; }
+
+		void setSortedDraw(bool sort, bool noDepthWrite) { sortedDraw = sort; disableDepth = noDepthWrite; }
+		bool getSortedDraw() { return sortedDraw; }
+		bool getDisablDepth() { return disableDepth; }
 
 	private:
 		float diffuse[4];
@@ -72,7 +76,10 @@ namespace T3D
 		bool smooth;			// or flat shading
 		blendMode blending;		// basic pixel blending
 
-		std::vector<GameObject*> renderQueue; // TODO: Change this to a priority queue
+		bool sortedDraw;		// requires depth sorting when drawn
+		bool disableDepth;		// disables depth buffer updating (will still read)
+
+		std::queue<GameObject*> renderQueue;
 	};
 }
 

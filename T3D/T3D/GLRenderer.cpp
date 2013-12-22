@@ -72,9 +72,12 @@ namespace T3D
 				glDisable(lightid);
 			}	
 		}
-		
-		// Set up camera
+
+		// Clear back buffer and depth buffer before any drawing
+		glDepthMask(GL_TRUE);		// depth mask must be true to clear buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// Set up camera
 		if (camera!=NULL){
 
 			setCamera(camera);
@@ -110,7 +113,6 @@ namespace T3D
 				glPopMatrix();
 			}
 		}
-
 		
 		// draw the global grid and axes if necessary		
 		glEnable(GL_DEPTH_TEST);	
@@ -227,12 +229,19 @@ namespace T3D
 			glMaterialfv(GL_FRONT, GL_EMISSION, mat->getEmissive());
 			glMaterialf(GL_FRONT,GL_SHININESS, mat->getShininess());
 			glShadeModel(mat->getSmoothShading() ? GL_SMOOTH : GL_FLAT);
+			glDepthMask(mat->getDisablDepth() ?  GL_FALSE : GL_TRUE);	// enable/disable depth buffer write
 
 			if (mat->getBlending() == Material::BLEND_NONE) {
-				glDisable(GL_BLEND);						// No Blending
+				glDisable(GL_BLEND);						// No Blending (although diffuse alpha will still be used)
+
+				// enable "on/off" transparency ("cookie cutter alpha")
+				// This will only work for textures with an alpha channel (i.e. not bmp)
+				glAlphaFunc(GL_GREATER, 0.99f);
+				glEnable(GL_ALPHA_TEST);
 			} 
 			else {
-				glEnable(GL_BLEND);                         // Enable Blending
+				glDisable(GL_ALPHA_TEST);
+				glEnable(GL_BLEND);						// Enable Blending
 
 				// Material only supports a limited number of predefined blending modes
 				if (mat->getBlending() == Material::BLEND_ADD) {
@@ -246,7 +255,7 @@ namespace T3D
 				else {
 					// Assume Material::BLEND_DEFAULT
 					// transparency: alpha=0 - invisible, alpha=1 - no transparency
-					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				}
 			}
 
@@ -272,9 +281,7 @@ namespace T3D
 			glMatrixMode(GL_MODELVIEW);
 			glPushMatrix();
 			glMultTransposeMatrixf((object->getTransform()->getWorldMatrix()).getData());
-
 			drawMesh(mesh);
-
 			glPopMatrix();
 		}
 	}

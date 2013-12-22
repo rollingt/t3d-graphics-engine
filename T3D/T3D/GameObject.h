@@ -45,6 +45,9 @@ namespace T3D
 		void addComponent(Component *component);
 		void update(float dt);
 
+		void setDistanceToCamera(float distance) { distanceToCamera = distance; }
+		float getDistanceToCamera() const { return distanceToCamera; }
+
 	protected:
 		T3DApplication *app;
 		Transform* transform;
@@ -55,6 +58,9 @@ namespace T3D
 
 	private:		
 		std::vector<Component*> components;
+
+		float distanceToCamera;				// this is a temp value for sorted draw order only
+
 	};
 }
 
