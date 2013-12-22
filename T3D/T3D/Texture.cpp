@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sdl\SDL_image.h>
 #include "Texture.h"
 #include "Math.h"
 
@@ -36,7 +37,8 @@ namespace T3D
 
 	Texture::Texture(std::string filename, bool continuousTone, bool mipmap)
 	{
-		if ( image = SDL_LoadBMP(filename.c_str()) )
+		if ( image = IMG_Load(filename.c_str()))			// supports lots of file formats
+		//if ( image = SDL_LoadBMP(filename.c_str()) )
 		{
 			std::cout << "loaded: " << filename << "\n";
 		} else {
