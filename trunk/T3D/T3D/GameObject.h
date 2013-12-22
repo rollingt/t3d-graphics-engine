@@ -48,6 +48,9 @@ namespace T3D
 		void setDistanceToCamera(float distance) { distanceToCamera = distance; }
 		float getDistanceToCamera() const { return distanceToCamera; }
 
+		void setVisible(bool visible) { this->visible = visible; }
+		bool isVisible() { return visible; }
+
 	protected:
 		T3DApplication *app;
 		Transform* transform;
@@ -59,6 +62,7 @@ namespace T3D
 	private:		
 		std::vector<Component*> components;
 
+		bool visible;						// object drawn or not
 		float distanceToCamera;				// this is a temp value for sorted draw order only
 
 	};

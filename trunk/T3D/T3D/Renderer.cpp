@@ -109,7 +109,10 @@ namespace T3D
 					// objects for normal unsorted materials are drawn immediately
 					loadMaterial(*mit);
 					while (!q.empty()) {
-						draw(q.front());
+						object = q.front();
+						if (object->isVisible()) {
+							draw(object);
+						}
 						q.pop();
 					}
 				}
@@ -117,10 +120,12 @@ namespace T3D
 					// objects to be sorted and drawn later
 					while (!q.empty()) {
 						object = q.front();
-						// Note using squared distance as we only care about relative distance
-						distance = cameraPos.squaredDistance(object->getTransform()->getWorldPosition());
-						object->setDistanceToCamera(distance);
-						sorted.push(object);
+						if (object->isVisible()) {
+							// Note using squared distance as we only care about relative distance
+							distance = cameraPos.squaredDistance(object->getTransform()->getWorldPosition());
+							object->setDistanceToCamera(distance);
+							sorted.push(object);
+						}
 						q.pop();
 					}
 				}
