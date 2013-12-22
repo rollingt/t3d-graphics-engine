@@ -19,6 +19,7 @@ namespace T3D
 		mesh = NULL;
 		material = NULL;
 		light = NULL;
+		visible = true;
 	}
 
 	/*! Destructor
