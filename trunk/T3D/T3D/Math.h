@@ -35,9 +35,29 @@ namespace T3D
 
 		static float** generateFractal(int size, float min, float max, float roughness, bool tile = false);
 
+		/*! randRange
+		  Generates a random value in a given range
+		  \param minimum	range from 
+		  \param maximum	range to 
+		  */
 		static float randRange(float minimum, float maximum){ 
 			float r = float(rand())/RAND_MAX;
 			return r*(maximum-minimum)+minimum; 
+		}
+
+		/*! randRangeND
+		  Generates a random value in a given range with an
+		  approximation of a normal distribution, uses Central
+		  limit theorem.
+		  \param minimum	range from 
+		  \param maximum	range to 
+		  \param maximum	iterations (more for better distribution curve)
+		  */
+		static float randRangeND(float minimum, float maximum, int iterations=3){ 
+			float r = 0;
+			for (int i=0; i<iterations; i++)
+				r += float(rand())/RAND_MAX;
+			return r / (float)iterations * (maximum - minimum) + minimum; 
 		}
 
 		static float clamp(float value, float minimum, float maximum){ 
