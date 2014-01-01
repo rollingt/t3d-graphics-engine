@@ -33,6 +33,11 @@ namespace T3D
 		if (mesh) delete mesh;
 		if (light) delete light; // TODO: should make sure that this is removed from renderer's list of lights
 
+		std::vector<Component*>::iterator ci;
+		for (ci = components.begin(); ci != components.end(); ci++) {
+			delete (*ci);
+		}
+
 		// don't delete transform - normally gameobject delete will be called from transform delete
 	}
 
