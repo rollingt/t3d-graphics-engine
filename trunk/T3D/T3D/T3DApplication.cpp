@@ -9,6 +9,9 @@
 // Abstract base class for a T3D application
 // Stores reference to root transform of scene graph and list of tasks
 
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+
 #include "T3DApplication.h"
 #include "Input.h"
 #include "Task.h"
@@ -18,6 +21,9 @@ namespace T3D
 
 	T3DApplication::T3DApplication(void)
 	{
+		/* initialize random seed: */
+		srand (time(NULL));
+
 		root = NULL;
 		Input::init();
 	}
