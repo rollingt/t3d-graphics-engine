@@ -21,6 +21,8 @@
 #include "LookAtBehaviour.h"
 #include "Terrain.h"
 #include "Camera.h"
+#include "ParticleEmitter.h"
+#include "ParticleBehaviour.h"
 #include "PerfLogTask.h"
 #include "DiagMessageTask.h"
 #include "Material.h"
@@ -55,7 +57,7 @@ namespace T3D{
 		red->setDiffuse(1,0,0,1);
 		Material *green = renderer->createMaterial(Renderer::PR_OPAQUE);
 		green->setDiffuse(0,1,0,1);
-		green->setSmooth();
+		green->setFlat();
 		green->setSpecular(0,0,0,0);
 		Material *blue = renderer->createMaterial(Renderer::PR_OPAQUE);
 		blue->setDiffuse(0,0,1,1);
@@ -113,7 +115,7 @@ namespace T3D{
 		Terrain *terrainComponent = new Terrain();
 		terrain->addComponent(terrainComponent);
 		//terrainComponent->createTerrain("Resources/terrain.bmp",500,25);
-		terrainComponent->createFractalTerrain(256,500,20,2.0);
+		terrainComponent->createFractalTerrain(256,500,15,2.0);
 		terrain->setMaterial(procmat);
 		terrain->getTransform()->setLocalPosition(Vector3(0,-20,0));
 		terrain->getTransform()->setParent(root);
@@ -148,15 +150,6 @@ namespace T3D{
 		renderer->loadTexture(texttex, true);		
 		Material *textmat = renderer->createMaterial(Renderer::PR_OPAQUE);
 		textmat->setTexture(texttex,1);
-
-		GameObject *plane = new GameObject(this);
-		plane->setMesh(new PlaneMesh(1));
-		plane->setMaterial(flamemat);
-		plane->getTransform()->setLocalPosition(Vector3(3,0,0));
-		plane->getTransform()->setLocalRotation(Vector3(90*Math::DEG2RAD,0,0));
-		plane->getTransform()->setParent(root);
-		plane->getTransform()->name = "Plane";
-
 
 		cout << "creating billboard\n";
 		GameObject *billboard = new GameObject(this);
@@ -213,12 +206,13 @@ namespace T3D{
 		// Note that both materials are created with PR_TRANSPARENT priority. This will cause them
 		// to be drawn after all PR_OPAQUE materials so it is not necessary to use depth sorting
 		// unless there are multiple transparent materials that may overlap.
+		cout << "creating transparent planes\n";
 		Material *tgreen = renderer->createMaterial(Renderer::PR_TRANSPARENT);
 		tgreen->setDiffuse(0,1,0,0.4);
 		tgreen->setBlending(Material::BLEND_DEFAULT);
 		tgreen->setSortedDraw(true, true);
 		// a Transparent Plane
-		plane = new GameObject(this);
+		GameObject *plane = new GameObject(this);
 		plane->setMesh(new PlaneMesh(1));
 		plane->setMaterial(tgreen);
 		plane->getTransform()->setLocalPosition(Vector3(1,0,17.1));
@@ -238,6 +232,64 @@ namespace T3D{
 		plane->getTransform()->setLocalRotation(Vector3(90*Math::DEG2RAD,0,0));
 		plane->getTransform()->setParent(root);
 		plane->getTransform()->name = "Transparent Blue Plane";
+
+
+		cout << "creating spheres to demo shading\n";
+		// Red Smooth Specular highlihts sphere
+		sphere = new GameObject(this);
+		sphere->setMesh(new Sphere(1.0,32));
+		sphere->setMaterial(red);
+		sphere->getTransform()->setLocalPosition(Vector3(-4,0,0));		
+		sphere->getTransform()->setParent(root);
+		sphere->getTransform()->name = "Sphere";
+		// Green Flat sphere
+		sphere = new GameObject(this);
+		sphere->setMesh(new Sphere(1.0,16));
+		sphere->setMaterial(green);
+		sphere->getTransform()->setLocalPosition(Vector3(-5,0,0));		
+		sphere->getTransform()->setParent(root);
+		sphere->getTransform()->name = "Sphere";
+
+		cout << "creating particle system\n";
+
+		GameObject *particles = new GameObject(this);
+		ParticleEmitter *particleSys = new ParticleEmitter(10.0f, 0.1f, 10.0f, 5.0f, 10.0f, 100.0f, 0.2f);
+		particles->setMesh(new Cube(1));
+		particles->setMaterial(red);
+		particles->addComponent(particleSys);
+		particles->getTransform()->setLocalPosition(Vector3(1, 3, 3));
+		particles->getTransform()->setParent(root);
+		particles->getTransform()->name = "Particle System";
+
+				// simple flat plane for texture demo
+		/*GameObject *plane = new GameObject(this);
+		plane->setMesh(new PlaneMesh(1));
+		plane->setMaterial(flamemat);
+		plane->getTransform()->setLocalPosition(Vector3(3,0,0));
+		plane->getTransform()->setLocalRotation(Vector3(90*Math::DEG2RAD,0,0));
+		plane->getTransform()->setParent(root);
+		plane->getTransform()->name = "Plane";	*/
+
+		for (int i=0; i<20; i++)
+		{
+			GameObject *particle = new GameObject(this);
+			Billboard *bbComponent = new Billboard(renderer->camera->gameObject->getTransform(),true);
+			particle->addComponent(bbComponent);
+			ParticleBehaviour *behaviour = new ParticleBehaviour(0.4, 1.6);
+			particle->addComponent(behaviour);
+			behaviour->setPositionRange(3);
+			behaviour->setVelocity(Vector3(0,2,0), Vector3(0.5,0.5,0.5));
+			behaviour->setAcceleration(Vector3(5,0,0), Vector3(3,0,0));
+
+			particle->setMaterial(flamemat);			// hello world
+			particle->getTransform()->setLocalScale(Vector3(2,2,2));
+			//particle->getTransform()->setLocalPosition(Vector3(i-10,5,2));
+			particle->getTransform()->setParent(root /*particles->getTransform()*/);
+			particle->getTransform()->name = "partice";
+
+			particleSys->addParticle(behaviour, false);
+		}
+
 
 		/*
 		Animation *b = new Animation(10,5);

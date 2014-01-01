@@ -7,24 +7,214 @@
 // ParticleEmitter.cpp
 //
 // Particle emitter and controller
+// This is a generic particle creator that can be used with any particles that have the
+// ParticleBehaviour component.
 
+#include <stdlib.h>
 
+#include "GameObject.h"
+#include "Transform.h"
 #include "ParticleEmitter.h"
 #include "ParticleBehaviour.h"
+#include "Math.h"
 
 
 namespace T3D
 {
 	/*! Constructor
-	  Initialises members
+	  Default constructor for emitter
+	  \param particleCount		maximum number of active particles
+	  \param startCount			number of particles alive when starting system
+	  \param rampUpDuration		duration (seconds) to from startEmitRate to emitRate
+	  \param startEmitrate		initial emit rate (particles/second)
+	  \param duration			duration of particle emit at normal rate
+	  \param emitRate			normal emit rate
+	  \param rampDownDuration	winding down duration from normal to end emit rate
+	  \param endEmitRate		emit rate at end
+	  \param emitVariability	random variability in emit rate (0.1 is +/- 10% variability)
 	  */
-	ParticleEmitter::ParticleEmitter(int particleCount, int startCount, float startEmitRate, float endEmitRate, float duration)
+	ParticleEmitter::ParticleEmitter(float rampUpDuration, float startEmitRate,
+		float runDuration, float emitRate, float rampDownDuration, float endEmitRate, float emitVariability)
 	{
+		elapsed = 0;
+		emitted = 0;
 	
+		this->rampUpDuration = rampUpDuration;
+		this->startEmitRate = startEmitRate;
+		this->runDuration = runDuration;
+		this->emitRate = emitRate;
+		this->rampDownDuration = rampDownDuration;
+		this->endEmitRate = endEmitRate;
+		this->emitVariability = emitVariability;
 
+	}
+
+	/*! Destructor
+	  */
+	ParticleEmitter::~ParticleEmitter()
+	{
+
+		ParticleBehaviour *particle;
+
+		while (!particlesActive.empty())
+		{
+			particle = particlesActive.front();
+			particlesActive.pop_front();
+			// NOTE: delete gameObjects by deleting their Transform
+			delete particle->gameObject->getTransform();		
+		}
+		while (!particlesPool.empty())
+		{
+			particle = particlesPool.front();
+			particlesPool.pop_front();
+			delete particle->gameObject->getTransform();		
+		}
+	}
+
+	/*! addParticle
+	  Adds a particle to the system for use. Particles would normally be added
+	  immediately following the creation of the particle system.
+	  \param particle		particle to add (through its ParticleBehaviour component)
+	  \param start			start immediately rather than going into available pool
+	  */
+	void ParticleEmitter::addParticle(ParticleBehaviour *particle, bool start)
+	{
+		if (start) {
+			particle->gameObject->setVisible(true);
+			particle->start(this->gameObject);
+			particlesActive.push_back(particle);
+		}
+		else {
+			particle->gameObject->setVisible(false);
+			particlesPool.push_back(particle);
+		}
+	}
+
+	/*! stop
+	  Stop particle system (moves elapsed time to full duration)
+	  \param clear	stop and hide all active particles immediately
+	  */
+	void ParticleEmitter::stop(bool clear)
+	{
+		ParticleBehaviour *particle;
+
+		elapsed = rampUpDuration + runDuration + rampDownDuration;
+
+		if (clear)
+		{
+			while (!particlesActive.empty())
+			{
+				particle = particlesActive.front();
+				particlesActive.pop_front();
+
+				particle->gameObject->setVisible(false);
+				particlesPool.push_back(particle);
+			}
+		}
+
+	}
+
+	/*! update
+	  emit particles
+	  \param count	number of particles to emit
+	  */
+	void ParticleEmitter::emit(int count)
+	{
+		ParticleBehaviour *particle;
+
+		//if (count > 0)
+		//{
+		//	emitted += count;
+		//	std::cout << "emitting " << count << " particles" << ", emitted " << emitted << std::endl;
+		//}
+
+		while (count > 0 && !particlesPool.empty())
+		{
+			particle = particlesPool.front();
+			particlesPool.pop_front();
+
+			particle->gameObject->setVisible(true);
+			particle->start(this->gameObject);
+			particlesActive.push_back(particle);
+
+			emitted++;
+			count--;
+		}
 
 
 	}
+
+
+	/*! update
+	  regular system update, generate particles as required
+	  \param dt	elapsed time since last frame
+	  */
+	void ParticleEmitter::update(float dt)
+	{
+		float count;
+		std::list<ParticleBehaviour *>::iterator i;
+		ParticleBehaviour *particle;
+
+		// Move any finished particles back to avaliable pool
+		i = particlesActive.begin();
+		while (i != particlesActive.end())
+		{
+			particle = (*i);
+			i++;					// must increment before any remove
+			if (particle->isFinished())
+			{
+				particlesActive.remove(particle);
+				particle->gameObject->setVisible(false);
+				particlesPool.push_back(particle);
+			}
+		}
+
+		elapsed += dt;			// total particle system run time
+
+		if (elapsed < (rampUpDuration + runDuration + rampDownDuration))
+		{
+			// Get expected particles for initial ramp up
+			count = emitRamp(startEmitRate, emitRate, rampUpDuration, elapsed, emitVariability);
+			// Plus particles for constant run (using the acceleration ramp even though constant rate)
+			count += emitRamp(emitRate, emitRate, runDuration, elapsed - rampUpDuration, emitVariability);
+			// Plus particles for ramp down
+			count += emitRamp(emitRate, endEmitRate, rampDownDuration, elapsed - rampUpDuration- runDuration, emitVariability);
+
+			//std::cout << "expected particles for time " << elapsed << " is " << count << ", particles emitted so far " << emitted << std::endl;
+
+			// count is now the total number of particles (with some random variability) that should have
+			// been generated by this time in the particles systems life. 
+			count -= emitted;	// minus the number already emitted to give how many we need to emit now
+
+			emit(count + 0.5f);			// emit rounded up output count
+		}
+	}
+
+	/*! emitRamp
+	  get total expected particle count for a time position along an acceleration ramp
+	  no particles emitted for negative
+	  \param start		particles per second
+	  \param end		particles per second
+	  \param duration	duration of ramp
+	  \param time		time pos (no particles if < 0 or max particles if > duration)
+	  \param			random varaibility (+/- fraction)
+	  */
+	float ParticleEmitter::emitRamp(float start, float end, float duration, float time, float variability)
+	{
+		float accel;		// calculated acceration rate for ramp
+		float count;		// expected number of particles produced to the given time
+
+		if (time < 0 || duration <= 0) return 0;		// not in ramp or no ramp
+
+		if (time > duration) time = duration;	// clamp time to max duration of ramp
+
+		accel = (end - start) / duration;		// particles per second per second
+		count = start * time + (accel * time * time) / 2.0f;
+		count += count * (Math::randRange(0, variability*2) - variability);
+
+		return count;
+	}
+
 
 
 }
