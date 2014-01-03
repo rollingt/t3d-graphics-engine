@@ -33,7 +33,7 @@ namespace T3D
 		void addInactiveList(ParticleBehaviour *particle);	// only particles should call this!
 
 		void addParticle(ParticleBehaviour *particle, bool start);	/// add particle for use
-		void createBillboardParticles(int total, int alive, float lifeSpanMin, float lifeSpanMax, Material *material, float scale, Transform *parent); 
+		void createBillboardParticles(int n, float lifeSpanMin, float lifeSpanMax, Material *material, float scale, Transform *parent); 
 
 		// particle attributes
 		void setPositionRange(float distance);
@@ -44,7 +44,7 @@ namespace T3D
 		void windDown() { elapsed = rampUpDuration + runDuration; }
 		void restart() { elapsed = 0; emitted = 0; }
 		void stop(bool clear);
-		void emit(int count);
+		void emit(int n, bool count=false);
 		void update(float dt);
 
 
@@ -56,7 +56,7 @@ namespace T3D
 		std::list<ParticleBehaviour *> particlesInactive;	// inactive particles that can be started
 
 		float elapsed;					//elapsed system time
-		int emitted;					//number of particles emitted during run (not counting any started when added)
+		int emitted;					//number of particles emitted during run
 
 		float rampUpDuration;
 		float startEmitRate;
