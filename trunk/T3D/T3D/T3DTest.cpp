@@ -262,10 +262,11 @@ namespace T3D{
 		particles->getTransform()->setParent(root);
 		particles->getTransform()->name = "Particle System";
 
-		particleSys->createBillboardParticles(20, 3, 0.4, 1.6, flamemat, 2.0, root);
+		particleSys->createBillboardParticles(20, 0.4, 1.6, flamemat, 2.0, root);
 		particleSys->setPositionRange(3);
 		particleSys->setVelocity(Vector3(0,2,0), Vector3(0.5,0.5,0.5));
 		particleSys->setAcceleration(Vector3(5,0,0), Vector3(3,0,0));
+		particleSys->emit(2);
 
 		// Manually add particles
 		/*for (int i=0; i<20; i++)
