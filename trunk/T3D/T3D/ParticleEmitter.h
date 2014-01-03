@@ -33,7 +33,7 @@ namespace T3D
 		void addInactiveList(ParticleBehaviour *particle);	// only particles should call this!
 
 		void addParticle(ParticleBehaviour *particle, bool start);	/// add particle for use
-		void createBillboardParticles(int total, int alive, float lifeSpanMin, float lifeSpanMax, const char *imageFileName, float scale, Transform *parent); 
+		void createBillboardParticles(int total, int alive, float lifeSpanMin, float lifeSpanMax, Material *material, float scale, Transform *parent); 
 
 		// particle attributes
 		void setPositionRange(float distance);
