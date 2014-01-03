@@ -12,11 +12,15 @@
 
 #include <stdlib.h>
 
+#include "Math.h"
 #include "GameObject.h"
+#include "Renderer.h"
+#include "T3DApplication.h"
 #include "Transform.h"
 #include "ParticleEmitter.h"
 #include "ParticleBehaviour.h"
-#include "Math.h"
+#include "Camera.h"
+#include "Billboard.h"
 
 
 namespace T3D
@@ -56,18 +60,10 @@ namespace T3D
 
 		ParticleBehaviour *particle;
 
-		while (!particlesActive.empty())
+		for (int i=0; i<particles.size(); i++)
 		{
-			particle = particlesActive.front();
-			particlesActive.pop_front();
 			// NOTE: delete gameObjects by deleting their Transform
-			delete particle->gameObject->getTransform();		
-		}
-		while (!particlesPool.empty())
-		{
-			particle = particlesPool.front();
-			particlesPool.pop_front();
-			delete particle->gameObject->getTransform();		
+			delete particles[i]->gameObject->getTransform();		
 		}
 	}
 
@@ -79,14 +75,114 @@ namespace T3D
 	  */
 	void ParticleEmitter::addParticle(ParticleBehaviour *particle, bool start)
 	{
+		particles.push_back(particle);
+
 		if (start) {
-			particle->gameObject->setVisible(true);
 			particle->start(this->gameObject);
-			particlesActive.push_back(particle);
 		}
 		else {
-			particle->gameObject->setVisible(false);
-			particlesPool.push_back(particle);
+			particle->stop();	// particle will be added to particlesInactive
+		}
+	}
+
+	/*! setParticle
+	  Adds particle to inactive list for reuse
+	  IMPORTANT: This is intended only to be used by particles
+	  to add themselves back into the inactive list for reuse
+	  \param particle		particle to add to inactive
+	  */
+	void ParticleEmitter::addInactiveList(ParticleBehaviour *particle)
+	{
+		particlesInactive.push_back(particle);
+	}
+
+	/*! createBillboardParticles
+	  Creates particles using Billboard as a base
+	  \param total			total number of particles to create
+	  \param alive			number of particles that should be started
+	  \param lifeSpanMin	minimum lifespan of particles (seconds)
+	  \param lifeSpanMax	maximum lifespan of particles (seconds)
+	  \param imageFileName	filename for billboard texture
+	  \param				billboard size scaling
+	  \param parent			parent Transform for particles
+	  */
+	void ParticleEmitter::createBillboardParticles(int total, int alive, float lifeSpanMin, float lifeSpanMax, const char *imageFileName, float scale, Transform *parent)
+	{
+		Renderer *renderer = this->gameObject->getApp()->getRenderer();
+
+		Texture *texture = new Texture(imageFileName, true, true);
+		renderer->loadTexture(texture);
+		Material *material = renderer->createMaterial(Renderer::PR_TRANSPARENT);
+		material->setTexture(texture);
+
+		for (int i=0; i<total; i++)
+		{
+			GameObject *particle = new GameObject(this->gameObject->getApp());
+
+			Billboard *bbComponent = new Billboard(renderer->camera->gameObject->getTransform(),true);
+			particle->addComponent(bbComponent);
+			ParticleBehaviour *behaviour = new ParticleBehaviour(this, lifeSpanMin, lifeSpanMax);
+			particle->addComponent(behaviour);
+
+			particle->setMaterial(material);
+			particle->getTransform()->setLocalScale(Vector3(scale, scale, scale));
+			particle->getTransform()->setParent(parent);
+			particle->getTransform()->name = "particle";
+
+			addParticle(behaviour, alive-- > 0);
+		}
+
+	}
+
+	/*! setPositionRange
+	  set initial maximum random distance for particles from emitter
+	  \param distance		maximum initial distance from particle emitter
+	  */
+	void ParticleEmitter::setPositionRange(float distance)
+	{
+		for (int i=0; i<particles.size(); i++)
+		{
+			particles[i]->setPositionRange(distance);
+		}
+	}
+
+
+	/*! setVelocity
+	  Sets base velocity and random variation for particle motion
+	  \param velocity		base veolcity vector (added to position per second) 
+	  \param variance		+/- random variation applied to velocity
+	  */
+	void ParticleEmitter::setVelocity(Vector3 velocity, Vector3 variance)
+	{
+		for (int i=0; i<particles.size(); i++)
+		{
+			particles[i]->setVelocity(velocity, variance);
+		}
+	}
+
+	/*! setAcceleration
+	  Sets acceleration vector and random variance for particles
+	  \param accel		base acceleration (added to velocity per second)
+	  \param variance	random variance in direction of acceleration (+/-)
+	  */
+	void ParticleEmitter::setAcceleration(Vector3 accel, Vector3 variance)
+	{
+		for (int i=0; i<particles.size(); i++)
+		{
+			particles[i]->setAcceleration(accel, variance);
+		}
+	}
+
+	/*! setSpeedLimits
+	  Sets minimum and maximum speed for particles
+	  \param min		minimum speed 
+	  \param max		maximum speed
+	  */
+	void ParticleEmitter::setSpeedLimits(float min, float max)
+	{
+		for (int i=0; i<particles.size(); i++)
+		{
+			particles[i]->setSpeedLimits(min, max);
 		}
 	}
 
@@ -102,13 +198,13 @@ namespace T3D
 
 		if (clear)
 		{
-			while (!particlesActive.empty())
-			{
-				particle = particlesActive.front();
-				particlesActive.pop_front();
+			// particles may already be inactive but easier just
+			// clear the list and add them all again
+			particlesInactive.clear();
 
-				particle->gameObject->setVisible(false);
-				particlesPool.push_back(particle);
+			for (int i=0; i<particles.size(); i++)
+			{
+				particles[i]->stop();	// note this will add particle to particlesInactive
 			}
 		}
 
@@ -128,22 +224,16 @@ namespace T3D
 		//	std::cout << "emitting " << count << " particles" << ", emitted " << emitted << std::endl;
 		//}
 
-		while (count > 0 && !particlesPool.empty())
+		while (count > 0 && !particlesInactive.empty())
 		{
-			particle = particlesPool.front();
-			particlesPool.pop_front();
-
-			particle->gameObject->setVisible(true);
+			particle = particlesInactive.front();
+			particlesInactive.pop_front();		// remove from inactive list
 			particle->start(this->gameObject);
-			particlesActive.push_back(particle);
 
 			emitted++;
 			count--;
 		}
-
-
 	}
-
 
 	/*! update
 	  regular system update, generate particles as required
@@ -154,20 +244,6 @@ namespace T3D
 		float count;
 		std::list<ParticleBehaviour *>::iterator i;
 		ParticleBehaviour *particle;
-
-		// Move any finished particles back to avaliable pool
-		i = particlesActive.begin();
-		while (i != particlesActive.end())
-		{
-			particle = (*i);
-			i++;					// must increment before any remove
-			if (particle->isFinished())
-			{
-				particlesActive.remove(particle);
-				particle->gameObject->setVisible(false);
-				particlesPool.push_back(particle);
-			}
-		}
 
 		elapsed += dt;			// total particle system run time
 
