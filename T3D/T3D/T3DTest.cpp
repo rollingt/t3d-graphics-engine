@@ -69,7 +69,8 @@ namespace T3D{
 
 		Texture *flametex = new Texture("Resources/flames.png", true, true);
 		renderer->loadTexture(flametex);
-		Material *flamemat = renderer->createMaterial(Renderer::PR_OPAQUE);
+		Material *flamemat = renderer->createMaterial(Renderer::PR_TRANSPARENT);
+		//flamemat->setBlending(Material::BLEND_DEFAULT);
 		flamemat->setTexture(flametex);
 
 		Texture *proctex = new Texture(512,512);
@@ -261,12 +262,12 @@ namespace T3D{
 		particles->getTransform()->setParent(root);
 		particles->getTransform()->name = "Particle System";
 
-		particleSys->createBillboardParticles(20, 3, 0.4, 1.6, "Resources/flames.png", 2.0, root);
+		particleSys->createBillboardParticles(20, 3, 0.4, 1.6, flamemat, 2.0, root);
 		particleSys->setPositionRange(3);
 		particleSys->setVelocity(Vector3(0,2,0), Vector3(0.5,0.5,0.5));
 		particleSys->setAcceleration(Vector3(5,0,0), Vector3(3,0,0));
 
-
+		// Manually add particles
 		/*for (int i=0; i<20; i++)
 		{
 			GameObject *particle = new GameObject(this);
@@ -287,9 +288,6 @@ namespace T3D{
 		}
 		*/
 
-
-
-
 				// simple flat plane for texture demo
 		/*GameObject *plane = new GameObject(this);
 		plane->setMesh(new PlaneMesh(1));
@@ -298,7 +296,6 @@ namespace T3D{
 		plane->getTransform()->setLocalRotation(Vector3(90*Math::DEG2RAD,0,0));
 		plane->getTransform()->setParent(root);
 		plane->getTransform()->name = "Plane";	*/
-
 
 
 		/*

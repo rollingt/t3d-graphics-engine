@@ -106,20 +106,15 @@ namespace T3D
 	  \param				billboard size scaling
 	  \param parent			parent Transform for particles
 	  */
-	void ParticleEmitter::createBillboardParticles(int total, int alive, float lifeSpanMin, float lifeSpanMax, const char *imageFileName, float scale, Transform *parent)
+	void ParticleEmitter::createBillboardParticles(int total, int alive, float lifeSpanMin, float lifeSpanMax, Material *material, float scale, Transform *parent)
 	{
-		Renderer *renderer = this->gameObject->getApp()->getRenderer();
-
-		Texture *texture = new Texture(imageFileName, true, true);
-		renderer->loadTexture(texture);
-		Material *material = renderer->createMaterial(Renderer::PR_TRANSPARENT);
-		material->setTexture(texture);
+		Transform *cameraTransform = this->gameObject->getApp()->getRenderer()->camera->gameObject->getTransform();
 
 		for (int i=0; i<total; i++)
 		{
 			GameObject *particle = new GameObject(this->gameObject->getApp());
 
-			Billboard *bbComponent = new Billboard(renderer->camera->gameObject->getTransform(),true);
+			Billboard *bbComponent = new Billboard(cameraTransform, true);
 			particle->addComponent(bbComponent);
 			ParticleBehaviour *behaviour = new ParticleBehaviour(this, lifeSpanMin, lifeSpanMax);
 			particle->addComponent(behaviour);
