@@ -13,9 +13,10 @@
 
 #include "Component.h"
 
-
 namespace T3D
 {
+	class ParticleEmitter;
+
 	//! Standard Particle Behaviour
 	/*! Manages an individual particle for its lifetime
 	    Particles are reusable
@@ -25,10 +26,10 @@ namespace T3D
 		public Component
 	{
 	public:
-		ParticleBehaviour(float lifeSpanMin, float lifeSpanMax);
+		ParticleBehaviour(ParticleEmitter *emitter, float lifeSpanMin, float lifeSpanMax);
 
 		virtual void start(GameObject *from);			// start or restart particle
-		bool isFinished() { return elapsed >= lifeSpan; }
+		void stop();									// stop and hide particle
 
 		void setPositionRange(float distance);
 		void setVelocity(Vector3 velocity, Vector3 variance);
@@ -40,7 +41,10 @@ namespace T3D
 		void update(float dt);
 
 	protected:
+		ParticleEmitter *emitter;
+
 		// Current state variables
+		bool active;			// particle is alive and active				
 		float elapsed;			// elapsed active time
 		float lifeSpan;			// current lifespan of particle
 		Vector3 velocity;		// current motion

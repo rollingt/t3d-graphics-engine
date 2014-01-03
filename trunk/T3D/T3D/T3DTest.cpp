@@ -261,6 +261,35 @@ namespace T3D{
 		particles->getTransform()->setParent(root);
 		particles->getTransform()->name = "Particle System";
 
+		particleSys->createBillboardParticles(20, 3, 0.4, 1.6, "Resources/flames.png", 2.0, root);
+		particleSys->setPositionRange(3);
+		particleSys->setVelocity(Vector3(0,2,0), Vector3(0.5,0.5,0.5));
+		particleSys->setAcceleration(Vector3(5,0,0), Vector3(3,0,0));
+
+
+		/*for (int i=0; i<20; i++)
+		{
+			GameObject *particle = new GameObject(this);
+			Billboard *bbComponent = new Billboard(renderer->camera->gameObject->getTransform(),true);
+			particle->addComponent(bbComponent);
+			ParticleBehaviour *behaviour = new ParticleBehaviour(particleSys, 0.4, 1.6);
+			particle->addComponent(behaviour);
+			behaviour->setPositionRange(3);
+			behaviour->setVelocity(Vector3(0,2,0), Vector3(0.5,0.5,0.5));
+			behaviour->setAcceleration(Vector3(5,0,0), Vector3(3,0,0));
+
+			particle->setMaterial(flamemat);			// hello world
+			particle->getTransform()->setLocalScale(Vector3(2,2,2));
+			particle->getTransform()->setParent(root);
+			particle->getTransform()->name = "partice";
+
+			particleSys->addParticle(behaviour, false);
+		}
+		*/
+
+
+
+
 				// simple flat plane for texture demo
 		/*GameObject *plane = new GameObject(this);
 		plane->setMesh(new PlaneMesh(1));
@@ -270,25 +299,6 @@ namespace T3D{
 		plane->getTransform()->setParent(root);
 		plane->getTransform()->name = "Plane";	*/
 
-		for (int i=0; i<20; i++)
-		{
-			GameObject *particle = new GameObject(this);
-			Billboard *bbComponent = new Billboard(renderer->camera->gameObject->getTransform(),true);
-			particle->addComponent(bbComponent);
-			ParticleBehaviour *behaviour = new ParticleBehaviour(0.4, 1.6);
-			particle->addComponent(behaviour);
-			behaviour->setPositionRange(3);
-			behaviour->setVelocity(Vector3(0,2,0), Vector3(0.5,0.5,0.5));
-			behaviour->setAcceleration(Vector3(5,0,0), Vector3(3,0,0));
-
-			particle->setMaterial(flamemat);			// hello world
-			particle->getTransform()->setLocalScale(Vector3(2,2,2));
-			//particle->getTransform()->setLocalPosition(Vector3(i-10,5,2));
-			particle->getTransform()->setParent(root /*particles->getTransform()*/);
-			particle->getTransform()->name = "partice";
-
-			particleSys->addParticle(behaviour, false);
-		}
 
 
 		/*

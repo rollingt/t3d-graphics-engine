@@ -21,10 +21,13 @@ namespace T3D
 	/*! Constructor
 	  Initialises members
 	  */
-	ParticleBehaviour::ParticleBehaviour(float lifeSpanMin, float lifeSpanMax)
+	ParticleBehaviour::ParticleBehaviour(ParticleEmitter *emitter, float lifeSpanMin, float lifeSpanMax)
 	{
+		this->emitter = emitter;
 		this->lifeSpanMin = lifeSpanMin;
 		this->lifeSpanMax = lifeSpanMax;
+
+		active = false;
 
 		startMaxDistance = 1;
 
@@ -49,7 +52,6 @@ namespace T3D
 		elapsed = 0;
 		lifeSpan = Math::randRange(lifeSpanMin, lifeSpanMax);
 
-
 		// Derive world position from gameObject of parent ParticleEmitter
 		// Note the particle may or may not be a descendent of the particle emitter
 		Vector3 position = from->getTransform()->getWorldPosition();
@@ -64,6 +66,22 @@ namespace T3D
 		acceleration = Vector3(accelBase.x + Math::randRangeND(-accelVar.x, accelVar.x),
 							accelBase.y + Math::randRangeND(-accelVar.y, accelVar.y),
 							accelBase.z + Math::randRangeND(-accelVar.z, accelVar.z));
+
+		gameObject->setVisible(true);
+		active = true;
+	}
+
+										// 
+
+	/*! stop
+	  stop and hide particle
+	  */
+	void ParticleBehaviour::stop()
+	{
+		gameObject->setVisible(false);
+		active = false;
+		// notify parent this particle is no longer active
+		emitter->addInactiveList(this);
 	}
 
 
@@ -117,16 +135,27 @@ namespace T3D
 	  */
 	void ParticleBehaviour::update(float dt)
 	{
-		elapsed += dt;
+		if (active)
+		{
 
-		Vector3 position = this->gameObject->getTransform()->getLocalPosition();
+			elapsed += dt;
 
-		velocity += acceleration * dt;
+			if (elapsed < lifeSpan) {
 
-		position += velocity * dt;
+				Vector3 position = this->gameObject->getTransform()->getLocalPosition();
 
-		this->gameObject->getTransform()->setLocalPosition(position);
+				velocity += acceleration * dt;
 
+				position += velocity * dt;
+
+				this->gameObject->getTransform()->setLocalPosition(position);
+
+			}
+			else
+			{
+				stop();
+			}
+		}
 
 	}
 
