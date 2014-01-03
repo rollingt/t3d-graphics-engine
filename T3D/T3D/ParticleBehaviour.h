@@ -30,6 +30,7 @@ namespace T3D
 
 		virtual void start(GameObject *from);			// start or restart particle
 		void stop();									// stop and hide particle
+		bool isActive() { return active; }
 
 		void setPositionRange(float distance);
 		void setVelocity(Vector3 velocity, Vector3 variance);

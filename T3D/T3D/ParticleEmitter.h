@@ -12,6 +12,7 @@
 #define PARTICLEEMITTER_H
 
 #include <list>
+#include <queue>
 #include "Component.h"
 #include "ParticleBehaviour.h"
 
@@ -53,7 +54,7 @@ namespace T3D
 
 	protected:
 		std::vector<ParticleBehaviour *> particles;			// all particles
-		std::list<ParticleBehaviour *> particlesInactive;	// inactive particles that can be started
+		std::queue<ParticleBehaviour *> particlesInactive;	// inactive particles that can be started
 
 		float elapsed;					//elapsed system time
 		int emitted;					//number of particles emitted during run

@@ -47,8 +47,6 @@ namespace T3D
 	  */
 	void ParticleBehaviour::start(GameObject *from)			// start or restart particle
 	{
-		float rvalue;
-
 		elapsed = 0;
 		lifeSpan = Math::randRange(lifeSpanMin, lifeSpanMax);
 
