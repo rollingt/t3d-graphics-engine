@@ -37,8 +37,8 @@ namespace T3D
 		void setSpecular(float r, float g, float b, float a){ specular[0] = r;  specular[1] = g; specular[2] = b; specular[3] = a; }
 		void setEmissive(float r, float g, float b, float a){ emissive[0] = r;  emissive[1] = g; emissive[2] = b; emissive[3] = a; }
 		void setShininess(float s){ shininess = s; }
-		void setFlat() { smooth = false; }
-		void setSmooth() { smooth = true; }
+		void setFlatShading() { smooth = false; }
+		void setSmoothShading() { smooth = true; }
 		void setBlending(blendMode mode) { blending = mode; }
 
 		bool isTextured(){ return textured; }
