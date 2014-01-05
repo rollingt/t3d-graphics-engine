@@ -32,12 +32,13 @@ namespace T3D
 		void stop();									// stop and hide particle
 		bool isActive() { return active; }
 
-		void setPositionRange(float distance);
-		void setVelocity(Vector3 velocity, Vector3 variance);
-		void setAcceleration(Vector3 accel, Vector3 variance);
-		void setSpeedLimits(float min, float max);
+		void setPositionRange(float dx, float dy, float dz);
 
-		//void setAlphaFade(float start, float end, float duration);
+		void setDirection(float theta_y, float theta_z, float variance);
+		void setStartVelocity(float min, float max);
+		void setAcceleration(float acceleration, float speedMinMax);
+
+		void setAlphaFade(float start, float end);
 
 		void update(float dt);
 
@@ -48,20 +49,29 @@ namespace T3D
 		bool active;			// particle is alive and active				
 		float elapsed;			// elapsed active time
 		float lifeSpan;			// current lifespan of particle
-		Vector3 velocity;		// current motion
-		Vector3 acceleration;	// constant acceleration
+
+		Vector3 direction;		// direction of motion (unit vector)
+		float speed;			// current speed
 
 		// Initial state parameters
 		float lifeSpanMin;		// minimum lifetime of active particle
 		float lifeSpanMax;		// maximum lifetime of active particle
-		float startMaxDistance;	// maximum start distance from emitter
-		Vector3 velocityBase;	// initial base velocity (X,Y,Z per second)
-		Vector3 velocityVar;	// velocity variation (+/- to velocityBase)
-		Vector3 accelBase;		// base acceleration vector (X,Y,Z per second per second)
-		Vector3 accelVar;		// acceleration direction variance (+/- applied to accelBase)
-		float minSpeed;			// minimum speed when decelerating (units per second per second)
-		float maxSpeed;			// maximum speed when accelerating
 
+		float startDistanceX;	// maximum start distance from emitter in X axis
+		float startDistanceY;	// maximum start distance from emitter in Y axis
+		float startDistanceZ;	// maximum start distance from emitter in Z axis
+
+		float dirBaseThetaY;	// base direction rotation around Y axis
+		float dirBaseThetaZ;	// base direction rotation around Z axis
+		float directionVar;		// +/- random variability to direction theta Y,Z
+
+		float speedStartMin;	// start speed min (units per second)
+		float speedStartMax;	// start speed max (speed random between min and max)
+		float acceleration;		// acceleration (units per second per second)
+		float speedMinMax;		// min or max speed (based on ve of acceleration)
+
+		float alphaStart;		// alpha at start of lifecycle
+		float alphaEnd;			// alpha at end of sequence
 
 	};
 

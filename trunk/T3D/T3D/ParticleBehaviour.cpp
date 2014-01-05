@@ -11,6 +11,7 @@
 
 #include "GameObject.h"
 #include "Math.h"
+#include "Quaternion.h"
 #include "Transform.h"
 #include "ParticleEmitter.h"
 #include "ParticleBehaviour.h"
@@ -29,14 +30,20 @@ namespace T3D
 
 		active = false;
 
-		startMaxDistance = 1;
+		startDistanceX = 0;
+		startDistanceY = 0;
+		startDistanceZ = 0;
 
-		velocityBase = Vector3(0, 0, 0);
-		velocityVar = Vector3(0, 0, 0);
-		accelBase = Vector3(0, 0, 0);
-		accelVar = Vector3(0, 0, 0);
-		minSpeed = -1000;			// no limits
-		maxSpeed = 1000;
+		dirBaseThetaY = 0.0f;
+		dirBaseThetaZ = 0.0f;
+		directionVar = 0.0f;
+		speedStartMin = 0.0f;
+		speedStartMax = 0.0f;
+		acceleration = 0.0f;
+		speedMinMax = 0.0f;
+
+		alphaStart = 1.0f;
+		alphaEnd = 1.0f;
 	}
 
 
@@ -53,23 +60,32 @@ namespace T3D
 		// Derive world position from gameObject of parent ParticleEmitter
 		// Note the particle may or may not be a descendent of the particle emitter
 		Vector3 position = from->getTransform()->getWorldPosition();
-		position.x += Math::randRangeND(-startMaxDistance, startMaxDistance);
-		position.y += Math::randRangeND(-startMaxDistance, startMaxDistance);
-		position.z += Math::randRangeND(-startMaxDistance, startMaxDistance);
+		position.x += Math::randRangeND(-startDistanceX, startDistanceX);
+		position.y += Math::randRangeND(-startDistanceY, startDistanceY);
+		position.z += Math::randRangeND(-startDistanceZ, startDistanceZ);
 		this->gameObject->getTransform()->setWorldPosition(position);
 
-		velocity = Vector3(velocityBase.x + Math::randRangeND(-velocityVar.x, velocityVar.x),
+		Quaternion rotQ(0.0f, dirBaseThetaY + Math::randRange(-directionVar, directionVar), 
+							 dirBaseThetaZ + Math::randRange(-directionVar, directionVar));
+		Matrix3x3 rotM = (Matrix3x3)rotQ;
+		Vector3 unitX(1.0, 0.0, 0.0);
+		direction = unitX * rotM;
+		speed = Math::randRangeND(speedStartMin, speedStartMax);
+
+				//rotationMatrix = (Matrix3x3)q;
+
+
+		/*velocity = Vector3(velocityBase.x + Math::randRangeND(-velocityVar.x, velocityVar.x),
 							velocityBase.y + Math::randRangeND(-velocityVar.y, velocityVar.y),
 							velocityBase.z + Math::randRangeND(-velocityVar.z, velocityVar.z));
 		acceleration = Vector3(accelBase.x + Math::randRangeND(-accelVar.x, accelVar.x),
 							accelBase.y + Math::randRangeND(-accelVar.y, accelVar.y),
 							accelBase.z + Math::randRangeND(-accelVar.z, accelVar.z));
+							*/
 
 		gameObject->setVisible(true);
 		active = true;
 	}
-
-										// 
 
 	/*! stop
 	  stop and hide particle
@@ -85,45 +101,63 @@ namespace T3D
 
 	/*! setPositionRange
 	  set initial maximum random distance from emitter
-	  \param distance		maximum initial distance from particle emitter
+	  \param dx		maximum initial distance from particle emitter in X axis (+/-)
+	  \param dy		maximum initial distance from particle emitter in Y axis (+/-)
+	  \param dz		maximum initial distance from particle emitter in Z axis (+/-)
 	  */
-	void ParticleBehaviour::setPositionRange(float distance)
+	void ParticleBehaviour::setPositionRange(float dx, float dy, float dz)
 	{
-		startMaxDistance = distance; 
+		this->startDistanceX = dx; 
+		this->startDistanceY = dy; 
+		this->startDistanceZ = dz; 
 	}
 
-
-	/*! setVelocity
-	  Sets base velocity and random variation for particle motion
-	  \param velocity		base veolcity vector (added to position per second) 
-	  \param variance		+/- random variation applied to velocity
+	/*! setDirection
+	  Sets base direction of motion and random variance
+	  Assumes bases direction is along +ve x axis
+	  \param theta_y	rotation around y axis
+	  \param theta_z	rotation around z axis
+	  \param variance	+/- random variation applied to angles
 	  */
-	void ParticleBehaviour::setVelocity(Vector3 velocity, Vector3 variance)
+	void ParticleBehaviour::setDirection(float theta_y, float theta_z, float variance)
 	{
-		velocityBase = velocity;
-		velocityVar = variance;
+		this->dirBaseThetaY = theta_y;
+		this->dirBaseThetaZ = theta_z;
+		this->directionVar = variance;
+	}
+
+	/*! setStartVelocity
+	  Sets startup seed range
+	  \param min		min start speed (units per second)
+	  \param max		max start speed
+	  */
+	void ParticleBehaviour::setStartVelocity(float min, float max)
+	{
+		this->speedStartMin = min;
+		this->speedStartMax = max;
 	}
 
 	/*! setAcceleration
-	  Sets acceleration vector and random variance
-	  \param accel		base acceleration (added to velocity per second)
-	  \param variance	random variance in direction of acceleration (+/-)
+	  Sets particles acceleration and min or max speed
+	  \param acceleration	particle acceleration (units per second per second)
+	  \param speedMinax		min speed if -ve acceleration otherwise max speed
 	  */
-	void ParticleBehaviour::setAcceleration(Vector3 accel, Vector3 variance)
+	void ParticleBehaviour::setAcceleration(float acceleration, float speedMinMax)
 	{
-		accelBase = accel;
-		accelVar = variance;
+		this->acceleration = acceleration;
+		this->speedMinMax = speedMinMax;
 	}
 
-	/*! setSpeedLimits
-	  Sets minimum and maximum speed (velocity.length())
-	  \param min		minimum speed 
-	  \param max		maximum speed
+	/*! setAlphaFade
+	  Sets alpha blending (fade) gradient from start to end
+	  of article lifecycle.
+	  \param start		start alpha value (1.0 opaque, 0.0 invisible) 
+	  \param max		end alpha value
 	  */
-	void ParticleBehaviour::setSpeedLimits(float min, float max)
+	void ParticleBehaviour::setAlphaFade(float start, float end)
 	{
-		minSpeed = min;
-		maxSpeed = max;
+		alphaStart = start;
+		alphaEnd = end;
 	}
 
 	/*! update
@@ -133,6 +167,12 @@ namespace T3D
 	  */
 	void ParticleBehaviour::update(float dt)
 	{
+		float *diffuse;
+		float alpha;
+		Vector3 position;
+		Vector3 velocity;
+		float vlength;
+
 		if (active)
 		{
 
@@ -140,13 +180,21 @@ namespace T3D
 
 			if (elapsed < lifeSpan) {
 
+				// Apply motion (velocity and acceleration)
 				Vector3 position = this->gameObject->getTransform()->getLocalPosition();
-
-				velocity += acceleration * dt;
-
+				speed += acceleration * dt;
+				// min speed if decelerating, max speed if accelerating
+				if ((acceleration < 0.0f && speed < speedMinMax) || (acceleration > 0.0f && speed > speedMinMax)) {
+					speed = speedMinMax;		// speed limit reached
+				}
+				velocity = direction * speed;
 				position += velocity * dt;
 
 				this->gameObject->getTransform()->setLocalPosition(position);
+
+				// interpolate alpha blending value
+				alpha = alphaEnd + (lifeSpan - elapsed) / lifeSpan * (alphaStart - alphaEnd);
+				this->gameObject->setAlpha(alpha);
 
 			}
 			else

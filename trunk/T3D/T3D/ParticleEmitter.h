@@ -37,10 +37,12 @@ namespace T3D
 		void createBillboardParticles(int n, float lifeSpanMin, float lifeSpanMax, Material *material, float scale, Transform *parent); 
 
 		// particle attributes
-		void setPositionRange(float distance);
-		void setVelocity(Vector3 velocity, Vector3 variance);
-		void setAcceleration(Vector3 accel, Vector3 variance);
-		void setSpeedLimits(float min, float max);
+		void setPositionRange(float dx, float dy, float dz);
+		void setDirection(float theta_y, float theta_z, float variance);
+		void setStartVelocity(float min, float max);
+		void setAcceleration(float acceleration, float speedMinMax);
+		void setAlphaFade(float start, float end);
+
 
 		void windDown() { elapsed = rampUpDuration + runDuration; }
 		void restart() { elapsed = 0; emitted = 0; }

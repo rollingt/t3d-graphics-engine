@@ -57,7 +57,7 @@ namespace T3D{
 		red->setDiffuse(1,0,0,1);
 		Material *green = renderer->createMaterial(Renderer::PR_OPAQUE);
 		green->setDiffuse(0,1,0,1);
-		green->setFlat();
+		green->setFlatShading();
 		green->setSpecular(0,0,0,0);
 		Material *blue = renderer->createMaterial(Renderer::PR_OPAQUE);
 		blue->setDiffuse(0,0,1,1);
@@ -66,12 +66,6 @@ namespace T3D{
 		renderer->loadTexture(smileytex);
 		Material *smiley = renderer->createMaterial(Renderer::PR_OPAQUE);
 		smiley->setTexture(smileytex);
-
-		Texture *flametex = new Texture("Resources/flames.png", true, true);
-		renderer->loadTexture(flametex);
-		Material *flamemat = renderer->createMaterial(Renderer::PR_TRANSPARENT);
-		//flamemat->setBlending(Material::BLEND_DEFAULT);
-		flamemat->setTexture(flametex);
 
 		Texture *proctex = new Texture(512,512);
 		proctex->createFractal(Colour(40,150,50,255),Colour(120,220,100,255),25.0f,false);
@@ -180,6 +174,31 @@ namespace T3D{
 		sweep->getTransform()->setLocalPosition(Vector3(0,10,0));
 		sweep->getTransform()->setParent(root);
 		sweep->getTransform()->name = "Sweep";
+
+		cout << "adding a bubble blowing particle emmiter to torus" << endl;
+		ParticleEmitter *particleSysBubbles = new ParticleEmitter(5.0f, 2.0f, 20.0f, 5.0f, 5.0f, 1.0f, 0.2f);
+		sweep->addComponent(particleSysBubbles);
+		// Manually add particles
+		Material *transblue = renderer->createMaterial(Renderer::PR_TRANSPARENT);
+		transblue->setDiffuse(0,0,1,1);
+		transblue->setBlending(Material::BLEND_ADD);
+		transblue->setSortedDraw(true, false);
+		for (int i=0; i<10; i++)
+		{
+			GameObject *particle = new GameObject(this);
+			particle->setMesh(new Sphere(0.5,16));
+			particle->setMaterial(transblue);
+			ParticleBehaviour *behaviour = new ParticleBehaviour(particleSysBubbles, 1.0, 1.0);
+			particle->addComponent(behaviour);
+			behaviour->setPositionRange(4.0, 0.0, 4.0);
+			behaviour->setDirection(0.0*Math::DEG2RAD, 90.0*Math::DEG2RAD, 5.0*Math::DEG2RAD);
+			behaviour->setStartVelocity(8.0, 12.0);
+			behaviour->setAlphaFade(0.3, 0.1);
+			particle->getTransform()->setParent(root);
+			particle->getTransform()->name = "particle";
+			particleSysBubbles->addParticle(behaviour, false);
+		}
+
 		
 		cube->addComponent(new LookAtBehaviour(sphere2->getTransform()));
 
@@ -251,43 +270,30 @@ namespace T3D{
 		sphere->getTransform()->setParent(root);
 		sphere->getTransform()->name = "Sphere";
 
-		cout << "creating particle system\n";
-
+		cout << "creating particle system (simple sparkler fireworks)\n";
+		Texture *sparkletex = new Texture("Resources/sparkle.png", true, true);
+		renderer->loadTexture(sparkletex);
+		Material *sparklemat = renderer->createMaterial(Renderer::PR_TRANSPARENT);
+		sparklemat->setEmissive(1, 1, 1, 1);
+		sparklemat->setBlending(Material::BLEND_DEFAULT);
+		sparklemat->setSortedDraw(true, false);
+		sparklemat->setTexture(sparkletex);
 		GameObject *particles = new GameObject(this);
-		ParticleEmitter *particleSys = new ParticleEmitter(10.0f, 0.1f, 10.0f, 5.0f, 10.0f, 100.0f, 0.2f);
-		particles->setMesh(new Cube(1));
+		//ParticleEmitter *particleSys = new ParticleEmitter(10.0f, 0.1f, 10.0f, 5.0f, 10.0f, 100.0f, 0.2f);
+		particles->setMesh(new Sphere(0.2,16));
 		particles->setMaterial(red);
-		particles->addComponent(particleSys);
-		particles->getTransform()->setLocalPosition(Vector3(1, 3, 3));
+		particles->getTransform()->setLocalPosition(Vector3(1, 1, 5));
 		particles->getTransform()->setParent(root);
 		particles->getTransform()->name = "Particle System";
-
-		particleSys->createBillboardParticles(20, 0.4, 1.6, flamemat, 2.0, root);
-		particleSys->setPositionRange(3);
-		particleSys->setVelocity(Vector3(0,2,0), Vector3(0.5,0.5,0.5));
-		particleSys->setAcceleration(Vector3(5,0,0), Vector3(3,0,0));
-		particleSys->emit(2);
-
-		// Manually add particles
-		/*for (int i=0; i<20; i++)
-		{
-			GameObject *particle = new GameObject(this);
-			Billboard *bbComponent = new Billboard(renderer->camera->gameObject->getTransform(),true);
-			particle->addComponent(bbComponent);
-			ParticleBehaviour *behaviour = new ParticleBehaviour(particleSys, 0.4, 1.6);
-			particle->addComponent(behaviour);
-			behaviour->setPositionRange(3);
-			behaviour->setVelocity(Vector3(0,2,0), Vector3(0.5,0.5,0.5));
-			behaviour->setAcceleration(Vector3(5,0,0), Vector3(3,0,0));
-
-			particle->setMaterial(flamemat);			// hello world
-			particle->getTransform()->setLocalScale(Vector3(2,2,2));
-			particle->getTransform()->setParent(root);
-			particle->getTransform()->name = "partice";
-
-			particleSys->addParticle(behaviour, false);
-		}
-		*/
+		ParticleEmitter *particleSys = new ParticleEmitter(0.0f, 20.0f, 20.0f, 20.0f, 5.0f, 5.0f, 0.2f);
+		particles->addComponent(particleSys);
+		particleSys->createBillboardParticles(100, 1.0, 1.0, sparklemat, 1.0, root);
+		particleSys->setPositionRange(0.01, 0.01, 0.01);
+		particleSys->setDirection(0*Math::DEG2RAD, 0.0*Math::DEG2RAD, 180*Math::DEG2RAD);
+		particleSys->setStartVelocity(20.0, 20.0);
+		particleSys->setAcceleration(-30.0, 1.0);
+		particleSys->setAlphaFade(1.0, 0.0);
+		particleSys->emit(40);
 
 				// simple flat plane for texture demo
 		/*GameObject *plane = new GameObject(this);
