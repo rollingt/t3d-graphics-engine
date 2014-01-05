@@ -112,6 +112,7 @@ namespace T3D
 
 			Billboard *bbComponent = new Billboard(cameraTransform, true);
 			particle->addComponent(bbComponent);
+			
 			ParticleBehaviour *behaviour = new ParticleBehaviour(this, lifeSpanMin, lifeSpanMax);
 			particle->addComponent(behaviour);
 
@@ -126,56 +127,74 @@ namespace T3D
 	}
 
 	/*! setPositionRange
-	  set initial maximum random distance for particles from emitter
-	  \param distance		maximum initial distance from particle emitter
+	  set initial maximum random distance for all particles from emitter
+	  \param dx		maximum initial distance from particle emitter in X axis (+/-)
+	  \param dy		maximum initial distance from particle emitter in Y axis (+/-)
+	  \param dz		maximum initial distance from particle emitter in Z axis (+/-)
 	  */
-	void ParticleEmitter::setPositionRange(float distance)
+	void ParticleEmitter::setPositionRange(float dx, float dy, float dz)
 	{
 		for (int i=0; i<particles.size(); i++)
 		{
-			particles[i]->setPositionRange(distance);
+			particles[i]->setPositionRange(dx, dy, dz);
 		}
 	}
 
-
-	/*! setVelocity
-	  Sets base velocity and random variation for particle motion
-	  \param velocity		base veolcity vector (added to position per second) 
-	  \param variance		+/- random variation applied to velocity
+	/*! setDirection
+	  Sets base direction of motion and random variance for particles
+	  Assumes bases direction is along +ve x axis
+	  \param theta_y	rotation around y axis
+	  \param theta_z	rotation around z axis
+	  \param variance	+/- random variation applied to angles
 	  */
-	void ParticleEmitter::setVelocity(Vector3 velocity, Vector3 variance)
+	void ParticleEmitter::setDirection(float theta_y, float theta_z, float variance)
 	{
 		for (int i=0; i<particles.size(); i++)
 		{
-			particles[i]->setVelocity(velocity, variance);
+			particles[i]->setDirection(theta_y, theta_z, variance);
+		}
+	}
+
+	/*! setStartVelocity
+	  Sets startup seed range for all particles
+	  \param min		min start speed (units per second)
+	  \param max		max start speed
+	  */
+	void ParticleEmitter::setStartVelocity(float min, float max)
+	{
+		for (int i=0; i<particles.size(); i++)
+		{
+			particles[i]->setStartVelocity(min, max);
 		}
 	}
 
 	/*! setAcceleration
-	  Sets acceleration vector and random variance for particles
-	  \param accel		base acceleration (added to velocity per second)
-	  \param variance	random variance in direction of acceleration (+/-)
+	  Sets particles acceleration and min or max speed for all particles
+	  \param acceleration	particle acceleration (units per second per second)
+	  \param speedMinax		min speed if -ve acceleration otherwise max speed
 	  */
-	void ParticleEmitter::setAcceleration(Vector3 accel, Vector3 variance)
+	void ParticleEmitter::setAcceleration(float acceleration, float speedMinMax)
 	{
 		for (int i=0; i<particles.size(); i++)
 		{
-			particles[i]->setAcceleration(accel, variance);
+			particles[i]->setAcceleration(acceleration, speedMinMax);
 		}
 	}
 
-	/*! setSpeedLimits
-	  Sets minimum and maximum speed for particles
-	  \param min		minimum speed 
-	  \param max		maximum speed
+	/*! setAlphaFade
+	  Sets alpha blending (fade) gradient from start to end
+	  of article lifecycle for all particles.
+	  \param start		start alpha value (1.0 opaque, 0.0 invisible) 
+	  \param max		end alpha value
 	  */
-	void ParticleEmitter::setSpeedLimits(float min, float max)
+	void ParticleEmitter::setAlphaFade(float start, float end)
 	{
 		for (int i=0; i<particles.size(); i++)
 		{
-			particles[i]->setSpeedLimits(min, max);
+			particles[i]->setAlphaFade(start, end);
 		}
 	}
+
 
 	/*! stop
 	  Stop particle system (moves elapsed time to full duration)
