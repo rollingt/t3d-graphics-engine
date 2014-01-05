@@ -277,12 +277,31 @@ namespace T3D
 
 	void GLRenderer::draw(GameObject* object){
 		Mesh *mesh = object->getMesh();
-		if (mesh != NULL){	
+		if (mesh != NULL){
+
+			float *matdiffuse = NULL;
+			if (object->getAlpha() < 1.0)
+			{
+				// object override of material alpha
+				float diffuse[4] = { 1.0, 1.0, 1.0, object->getAlpha() };
+				if (object->getMaterial() != NULL) {
+					matdiffuse = object->getMaterial()->getDiffuse();
+					diffuse[0] = matdiffuse[0];
+					diffuse[1] = matdiffuse[1];
+					diffuse[2] = matdiffuse[2];
+				}
+				glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, diffuse);
+			}
+
 			glMatrixMode(GL_MODELVIEW);
 			glPushMatrix();
 			glMultTransposeMatrixf((object->getTransform()->getWorldMatrix()).getData());
 			drawMesh(mesh);
 			glPopMatrix();
+
+			if (matdiffuse != NULL)
+				glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, matdiffuse);	// restore material diffuse after alpha override
+
 		}
 	}
 	

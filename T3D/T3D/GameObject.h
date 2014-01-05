@@ -51,6 +51,9 @@ namespace T3D
 		void setVisible(bool visible) { this->visible = visible; }
 		bool isVisible() { return visible; }
 
+		void setAlpha(float alpha) { this->alpha = alpha; }		// 
+		float getAlpha() { return alpha; }
+
 	protected:
 		T3DApplication *app;
 		Transform* transform;
@@ -58,6 +61,7 @@ namespace T3D
 		Light* light;
 		Material* material;
 		Mesh* mesh;
+		float alpha;			// override material alpha if < 1.0
 
 	private:		
 		std::vector<Component*> components;

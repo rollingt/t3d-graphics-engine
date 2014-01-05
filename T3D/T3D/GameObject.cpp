@@ -20,6 +20,7 @@ namespace T3D
 		material = NULL;
 		light = NULL;
 		visible = true;
+		alpha = 1.0f;
 	}
 
 	/*! Destructor
