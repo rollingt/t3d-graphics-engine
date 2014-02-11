@@ -49,12 +49,15 @@
     <Filter Include="Source Files\Mesh\Component">
       <UniqueIdentifier>{73f845b3-1acf-4de5-aed2-13af01528cd4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Tasks">
+      <UniqueIdentifier>{5e783bde-d7ec-4cb3-bd3d-465e0dc44dfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tasks">
+      <UniqueIdentifier>{19a1c4ef-eaf6-469f-8088-8505230f6ed6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="T3DTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
@@ -132,16 +135,10 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="PerfLogTask.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="T3DApplication.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Task.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="WinGLApplication.cpp">
@@ -162,9 +159,6 @@
     <ClCompile Include="FontCache.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="DiagMessageTask.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
@@ -174,11 +168,26 @@
     <ClCompile Include="ParticleBehaviour.cpp">
       <Filter>Source Files\Mesh\Component</Filter>
     </ClCompile>
+    <ClCompile Include="DiagMessageTask.cpp">
+      <Filter>Source Files\Tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="PerfLogTask.cpp">
+      <Filter>Source Files\Tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="Task.cpp">
+      <Filter>Source Files\Tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawTask.cpp">
+      <Filter>Source Files\Tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="T3DTest.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Tutorial1.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="T3DTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Header Files\Mesh</Filter>
     </ClInclude>
@@ -260,12 +269,6 @@
     <ClInclude Include="WinGLApplication.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="Task.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="PerfLogTask.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
@@ -293,9 +296,6 @@
     <ClInclude Include="FontCache.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="DiagMessageTask.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
@@ -304,6 +304,24 @@
     </ClInclude>
     <ClInclude Include="ParticleBehaviour.h">
       <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawTask.h">
+      <Filter>Header Files\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="T3DTest.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Tutorial1.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="DiagMessageTask.h">
+      <Filter>Header Files\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="PerfLogTask.h">
+      <Filter>Header Files\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="Task.h">
+      <Filter>Header Files\Tasks</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

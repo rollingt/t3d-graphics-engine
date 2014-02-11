@@ -92,7 +92,10 @@ namespace T3D
 		std::vector<Material*>::iterator mit;
 
 		// Single common camera for all rendering
-		cameraPos = camera->gameObject->getTransform()->getWorldPosition();
+		if (camera)
+			cameraPos = camera->gameObject->getTransform()->getWorldPosition();
+		else
+			cameraPos = Vector3(0,0,0);
 
 		buildRenderQueue(root);
 
