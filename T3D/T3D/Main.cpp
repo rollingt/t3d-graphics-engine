@@ -10,14 +10,14 @@
 
 #include "T3DTest.h"
 #include "Tutorial1.h"
-//#include "ShaderTest.h"
+#include "ShaderTest.h"
 
 using namespace T3D;
 
 int main(int argc, char* argv[]){
-	//T3DApplication *theApp = new ShaderTest();
+	T3DApplication *theApp = new ShaderTest();
 	//T3DApplication *theApp = new T3DTest();
-	T3DApplication *theApp = new Tutorial1();
+	//T3DApplication *theApp = new Tutorial1();
 	theApp->run();
 	delete theApp;
 

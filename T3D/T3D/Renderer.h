@@ -65,6 +65,7 @@ namespace T3D
 	private:	
 		virtual void buildRenderQueue(Transform *root);
 		virtual void loadMaterial(Material *mat) = 0;
+		virtual void unloadMaterial(Material *mat) = 0;
 
 		virtual void drawMesh(Mesh *mesh) = 0;
 		virtual void drawSkybox() = 0;

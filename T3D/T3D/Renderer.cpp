@@ -118,6 +118,7 @@ namespace T3D
 						}
 						q.pop();
 					}
+					unloadMaterial(*mit);
 				}
 				else {
 					// objects to be sorted and drawn later
