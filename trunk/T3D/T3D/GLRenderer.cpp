@@ -19,6 +19,7 @@
 #include "GLRenderer.h"
 #include "GameObject.h"
 #include "Camera.h"
+#include "Shader.h"
 
 namespace T3D
 {
@@ -222,7 +223,6 @@ namespace T3D
 	}
 
 	void GLRenderer::loadMaterial(Material* mat){
-
 		if (mat != NULL){
 			glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat->getDiffuse());
 			glMaterialfv(GL_FRONT, GL_SPECULAR, mat->getSpecular());
@@ -271,6 +271,20 @@ namespace T3D
 			}
 			else {
 				glDisable(GL_TEXTURE_2D);
+			}
+
+			Shader *shader = mat->getShader();
+			if (shader) {
+				shader->bindShader();
+			}
+		}	
+	}
+
+	void GLRenderer::unloadMaterial(Material* mat){
+		if (mat != NULL){
+			Shader *shader = mat->getShader();
+			if (shader) {
+				shader->unbindShader();
 			}
 		}	
 	}

@@ -14,6 +14,7 @@
 #include <vector>
 #include <queue>
 #include "Texture.h"
+#include "Shader.h"
 
 namespace T3D
 {
@@ -48,6 +49,9 @@ namespace T3D
 		void setTextureScale(float s){ textureScale = s; }
 		float getTextureScale(){ return textureScale; }
 
+		void setShader(Shader* s){ shader = s; }
+		Shader* getShader(){ return shader; }
+
 		void addToQueue(GameObject* gameObject){ renderQueue.push(gameObject); }
 		std::queue<GameObject*> &getQueue(){ return renderQueue; }
 
@@ -72,6 +76,8 @@ namespace T3D
 		bool textured;
 		Texture *texture;
 		float textureScale;
+
+		Shader *shader;
 
 		bool smooth;			// or flat shading
 		blendMode blending;		// basic pixel blending

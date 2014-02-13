@@ -12,6 +12,8 @@ namespace T3D{
 		texture = NULL;
 		textureScale = 1.0;
 
+		shader = NULL;
+
 		smooth = true;
 
 		sortedDraw = false;

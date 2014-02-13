@@ -17,7 +17,6 @@
 #include <list>
 #include "renderer.h"
 
-
 namespace T3D
 {
 	// Entry for simple display of text on screen. This is intended for diagnostic type display only
@@ -43,7 +42,6 @@ namespace T3D
 		void setCamera(Camera *cam);
 
 		void draw(GameObject* object);
-		void loadMaterial(Material* mat);
 		
 		void loadTexture(Texture *tex, bool repeat = false);
 		void reloadTexture(Texture *tex);
@@ -55,6 +53,9 @@ namespace T3D
 		void remove2DOverlay(Texture *texture);					// remove overlay
 
 	private:
+		void loadMaterial(Material* mat);
+		void unloadMaterial(Material* mat);
+
 		GLint GLRenderer::getTextureFormat(Texture *tex);
 
 		void drawMesh(Mesh *mesh);

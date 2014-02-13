@@ -24,6 +24,7 @@
     <ClCompile Include="FontCache.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
+    <ClCompile Include="GLShader.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -42,6 +43,8 @@
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RotateBehaviour.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderTest.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Sweep.cpp" />
     <ClCompile Include="SweepPath.cpp" />
@@ -69,6 +72,7 @@
     <ClInclude Include="FontCache.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GLRenderer.h" />
+    <ClInclude Include="GLShader.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="Light.h" />
@@ -86,6 +90,8 @@
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RotateBehaviour.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderTest.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Sweep.h" />
