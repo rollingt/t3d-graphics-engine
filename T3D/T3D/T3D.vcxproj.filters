@@ -46,14 +46,14 @@
     <Filter Include="Header Files\Material">
       <UniqueIdentifier>{d2998715-22ea-4f17-9293-065dd4825a15}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Mesh\Component">
-      <UniqueIdentifier>{73f845b3-1acf-4de5-aed2-13af01528cd4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Tasks">
       <UniqueIdentifier>{5e783bde-d7ec-4cb3-bd3d-465e0dc44dfb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Tasks">
       <UniqueIdentifier>{19a1c4ef-eaf6-469f-8088-8505230f6ed6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component">
+      <UniqueIdentifier>{73f845b3-1acf-4de5-aed2-13af01528cd4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -73,34 +73,34 @@
       <Filter>Source Files\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="KeyboardController.cpp">
-      <Filter>Source Files\Mesh\Component</Filter>
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="LookAtBehaviour.cpp">
-      <Filter>Source Files\Mesh\Component</Filter>
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="Animation.cpp">
-      <Filter>Source Files\Mesh\Component</Filter>
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="TerrainFollower.cpp">
-      <Filter>Source Files\Mesh\Component</Filter>
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="RotateBehaviour.cpp">
-      <Filter>Source Files\Mesh\Component</Filter>
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="Terrain.cpp">
-      <Filter>Source Files\Mesh\Component</Filter>
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
-      <Filter>Source Files\Mesh\Component</Filter>
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Mesh\Component</Filter>
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
-      <Filter>Source Files\Mesh\Component</Filter>
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="Billboard.cpp">
-      <Filter>Source Files\Mesh\Component</Filter>
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="Math.cpp">
       <Filter>Source Files\Math</Filter>
@@ -163,10 +163,10 @@
       <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="ParticleEmitter.cpp">
-      <Filter>Source Files\Mesh\Component</Filter>
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="ParticleBehaviour.cpp">
-      <Filter>Source Files\Mesh\Component</Filter>
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="DiagMessageTask.cpp">
       <Filter>Source Files\Tasks</Filter>
@@ -193,6 +193,12 @@
       <Filter>Source Files\Material</Filter>
     </ClCompile>
     <ClCompile Include="ShaderTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundTestTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -299,9 +305,6 @@
     <ClInclude Include="Texture.h">
       <Filter>Header Files\Material</Filter>
     </ClInclude>
-    <ClInclude Include="SoundManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FontCache.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
@@ -340,6 +343,12 @@
     </ClInclude>
     <ClInclude Include="ShaderTest.h">
       <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundTestTask.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

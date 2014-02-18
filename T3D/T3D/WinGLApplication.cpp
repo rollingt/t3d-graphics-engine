@@ -13,6 +13,7 @@
 #include <GL/GL.h>
 #include <GL/GLU.h>
 #include <sdl\SDL_ttf.h>
+#include <sdl/SDL_mixer.h>
 
 #include "WinGLApplication.h"
 #include "GLRenderer.h"
@@ -50,6 +51,12 @@ namespace T3D
 		cout << "init\n";
 		if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 			return false;
+		}
+		
+		//Initialize SDL_mixer
+		if( Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
+		{
+			return false;    
 		}
 
 		SDL_GL_SetAttribute(SDL_GL_RED_SIZE,            8);
