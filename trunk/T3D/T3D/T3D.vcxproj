@@ -35,6 +35,7 @@
     <ClCompile Include="Matrix3x3.cpp" />
     <ClCompile Include="Matrix4x4.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Music.cpp" />
     <ClCompile Include="ParticleBehaviour.cpp" />
     <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="PerfLogTask.cpp" />
@@ -84,6 +85,7 @@
     <ClInclude Include="Matrix3x3.h" />
     <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Music.h" />
     <ClInclude Include="ParticleBehaviour.h" />
     <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="PerfLogTask.h" />
@@ -144,6 +146,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>..\Include;$(IncludePath)</IncludePath>
     <LibraryPath>..\Lib;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
