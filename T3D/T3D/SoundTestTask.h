@@ -1,6 +1,7 @@
 #pragma once
 #include "task.h"
 #include "Sound.h"
+#include "Music.h"
 
 namespace T3D{
 
@@ -14,6 +15,7 @@ namespace T3D{
 		virtual void update(float dt);
 	private:
 		Sound *sound;
+		Music *music;
 	};
 
 }
