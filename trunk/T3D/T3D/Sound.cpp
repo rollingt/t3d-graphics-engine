@@ -2,20 +2,24 @@
 
 namespace T3D{
 
-	Sound::Sound(std::string filename)
+	Sound::Sound(SoundManager* sm) : soundManager(sm)
 	{
-		theSound = Mix_LoadWAV(filename.c_str());
+		channel = NULL;
+		volume = 0.01; 
 	}
 
 
 	Sound::~Sound(void)
 	{
-		if (theSound)
-			Mix_FreeChunk(theSound);
 	}
 
 	void Sound::play(){
-		Mix_PlayChannel(-1,theSound,0);
+		soundManager->system->playSound(FMOD_CHANNEL_FREE, theSound, true, &channel);
+		channel->setVolume(volume); 
+		channel->setPaused(false);
 	}
 
+	void Sound::setVolume(float v){
+		volume = v;
+	}
 }

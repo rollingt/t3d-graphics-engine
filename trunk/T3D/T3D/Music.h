@@ -1,24 +1,30 @@
 #pragma once
 
 #include <string>
-
-#include <sdl\SDL_mixer.h>
+#include "fmod/fmod.hpp"
+#include "SoundManager.h"
 
 namespace T3D{
 
 	class Music
 	{
+	friend class SoundManager;
 	public:
-		Music(std::string filename);
+		Music(SoundManager* sm);
 		~Music(void);
 
-		void play();
+		void play();	
 		void pause();
 		void stop();
+		void setVolume(float v);	
+		bool isPlaying();
 
 	private:
-		Mix_Music *theMusic;
-	};
+		SoundManager* soundManager;
+		FMOD::Sound *theMusic;
+		FMOD::Channel *channel;
 
+		float volume;
+	};
 }
 

@@ -1,47 +1,58 @@
-#include <iostream>
-#include <string>
 #include "Music.h"
 
 namespace T3D{
 
-	Music::Music(std::string filename)
+	Music::Music(SoundManager* sm) : soundManager(sm)
 	{
-		theMusic = Mix_LoadMUS(filename.c_str());
-		if (!theMusic)
-			std::cout<<"Problem loading music: " << Mix_GetError() << "\n";
+		channel = NULL;
+
+		volume = 1.0;
 	}
 
 
 	Music::~Music(void)
 	{
-		if (theMusic)
-			Mix_FreeMusic(theMusic);
 	}
-	
-	void Music::play(){ 
-        if( Mix_PlayingMusic() == 0 )
-        {
-            Mix_PlayMusic(theMusic, -1 );
-        }
-        else
-        {
-            if( Mix_PausedMusic() == 1 )
-            {
-                Mix_ResumeMusic();
-            }
-        }
+
+	void Music::play(){
+		if (channel){			
+            channel->setPaused(false);
+		} else {
+			soundManager->system->playSound(FMOD_CHANNEL_FREE, theMusic, true, &channel);
+			channel->setVolume(volume);
+			channel->setPaused(false);
+		}
+	}
+
+	void Music::setVolume(float v){		
+		volume = v;
+
+		if (channel){
+			channel->setVolume(volume);
+		}
 	}
 
 	void Music::pause(){
-		if( Mix_PlayingMusic() == 1 )
-        {
-            Mix_PauseMusic();
-        }
+		if (channel) {
+            channel->setPaused(true);
+		}
+	}
+	
+	void Music::stop(){		
+		if (channel) {
+			channel->stop();
+			channel = NULL;
+		}
 	}
 
-	void Music::stop(){
-		Mix_HaltMusic();
+	bool Music::isPlaying(){
+		if (channel){
+			bool paused;
+			channel->getPaused(&paused);
+			return !paused;
+		} else {
+			return false;
+		}
 	}
-
 
 }

@@ -13,7 +13,6 @@
 #include <GL/GL.h>
 #include <GL/GLU.h>
 #include <sdl\SDL_ttf.h>
-#include <sdl/SDL_mixer.h>
 
 #include "WinGLApplication.h"
 #include "GLRenderer.h"
@@ -24,6 +23,7 @@
 #include "Input.h"
 #include "PerfLogTask.h"
 #include "DiagMessageTask.h"
+#include "SoundManager.h"
 
 
 
@@ -54,10 +54,7 @@ namespace T3D
 		}
 		
 		//Initialize SDL_mixer
-		if( Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
-		{
-			return false;    
-		}
+		soundManager->init();
 
 		SDL_GL_SetAttribute(SDL_GL_RED_SIZE,            8);
 		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,          8);
@@ -110,6 +107,8 @@ namespace T3D
 		SDL_Event sdlEvent;
 		lastFrame = SDL_GetTicks()/1000.0f;
 		while(running) {
+			soundManager->update();
+
 			float thisFrame = SDL_GetTicks()/1000.0f;
 			dt = thisFrame-lastFrame;
 			lastFrame = thisFrame;

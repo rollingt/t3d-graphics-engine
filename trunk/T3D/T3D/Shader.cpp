@@ -6,7 +6,7 @@ namespace T3D{
 
 	Shader::Shader(std::string vertFilename, std::string fragFilename)
 	{
-		std::cout << "Loading shader source...\n";
+		//std::cout << "Loading shader source...\n";
 		std::ifstream vertfile(vertFilename);
 		std::ifstream fragfile(fragFilename);
 		

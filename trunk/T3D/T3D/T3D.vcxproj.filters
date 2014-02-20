@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Mesh">
-      <UniqueIdentifier>{7d459226-63eb-417d-9d76-8d891c290d6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Mesh">
-      <UniqueIdentifier>{f2153dbe-1717-47e9-a98d-c925ac13ed4a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Component">
       <UniqueIdentifier>{7583d0e7-e247-454e-a2ef-dcbc3d46c6e8}</UniqueIdentifier>
     </Filter>
@@ -55,22 +49,34 @@
     <Filter Include="Source Files\Component">
       <UniqueIdentifier>{73f845b3-1acf-4de5-aed2-13af01528cd4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Miscellaneous">
+      <UniqueIdentifier>{0adb4e63-6a29-4564-820f-01a0c4beeb3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Component\Mesh">
+      <UniqueIdentifier>{f2153dbe-1717-47e9-a98d-c925ac13ed4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Mesh">
+      <UniqueIdentifier>{7d459226-63eb-417d-9d76-8d891c290d6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Miscellaneous">
+      <UniqueIdentifier>{4d94b0f6-3db6-4a1b-8006-c3a30eef95fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
-      <Filter>Source Files\Mesh</Filter>
+      <Filter>Source Files\Component\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Mesh</Filter>
+      <Filter>Source Files\Component\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Cube.cpp">
-      <Filter>Source Files\Mesh</Filter>
+      <Filter>Source Files\Component\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="PlaneMesh.cpp">
-      <Filter>Source Files\Mesh</Filter>
+      <Filter>Source Files\Component\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="KeyboardController.cpp">
       <Filter>Source Files\Component</Filter>
@@ -132,9 +138,6 @@
     <ClCompile Include="GLRenderer.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
@@ -145,22 +148,16 @@
       <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="Sweep.cpp">
-      <Filter>Source Files\Mesh</Filter>
+      <Filter>Source Files\Component\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="SweepPath.cpp">
-      <Filter>Source Files\Mesh</Filter>
+      <Filter>Source Files\Component\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Source Files\Material</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="FontCache.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Font.cpp">
-      <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="ParticleEmitter.cpp">
       <Filter>Source Files\Component</Filter>
@@ -192,13 +189,25 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files\Material</Filter>
     </ClCompile>
+    <ClCompile Include="SoundTestTask.cpp">
+      <Filter>Source Files\Tasks</Filter>
+    </ClCompile>
     <ClCompile Include="ShaderTest.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="Sound.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Miscellaneous</Filter>
     </ClCompile>
-    <ClCompile Include="SoundTestTask.cpp">
+    <ClCompile Include="Font.cpp">
+      <Filter>Source Files\Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="FontCache.cpp">
+      <Filter>Source Files\Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source Files\Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Music.cpp">
@@ -207,16 +216,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mesh.h">
-      <Filter>Header Files\Mesh</Filter>
+      <Filter>Header Files\Component\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Sphere.h">
-      <Filter>Header Files\Mesh</Filter>
+      <Filter>Header Files\Component\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Cube.h">
-      <Filter>Header Files\Mesh</Filter>
+      <Filter>Header Files\Component\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="PlaneMesh.h">
-      <Filter>Header Files\Mesh</Filter>
+      <Filter>Header Files\Component\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Header Files\Component</Filter>
@@ -287,9 +296,6 @@
     <ClInclude Include="WinGLApplication.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
@@ -297,22 +303,16 @@
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Sweep.h">
-      <Filter>Header Files\Mesh</Filter>
+      <Filter>Header Files\Component\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="SweepPath.h">
-      <Filter>Header Files\Mesh</Filter>
+      <Filter>Header Files\Component\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Header Files\Material</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Header Files\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="FontCache.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Font.h">
-      <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="ParticleEmitter.h">
       <Filter>Header Files\Component</Filter>
@@ -347,10 +347,22 @@
     <ClInclude Include="ShaderTest.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="Sound.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SoundTestTask.h">
+      <Filter>Header Files\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Header Files\Miscellaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Header Files\Miscellaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="FontCache.h">
+      <Filter>Header Files\Miscellaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Header Files\Miscellaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Music.h">

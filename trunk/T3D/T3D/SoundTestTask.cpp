@@ -5,8 +5,8 @@ namespace T3D{
 
 	SoundTestTask::SoundTestTask(T3DApplication *app) : Task(app)
 	{
-		sound = new Sound("resources/beep.wav");
-		music = new Music("resources/example.ogg");
+		music = app->soundManager->createMusic("Resources/oddity.mp3");
+		sound = app->soundManager->createSound("Resources/beep.wav");
 	}
 
 
@@ -19,7 +19,11 @@ namespace T3D{
 			sound->play();
 		}
 		if (Input::keyDown[KEY_P]){
-			music->play();
+			if (music->isPlaying()){
+				music->pause();
+			} else {
+				music->play();
+			}
 		}
 	}
 
