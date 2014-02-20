@@ -17,9 +17,9 @@ namespace T3D{
 	}
 
 	void GLShader::compileShader(){
-		std::cout << "Compiling shader...\n";
-		std::cout << vertSource << "\n\n";
-		std::cout << fragSource << "\n\n";
+		//std::cout << "Compiling shader...\n";
+		//std::cout << vertSource << "\n\n";
+		//std::cout << fragSource << "\n\n";
 
 		vertID = glCreateShader(GL_VERTEX_SHADER);
 		fragID = glCreateShader(GL_FRAGMENT_SHADER);
@@ -45,14 +45,14 @@ namespace T3D{
 			glGetShaderInfoLog(vertID,length,&length,log);
 			std::cout<<log<<"\n";
 		} else {
-			std::cout << "Vertex program "<< vertID << " compiled successfully\n";
+			//std::cout << "Vertex program "<< vertID << " compiled successfully\n";
 		}
 		glCompileShader(fragID);
 		glGetShaderiv(fragID, GL_COMPILE_STATUS, &result);
 		if (result!=GL_TRUE){
 			std::cout << "Fragment program "<< fragID << " did not compile...\n";
 		} else {
-			std::cout << "Fragment program "<< fragID << " compiled successfully\n";
+			//std::cout << "Fragment program "<< fragID << " compiled successfully\n";
 		}
 
 		//Check for compile errors (TODO)
@@ -67,7 +67,7 @@ namespace T3D{
 		if (result!=GL_TRUE){
 			std::cout << "Error linking shader...\n";
 		} else {
-			std::cout << "Shader program "<< id << " linked successfully\n";
+			//std::cout << "Shader program "<< id << " linked successfully\n";
 		}
 
 		//Check for link errors (TODO)
