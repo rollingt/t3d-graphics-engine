@@ -1,3 +1,14 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// Billboard.cpp
+//
+// A billboard component.  Creates a plane mesh and adds it to the game object.  
+// Update method supports spherical and cylindrical billboarding to face the plane towards the camera
+
 #ifndef BILLBOARD_H
 #define BILLBOARD_H
 

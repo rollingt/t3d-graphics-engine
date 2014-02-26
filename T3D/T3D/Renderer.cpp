@@ -31,9 +31,9 @@ namespace T3D
 		fogColour[1] = 0;
 		fogColour[2] = 0;
 		fogColour[3] = 1;
-		ambient[0] = 0.1;
-		ambient[1] = 0.1;
-		ambient[2] = 0.1;
+		ambient[0] = 0.1f;
+		ambient[1] = 0.1f;
+		ambient[2] = 0.1f;
 		ambient[3] = 1;
 
 		showWireframe = false;
@@ -162,7 +162,7 @@ namespace T3D
 
 		if(!root->children.empty())
 		{
-			for(int i = 0; i < root->children.size(); ++i)
+			for(unsigned int i = 0; i < root->children.size(); ++i)
 			{
 				if(NULL != root->children[i])
 				{

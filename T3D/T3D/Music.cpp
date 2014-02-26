@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// Music.cpp
+//
+// Simple class used for streaming large sound files.  Uses FMod: www.fmod.org
+
 #include "Music.h"
 
 namespace T3D{

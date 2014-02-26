@@ -57,7 +57,7 @@ namespace T3D
 	  */
 	ParticleEmitter::~ParticleEmitter()
 	{
-		for (int i=0; i<particles.size(); i++)
+		for (unsigned int i=0; i<particles.size(); i++)
 		{
 			// NOTE: delete gameObjects by deleting their Transform
 			delete particles[i]->gameObject->getTransform();		
@@ -134,7 +134,7 @@ namespace T3D
 	  */
 	void ParticleEmitter::setPositionRange(float dx, float dy, float dz)
 	{
-		for (int i=0; i<particles.size(); i++)
+		for (unsigned int i=0; i<particles.size(); i++)
 		{
 			particles[i]->setPositionRange(dx, dy, dz);
 		}
@@ -149,7 +149,7 @@ namespace T3D
 	  */
 	void ParticleEmitter::setDirection(float theta_y, float theta_z, float variance)
 	{
-		for (int i=0; i<particles.size(); i++)
+		for (unsigned int i=0; i<particles.size(); i++)
 		{
 			particles[i]->setDirection(theta_y, theta_z, variance);
 		}
@@ -162,7 +162,7 @@ namespace T3D
 	  */
 	void ParticleEmitter::setStartVelocity(float min, float max)
 	{
-		for (int i=0; i<particles.size(); i++)
+		for (unsigned int i=0; i<particles.size(); i++)
 		{
 			particles[i]->setStartVelocity(min, max);
 		}
@@ -175,7 +175,7 @@ namespace T3D
 	  */
 	void ParticleEmitter::setAcceleration(float acceleration, float speedMinMax)
 	{
-		for (int i=0; i<particles.size(); i++)
+		for (unsigned int i=0; i<particles.size(); i++)
 		{
 			particles[i]->setAcceleration(acceleration, speedMinMax);
 		}
@@ -189,7 +189,7 @@ namespace T3D
 	  */
 	void ParticleEmitter::setAlphaFade(float start, float end)
 	{
-		for (int i=0; i<particles.size(); i++)
+		for (unsigned int i=0; i<particles.size(); i++)
 		{
 			particles[i]->setAlphaFade(start, end);
 		}
@@ -206,7 +206,7 @@ namespace T3D
 
 		if (clear)
 		{
-			for (int i=0; i<particles.size(); i++)
+			for (unsigned int i=0; i<particles.size(); i++)
 			{
 				// stop any active particles
 				if (!particles[i]->isActive())

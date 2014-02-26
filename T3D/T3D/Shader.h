@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// Shader.h
+//
+// Abstract bass class for shaders
+
 #pragma once
 
 #include <string>

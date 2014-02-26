@@ -4,28 +4,23 @@
 //
 // Author: Robert Ollington
 //
-// SoundTestTask.h
+// GLTestRenderer.cpp
 //
-// Class to manage test the sound system
+// A dummy renderer that ignores the scene entirely.  Intended to be used as an OpenGL snadbox.
 
 #pragma once
-#include "task.h"
-#include "Sound.h"
-#include "Music.h"
+#include "glrenderer.h"
 
 namespace T3D{
 
-	class SoundTestTask :
-		public Task
+	class GLTestRenderer :
+		public GLRenderer
 	{
 	public:
-		SoundTestTask(T3DApplication *app);
-		~SoundTestTask(void);
-		
-		virtual void update(float dt);
-	private:
-		Sound *sound;
-		Music *music;
+		GLTestRenderer(void);
+		~GLTestRenderer(void);
+
+		virtual void render(Transform *root);
 	};
 
 }

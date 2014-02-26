@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// Bone.h
+//
+// Bone class used for animation in conjunction with the Animation class
+
 #ifndef BONE_H
 #define BONE_H
 

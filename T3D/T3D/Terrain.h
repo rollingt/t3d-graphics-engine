@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// Terrain.h
+//
+// Component used for creating terrains - from an image file, or procedurally.
+
 #ifndef TERRAIN_H
 #define TERRAIN_H
 

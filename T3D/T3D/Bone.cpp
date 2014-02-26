@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// Bone.cpp
+//
+// Bone class used for animation in conjunction with the Animation class
+
 #include "bone.h"
 
 namespace T3D

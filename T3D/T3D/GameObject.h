@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// GameObject.h
+//
+// Class to manage all information relating to objects in the scene.  Includes link to Transform and all Components
+
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 

@@ -4,32 +4,24 @@
 //
 // Author: Robert Ollington
 //
-// Tutorial1.cpp
+// GLTestApplication.cpp
 //
-// Base application for tutorial 1.  Used in conjunction with DrawTask, a task for drawing onto a 2D texture.
+// A dummy application for running the GLTestRenderer (used as an OpenGL sandbox)
 
 #pragma once
 #include "winglapplication.h"
-#include "Texture.h"
-#include "DrawTask.h"
+
 
 namespace T3D{
 
-	class Tutorial1 :
+	class GLTestApplication :
 		public WinGLApplication
 	{
 	public:
-		Tutorial1(void);
-		~Tutorial1(void);
+		GLTestApplication(void);
+		~GLTestApplication(void);
 
 		bool init();
-
-
-	private:
-		Texture *drawArea;
-		DrawTask *drawTask;
-
 	};
 
 }
-

@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// SoundManager.cpp
+//
+// Simple class used for managing Sound and Music objects.  Uses FMod: www.fmod.org
+
 #include <iostream>
 
 #include "SoundManager.h"

@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// Sound.h
+//
+// Simple class used for playing short sound files.  Uses FMod: www.fmod.org
+
 #pragma once
 
 #include <string>

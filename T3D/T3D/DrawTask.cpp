@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// GameObject.cpp
+//
+// Simple task for drawing to and animating textures, used in tutorial 1 for practice implementing drawing routines
+
 #include <math.h>
 #include "DrawTask.h"
 

@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// TerrainFollower.h
+//
+// Simple behaviour for basic terrain following
+
 #ifndef TERRAINFOLLOWER_H
 #define TERRAINFOLLOWER_H
 

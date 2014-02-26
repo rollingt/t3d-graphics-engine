@@ -23,8 +23,8 @@ namespace T3D
 		
 		int vpos = 0;
 		int fpos = 0;
-		for (int i=0; i<path.size(); i++){
-			for(int j = 0; j < points.size(); j++)
+		for (unsigned int i=0; i<path.size(); i++){
+			for(unsigned int j = 0; j < points.size(); j++)
 			{
 				Vector3 v = path[i].transformPoint(points[j]);
 				setVertex(vpos++,v.x,v.y,v.z);

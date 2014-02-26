@@ -207,11 +207,17 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source Files\Miscellaneous</Filter>
     </ClCompile>
-    <ClCompile Include="SoundManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Music.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Source Files\Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="GLTestApplication.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="GLTestRenderer.cpp">
+      <Filter>Source Files\Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -362,11 +368,17 @@
     <ClInclude Include="Input.h">
       <Filter>Header Files\Miscellaneous</Filter>
     </ClInclude>
-    <ClInclude Include="SoundManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GLTestApplication.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="GLTestRenderer.h">
+      <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="Music.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Miscellaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Header Files\Miscellaneous</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

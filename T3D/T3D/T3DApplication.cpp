@@ -22,7 +22,7 @@ namespace T3D
 	T3DApplication::T3DApplication(void)
 	{
 		/* initialize random seed: */
-		srand (time(NULL));
+		srand((unsigned int)time(NULL));
 
 		root = NULL;
 		Input::init();
@@ -73,7 +73,7 @@ namespace T3D
 			t->gameObject->update(dt);
 		}
 
-		for(int i = 0; i < t->children.size(); ++i)
+		for(unsigned int i = 0; i < t->children.size(); ++i)
 		{
 			updateComponents(t->children[i]);
 		}

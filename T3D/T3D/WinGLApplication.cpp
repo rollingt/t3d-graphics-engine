@@ -35,7 +35,7 @@ namespace T3D
 		surf = NULL;
 		running = false;
 		renderer = new GLRenderer();		
-		root = new Transform();
+		root = new Transform(NULL,"Root");
 	}
 
 

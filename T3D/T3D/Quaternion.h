@@ -1,8 +1,12 @@
 // =========================================================================================
-// KXG363 - Advanced Games Programming, 2012
+// KXG363 - Advanced Games Programming
 // =========================================================================================
-
-
+//
+// Author: Robert Ollington
+//
+// Quaternion.h
+//
+// Quaternion class - all implementation is in the header
 
 #ifndef QUATERNION_H
 #define QUATERNION_H

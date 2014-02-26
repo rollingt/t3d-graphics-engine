@@ -47,9 +47,9 @@ namespace T3D
 			float rough = roughness * float(step)/float(size) * (high-low);
 			for (int x=0; x<size; x+=step){				
 				for (int y=0; y<size; y+=step){
-					data[x][y+step/2] = Math::clamp((data[x][y] + data[x][y+step])/2.0 + Math::randRange(-rough,rough),low,high);
-					data[x+step/2][y] = Math::clamp((data[x][y] + data[x+step][y])/2.0 + Math::randRange(-rough,rough),low,high);
-					data[x+step/2][y+step/2] = Math::clamp((data[x][y] + data[x][y+step] + data[x+step][y] + data[x+step][y+step])/4.0
+					data[x][y+step/2] = Math::clamp((data[x][y] + data[x][y+step])/2.0f + Math::randRange(-rough,rough),low,high);
+					data[x+step/2][y] = Math::clamp((data[x][y] + data[x+step][y])/2.0f + Math::randRange(-rough,rough),low,high);
+					data[x+step/2][y+step/2] = Math::clamp((data[x][y] + data[x][y+step] + data[x+step][y] + data[x+step][y+step])/4.0f
 						+ Math::randRange(-rough,rough),low,high);
 				}
 			}
@@ -62,10 +62,10 @@ namespace T3D
 				}
 			} else {
 				for (int x=0; x<size; x+=step){	
-					data[x+step/2][size] = Math::clamp((data[x][size] + data[x+step][size])/2.0 + Math::randRange(-rough,rough),low,high);
+					data[x+step/2][size] = Math::clamp((data[x][size] + data[x+step][size])/2.0f + Math::randRange(-rough,rough),low,high);
 				}
 				for (int y=0; y<size; y+=step){	
-					data[size][y+step/2] = Math::clamp((data[size][y] + data[size][y+step])/2.0 + Math::randRange(-rough,rough),low,high);
+					data[size][y+step/2] = Math::clamp((data[size][y] + data[size][y+step])/2.0f + Math::randRange(-rough,rough),low,high);
 				}
 			}
 			step = step/2;
