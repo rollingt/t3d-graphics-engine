@@ -39,7 +39,7 @@ namespace T3D
 
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);
 		
-		for(int i = 0; i < lights.size(); ++i)
+		for(unsigned int i = 0; i < lights.size(); ++i)
 		{
 			int lightid = GL_LIGHT0+i;
 			if (lights[i]->enabled){
@@ -92,7 +92,6 @@ namespace T3D
 				glEnable(GL_TEXTURE_2D);				
 				glDisable(GL_BLEND);
 				
-				float camAngle;
 				Vector3 camAxis;
 
 				//camera->gameObject->getTransform()->getQuaternion().toAngleAxis(camAngle,camAxis);
@@ -394,7 +393,7 @@ namespace T3D
 	}
 
 	// Helper function to get the GL texture format from a texture
-	GLint GLRenderer::getTextureFormat(Texture *tex){
+	int GLRenderer::getTextureFormat(Texture *tex){
 
 		GLenum texture_format;
 		GLint  nOfColors;

@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// RotateBehaviour.cpp
+//
+// Simple behaviour to rotate an object
+
 #include "rotatebehaviour.h"
 #include "GameObject.h"
 #include "Transform.h"

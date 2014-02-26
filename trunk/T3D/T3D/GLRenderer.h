@@ -56,7 +56,7 @@ namespace T3D
 		void loadMaterial(Material* mat);
 		void unloadMaterial(Material* mat);
 
-		GLint GLRenderer::getTextureFormat(Texture *tex);
+		int GLRenderer::getTextureFormat(Texture *tex);
 
 		void drawMesh(Mesh *mesh);
 		void drawSkybox();

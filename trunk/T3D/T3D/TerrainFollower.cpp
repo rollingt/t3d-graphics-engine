@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// TerrainFollower.cpp
+//
+// Simple behaviour for basic terrain following
+
 #include "TerrainFollower.h"
 #include "Transform.h"
 #include "GameObject.h"

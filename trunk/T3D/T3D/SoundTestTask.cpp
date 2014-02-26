@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// SoundTestTask.cpp
+//
+// Class to manage test the sound system
+
 #include "SoundTestTask.h"
 #include "Input.h"
 

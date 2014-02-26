@@ -40,7 +40,7 @@ namespace T3D
 
 	Transform::~Transform(void)
 	{
-		for(int i = 0; i < children.size(); ++i)
+		for(unsigned int i = 0; i < children.size(); ++i)
 		{
 			if(NULL != children[i])
 			{
@@ -92,7 +92,7 @@ namespace T3D
 
 		if(updateChildren && !children.empty())
 		{
-			for(int i = 0; i < children.size(); ++i)
+			for(unsigned int i = 0; i < children.size(); ++i)
 			{
 				if(NULL != children[i])
 				{
@@ -104,7 +104,7 @@ namespace T3D
 
 	void Transform::calcLocalMatrix(){
 		Matrix4x4 scaleRotate = Matrix4x4::IDENTITY;
-		scaleRotate = (scaleMatrix*rotationMatrix);
+		scaleRotate = (rotationMatrix*scaleMatrix);
 		localMatrix = translationMatrix*scaleRotate;
 		
 		needLocalUpdate = false;
@@ -116,7 +116,7 @@ namespace T3D
 			needWorldUpdate = true;
 			if(!children.empty())
 			{
-				for(int i = 0; i < children.size(); ++i)
+				for(unsigned int i = 0; i < children.size(); ++i)
 				{
 					if(NULL != children[i])
 					{
@@ -280,7 +280,7 @@ namespace T3D
 	{
 		if(NULL != c && !children.empty())
 		{
-			for(int i = 0; i < children.size(); ++i)
+			for(unsigned int i = 0; i < children.size(); ++i)
 			{
 				if(children[i] == c)
 				{
@@ -300,7 +300,7 @@ namespace T3D
 	{
 		if(!children.empty())
 		{
-			for(int i = 0; i < children.size(); ++i)
+			for(unsigned int i = 0; i < children.size(); ++i)
 			{
 				if(0 == n.compare(children[i]->name))
 				{
@@ -320,7 +320,7 @@ namespace T3D
 			std::cout << "processing " << current->name << "\n";
 			if(!current->children.empty())
 			{
-				for(int i = 0; i < current->children.size(); ++i)
+				for(unsigned int i = 0; i < current->children.size(); ++i)
 				{
 					q.push(current->children[i]);
 				}

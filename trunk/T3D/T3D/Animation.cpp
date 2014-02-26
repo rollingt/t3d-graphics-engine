@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// Animation.cpp
+//
+// A component for controlling skeletal animation.
+
 #include "animation.h"
 #include "GameObject.h"
 #include "Math.h"

@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// Texture.h
+//
+// Class for loading, storing and manipulating textures
+
 #ifndef TEXTURE_H
 #define TEXTURE_H
 

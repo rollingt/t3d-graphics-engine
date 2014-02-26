@@ -167,11 +167,9 @@ namespace T3D
 	  */
 	void ParticleBehaviour::update(float dt)
 	{
-		float *diffuse;
 		float alpha;
 		Vector3 position;
 		Vector3 velocity;
-		float vlength;
 
 		if (active)
 		{

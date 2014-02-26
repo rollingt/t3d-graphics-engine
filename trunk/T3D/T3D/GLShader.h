@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// GLShader.h
+//
+// Class for creating and compiling a GLSL shader
+
 #pragma once
 
 #include "shader.h"

@@ -22,7 +22,7 @@ namespace T3D
 	class WinGLApplication :
 		public T3DApplication
 	{
-	private:
+	protected:
 		SDL_Surface *surf;
 		FontCache fonts;
 

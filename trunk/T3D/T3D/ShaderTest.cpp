@@ -1,8 +1,17 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// ShaderTest.cpp
+//
+// A simple application used for testing lighting shaders
+
 #include "ShaderTest.h"
 #include "Camera.h"
 #include "Sphere.h"
 #include "GLShader.h"
-#include "SoundTestTask.h"
 
 namespace T3D{
 
@@ -59,8 +68,6 @@ namespace T3D{
 		sphere2->getTransform()->setLocalPosition(Vector3(1.25,0,0));		
 		sphere2->getTransform()->setParent(root);
 		sphere2->getTransform()->name = "Sphere 2";
-
-		addTask(new SoundTestTask(this));
 
 		return true;
 	}

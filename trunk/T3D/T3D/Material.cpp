@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// Material.cpp
+//
+// Class for encapsulating material properties
+
 #include "material.h"
 
 namespace T3D{

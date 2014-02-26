@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// Texture.cpp
+//
+// Class for loading, storing and manipulating textures
+
 #include <iostream>
 #include <sdl\SDL_image.h>
 #include "Texture.h"

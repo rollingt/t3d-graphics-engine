@@ -25,6 +25,8 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
     <ClCompile Include="GLShader.cpp" />
+    <ClCompile Include="GLTestApplication.cpp" />
+    <ClCompile Include="GLTestRenderer.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -77,6 +79,8 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GLRenderer.h" />
     <ClInclude Include="GLShader.h" />
+    <ClInclude Include="GLTestApplication.h" />
+    <ClInclude Include="GLTestRenderer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="Light.h" />

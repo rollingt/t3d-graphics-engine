@@ -1,7 +1,12 @@
-///-------------------------------------------------------------------------------------------------
-/// @file	Terrain.cpp
-///
-/// @brief	Implements the terrain class.
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// Terrain.cpp
+//
+// Component used for creating terrains - from an image file, or procedurally.
 
 #include <sdl\SDL.h>
 #include "terrain.h"

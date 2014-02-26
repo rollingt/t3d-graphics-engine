@@ -1,3 +1,13 @@
+// =========================================================================================
+// KXG363 - Advanced Games Programming
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// Tutorial1.cpp
+//
+// Base application for tutorial 1.  Used in conjunction with DrawTask, a task for drawing onto a 2D texture.
+
 #include "Tutorial1.h"
 #include "Camera.h"
 
