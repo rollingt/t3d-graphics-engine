@@ -8,13 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -31,7 +24,6 @@
   <td style="padding-left: 0.5em;">
    <div id="projectname">T3D
    </div>
-   <div id="projectbrief">A simple graphics education for educational use</div>
   </td>
  </tr>
  </tbody>
@@ -109,26 +101,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     </ul>
   </div>
 </div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('functions.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -144,6 +122,12 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>addComponent()
 : <a class="el" href="class_t3_d_1_1_game_object.html#aac8822a022b16a89fcbe6c7ecac53b31">T3D::GameObject</a>
 </li>
+<li>addInactiveList()
+: <a class="el" href="class_t3_d_1_1_particle_emitter.html#a836d37d9f84fedf8738056dd5c254abc">T3D::ParticleEmitter</a>
+</li>
+<li>addParticle()
+: <a class="el" href="class_t3_d_1_1_particle_emitter.html#aaa675e21bb3898e671d3c46f93353b5f">T3D::ParticleEmitter</a>
+</li>
 <li>angleBetween()
 : <a class="el" href="class_t3_d_1_1_vector3.html#ae31951331ffa4d0bdb00f61cfd2ca84f">T3D::Vector3</a>
 </li>
@@ -156,6 +140,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>conjugate()
 : <a class="el" href="class_t3_d_1_1_quaternion.html#aa22423bdf63803cff2071f3f4d0fc589">T3D::Quaternion</a>
+</li>
+<li>createBillboardParticles()
+: <a class="el" href="class_t3_d_1_1_particle_emitter.html#a789fad23c7386cd66b0715557019bcdb">T3D::ParticleEmitter</a>
 </li>
 <li>createFractalTerrain()
 : <a class="el" href="class_t3_d_1_1_terrain.html#a70cea761255206d5460f0f02c3d1f2a0">T3D::Terrain</a>
@@ -185,6 +172,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 
 
 <h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
+<li>emit()
+: <a class="el" href="class_t3_d_1_1_particle_emitter.html#a379dcba5dcd16e15e9a0a3cf719ee5f0">T3D::ParticleEmitter</a>
+</li>
 <li>eulerAngles()
 : <a class="el" href="class_t3_d_1_1_quaternion.html#aeca5d04f00eae931e1b35a6c3c8e1f35">T3D::Quaternion</a>
 </li>
@@ -338,8 +328,14 @@ $(document).ready(function(){initNavTree('functions.html','');});
 
 
 <h3><a class="anchor" id="index_p"></a>- p -</h3><ul>
+<li>ParticleBehaviour()
+: <a class="el" href="class_t3_d_1_1_particle_behaviour.html#a9ebd76f1bbeffc9c099f8fe3a4953446">T3D::ParticleBehaviour</a>
+</li>
+<li>ParticleEmitter()
+: <a class="el" href="class_t3_d_1_1_particle_emitter.html#ab595732cf3ae8b9ff4e1b0686f46a24d">T3D::ParticleEmitter</a>
+</li>
 <li>Plane()
-: <a class="el" href="class_t3_d_1_1_plane.html#a8be72fde9705d3f895e9ca94142d95ae">T3D::Plane</a>
+: <a class="el" href="class_t3_d_1_1_plane.html#a2ebfff7c0e66027425d035230fd5bbd6">T3D::Plane</a>
 </li>
 <li>PR_OPAQUE
 : <a class="el" href="class_t3_d_1_1_renderer.html#a6e70f4ae65e9647e8c0e6e5c9cdeec2c">T3D::Renderer</a>
@@ -360,8 +356,8 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="class_t3_d_1_1_plane.html#a0b438dca92bc3f1a3d3b4fa20fa30aaa">T3D::Plane</a>
 </li>
 <li>ptr()
-: <a class="el" href="class_t3_d_1_1_vector3.html#a5621caf8a115d205c424e2370b1e57f4">T3D::Vector3</a>
-, <a class="el" href="class_t3_d_1_1_vector4.html#a84492ecab389eb79058c5b0f74cf3890">T3D::Vector4</a>
+: <a class="el" href="class_t3_d_1_1_vector4.html#a84492ecab389eb79058c5b0f74cf3890">T3D::Vector4</a>
+, <a class="el" href="class_t3_d_1_1_vector3.html#a5621caf8a115d205c424e2370b1e57f4">T3D::Vector3</a>
 </li>
 </ul>
 
@@ -374,11 +370,18 @@ $(document).ready(function(){initNavTree('functions.html','');});
 
 
 <h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
+<li>randRange()
+: <a class="el" href="class_t3_d_1_1_math.html#a944cc677af0d20fc4ba3d62d20c1fe10">T3D::Math</a>
+</li>
+<li>randRangeND()
+: <a class="el" href="class_t3_d_1_1_math.html#a34fe3050ca6e140ee1133e402da57c60">T3D::Math</a>
+</li>
 <li>reflect()
 : <a class="el" href="class_t3_d_1_1_vector3.html#a3639eebd96e854b54015809f22b69770">T3D::Vector3</a>
 </li>
 <li>render()
 : <a class="el" href="class_t3_d_1_1_renderer.html#a61ad81bfef8ded1b4a68589773ff87b6">T3D::Renderer</a>
+, <a class="el" href="class_t3_d_1_1_g_l_test_renderer.html#a16a652d7d5f42123b2437f264b4203a6">T3D::GLTestRenderer</a>
 </li>
 <li>Renderer()
 : <a class="el" href="class_t3_d_1_1_renderer.html#a49e8a1d60708dabff0ca3393f42cd6cf">T3D::Renderer</a>
@@ -393,8 +396,20 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>s
 : <a class="el" href="class_t3_d_1_1_quaternion.html#a5cca6c63059d5dc4206092fabdf67740">T3D::Quaternion</a>
 </li>
+<li>setAcceleration()
+: <a class="el" href="class_t3_d_1_1_particle_behaviour.html#a4776df4b90cb387f8b210fe4b875cb9d">T3D::ParticleBehaviour</a>
+, <a class="el" href="class_t3_d_1_1_particle_emitter.html#abffbe455f6577326fc67586fd685b9d0">T3D::ParticleEmitter</a>
+</li>
+<li>setAlphaFade()
+: <a class="el" href="class_t3_d_1_1_particle_behaviour.html#adfcd9250e801f0c94a26b0dc8156dd83">T3D::ParticleBehaviour</a>
+, <a class="el" href="class_t3_d_1_1_particle_emitter.html#a563cf663ae54e0ffd7a8cb2e53bc1b24">T3D::ParticleEmitter</a>
+</li>
 <li>setCamera()
 : <a class="el" href="class_t3_d_1_1_game_object.html#a5a68bd2f90384e3600e5499adf6a29c1">T3D::GameObject</a>
+</li>
+<li>setDirection()
+: <a class="el" href="class_t3_d_1_1_particle_emitter.html#abc24ecd5c59c5a9aba0689bc2ea3dae8">T3D::ParticleEmitter</a>
+, <a class="el" href="class_t3_d_1_1_particle_behaviour.html#ada4b1ba6d0422929e8ec76a0e3cf51b3">T3D::ParticleBehaviour</a>
 </li>
 <li>setFog()
 : <a class="el" href="class_t3_d_1_1_renderer.html#af3b0617b0485608e1537f1b053288358">T3D::Renderer</a>
@@ -408,8 +423,16 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>setMesh()
 : <a class="el" href="class_t3_d_1_1_game_object.html#ac4b0c0c8bbcf09c316c46bc9bc6d7fa4">T3D::GameObject</a>
 </li>
+<li>setPositionRange()
+: <a class="el" href="class_t3_d_1_1_particle_behaviour.html#a53c7b1d6f52e5da2b4f10a325b7abe57">T3D::ParticleBehaviour</a>
+, <a class="el" href="class_t3_d_1_1_particle_emitter.html#a443b4d8cc822f72a4546b55874ef9c28">T3D::ParticleEmitter</a>
+</li>
 <li>setScale()
 : <a class="el" href="class_t3_d_1_1_matrix4x4.html#a09417efd46dfd51207acc43dc19199e6">T3D::Matrix4x4</a>
+</li>
+<li>setStartVelocity()
+: <a class="el" href="class_t3_d_1_1_particle_behaviour.html#a91c567d0865e59c97a584993066b4ccc">T3D::ParticleBehaviour</a>
+, <a class="el" href="class_t3_d_1_1_particle_emitter.html#aaeb924c64d5016f7cd8d483ccbaa0d55">T3D::ParticleEmitter</a>
 </li>
 <li>setTrans()
 : <a class="el" href="class_t3_d_1_1_matrix4x4.html#afd7c913d2721c0dc400b131f0a39e9a6">T3D::Matrix4x4</a>
@@ -429,6 +452,13 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>squaredLength()
 : <a class="el" href="class_t3_d_1_1_quaternion.html#a8a4ab822e725b00342ae07b7079bf6b3">T3D::Quaternion</a>
 , <a class="el" href="class_t3_d_1_1_vector3.html#acd91aebbd70888894baefb8b2695f621">T3D::Vector3</a>
+</li>
+<li>start()
+: <a class="el" href="class_t3_d_1_1_particle_behaviour.html#aa3d217724a2e72cec327356fe557fdbf">T3D::ParticleBehaviour</a>
+</li>
+<li>stop()
+: <a class="el" href="class_t3_d_1_1_particle_emitter.html#a3275b7175682f2e6bf0e2810d2962b0d">T3D::ParticleEmitter</a>
+, <a class="el" href="class_t3_d_1_1_particle_behaviour.html#a0cab63030afabd593c5bacf1a08be334">T3D::ParticleBehaviour</a>
 </li>
 <li>swap()
 : <a class="el" href="class_t3_d_1_1_vector3.html#a4fbe97c91a8fc9b655ad0b9f3604427e">T3D::Vector3</a>
@@ -458,6 +488,8 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <h3><a class="anchor" id="index_u"></a>- u -</h3><ul>
 <li>update()
 : <a class="el" href="class_t3_d_1_1_game_object.html#a53b1349aa04ebd6e643286bdd6ce0167">T3D::GameObject</a>
+, <a class="el" href="class_t3_d_1_1_particle_emitter.html#ad350a4ab916215d4467d41d878f086a5">T3D::ParticleEmitter</a>
+, <a class="el" href="class_t3_d_1_1_particle_behaviour.html#a0bc28b6f47d432e3be61459cacc771b2">T3D::ParticleBehaviour</a>
 </li>
 </ul>
 
@@ -480,6 +512,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>~GameObject()
 : <a class="el" href="class_t3_d_1_1_game_object.html#a5ebb97ddcd82ac6f6e7baf06c6509afa">T3D::GameObject</a>
 </li>
+<li>~ParticleEmitter()
+: <a class="el" href="class_t3_d_1_1_particle_emitter.html#adfe7eeaf7a934738635b6af39c531fc8">T3D::ParticleEmitter</a>
+</li>
 <li>~Renderer()
 : <a class="el" href="class_t3_d_1_1_renderer.html#a9bec949bfe043cdef98583009aaf9138">T3D::Renderer</a>
 </li>
@@ -491,14 +526,11 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated on Thu Dec 12 2013 16:37:17 for T3D by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated on Thu Feb 27 2014 10:39:52 for T3D by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.5
+</small></address>
 </body>
 </html>
