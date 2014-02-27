@@ -8,13 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -31,7 +24,6 @@
   <td style="padding-left: 0.5em;">
    <div id="projectname">T3D
    </div>
-   <div id="projectbrief">A simple graphics education for educational use</div>
   </td>
  </tr>
  </tbody>
@@ -74,27 +66,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('class_t3_d_1_1_game_object.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -103,6 +80,11 @@ $(document).ready(function(){initNavTree('class_t3_d_1_1_game_object.html','');}
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>T3D</b></li><li class="navelem"><a class="el" href="class_t3_d_1_1_game_object.html">GameObject</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
@@ -151,6 +133,24 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aac8822a022b16a89fcbe6c7ecac53b31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53b1349aa04ebd6e643286bdd6ce0167"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t3_d_1_1_game_object.html#a53b1349aa04ebd6e643286bdd6ce0167">update</a> (float dt)</td></tr>
 <tr class="separator:a53b1349aa04ebd6e643286bdd6ce0167"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98adfe5bb543509f9020d4f414ad8c3a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a98adfe5bb543509f9020d4f414ad8c3a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setDistanceToCamera</b> (float distance)</td></tr>
+<tr class="separator:a98adfe5bb543509f9020d4f414ad8c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69f8350fe099f6609c5f5e7d6181c9ef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69f8350fe099f6609c5f5e7d6181c9ef"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getDistanceToCamera</b> () const </td></tr>
+<tr class="separator:a69f8350fe099f6609c5f5e7d6181c9ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4aa3e5ae64cf89d4d6f3db5676d129a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4aa3e5ae64cf89d4d6f3db5676d129a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setVisible</b> (bool visible)</td></tr>
+<tr class="separator:ab4aa3e5ae64cf89d4d6f3db5676d129a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b7cfeddb36c5101450ab9b454d49a75"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b7cfeddb36c5101450ab9b454d49a75"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isVisible</b> ()</td></tr>
+<tr class="separator:a3b7cfeddb36c5101450ab9b454d49a75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc589f2436b48d48d656ba0ddd445060"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc589f2436b48d48d656ba0ddd445060"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setAlpha</b> (float alpha)</td></tr>
+<tr class="separator:acc589f2436b48d48d656ba0ddd445060"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71810f1fb9a9b58a7c75fee20e5df4f3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71810f1fb9a9b58a7c75fee20e5df4f3"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getAlpha</b> ()</td></tr>
+<tr class="separator:a71810f1fb9a9b58a7c75fee20e5df4f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -172,6 +172,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a9a6458961f8217b5ccb8133542749930"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a6458961f8217b5ccb8133542749930"></a>
 <a class="el" href="class_t3_d_1_1_mesh.html">Mesh</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>mesh</b></td></tr>
 <tr class="separator:a9a6458961f8217b5ccb8133542749930"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cad0b7e00e07a46816dab74aff1f26b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2cad0b7e00e07a46816dab74aff1f26b"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>alpha</b></td></tr>
+<tr class="separator:a2cad0b7e00e07a46816dab74aff1f26b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Generic class for all objects that exist in the world. </p>
@@ -473,19 +476,15 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>M:/T3Dwin/SVNCheckout/T3D/T3D/<a class="el" href="_game_object_8h_source.html">GameObject.h</a></li>
-<li>M:/T3Dwin/SVNCheckout/T3D/T3D/GameObject.cpp</li>
+<li>M:/T3Dwin/T3DShaderVersion/T3D/T3D/<a class="el" href="_game_object_8h_source.html">GameObject.h</a></li>
+<li>M:/T3Dwin/T3DShaderVersion/T3D/T3D/GameObject.cpp</li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><b>T3D</b></li><li class="navelem"><a class="el" href="class_t3_d_1_1_game_object.html">GameObject</a></li>
-    <li class="footer">Generated on Thu Dec 12 2013 16:37:16 for T3D by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated on Thu Feb 27 2014 10:39:52 for T3D by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.5
+</small></address>
 </body>
 </html>
