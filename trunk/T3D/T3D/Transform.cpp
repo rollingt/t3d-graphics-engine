@@ -235,9 +235,8 @@ namespace T3D
 		if (vectorTo.squaredLength()>0){
 			// first build rotation matrix
 			Vector3 zaxis = -vectorTo.normalised();
-			Vector3 xaxis = zaxis.cross(up).normalised();
+			Vector3 xaxis = -zaxis.cross(up).normalised();
 			Vector3 yaxis = zaxis.cross(xaxis);
-			Matrix3x3 rot;
 			rotationMatrix.FromAxes(xaxis,yaxis,zaxis);
 		}
 		needLocalUpdate = true;
