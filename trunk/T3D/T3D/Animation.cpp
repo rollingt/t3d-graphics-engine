@@ -49,22 +49,23 @@ namespace T3D
 		}
 	}
 
-	void Animation::update(float dt){
-		time += dt;
-		if (time>duration){
-			if (looping){
-				while (time>duration)
-					time = time-duration;
-			} else {
-				time = duration;
-				playing = false;
+	void Animation::update(float dt){		
+		if (playing){
+			time += dt;
+			if (time>duration){
+				if (looping){
+					while (time>duration)
+						time = time-duration;
+				} else {
+					time = duration;
+					playing = false;
+				}
 			}
-		}
-		
-		BoneMap::iterator it;
-		for (it = bones.begin(); it!= bones.end(); it++){
-			Bone *b = it->second;
-			b->update(time);
+			BoneMap::iterator it;
+			for (it = bones.begin(); it!= bones.end(); it++){
+				Bone *b = it->second;
+				b->update(time);
+			}
 		}
 	}
 }
