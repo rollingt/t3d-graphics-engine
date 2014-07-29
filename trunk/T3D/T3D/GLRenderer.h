@@ -49,6 +49,7 @@ namespace T3D
 
 		void loadSkybox(std::string tex);
 
+		bool exists2DOverlay(Texture *texture);					// is there a existing 2D overlay using this texture?
 		void add2DOverlay(Texture *texture, int x, int y);		// 2D overlay (used for on screen diagnostic messages mainly)
 		void remove2DOverlay(Texture *texture);					// remove overlay
 

@@ -531,6 +531,20 @@ namespace T3D
 		renderSkybox = true;
 	}
 
+	// is there a existing 2D overlay using this texture?
+	bool GLRenderer::exists2DOverlay(Texture *texture)
+	{
+		std::list<overlay2D *>::iterator i = overlays.begin();
+		while (i != overlays.end())
+		{
+			overlay2D *overlay = *i;
+			if (overlay->texture == texture)
+				return true;
+			i++;
+		}
+		return false;
+	}
+
 	// 2D overlay (used for on screen diagnostic messages mainly)
 	void GLRenderer::add2DOverlay(Texture *texture, int x, int y)
 	{

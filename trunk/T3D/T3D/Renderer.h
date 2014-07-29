@@ -51,8 +51,9 @@ namespace T3D
 
 		virtual void loadSkybox(std::string tex) = 0; 
 
-		virtual void add2DOverlay(Texture *texture, int x, int y) = 0;	// 2D overlay (used for on screen diagnostic messages mainly)
-		virtual void remove2DOverlay(Texture *texture) = 0;				// remove overlay
+		virtual bool exists2DOverlay(Texture *texture) = 0;					// is there a existing 2D overlay using this texture?
+		virtual void add2DOverlay(Texture *texture, int x, int y) = 0;		// 2D overlay (used for on screen diagnostic messages mainly)
+		virtual void remove2DOverlay(Texture *texture) = 0;					// remove overlay
 
 		virtual Material* createMaterial(int priority); // creates a material and returns a pointer to it
 		
