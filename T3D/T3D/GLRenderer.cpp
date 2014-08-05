@@ -115,7 +115,8 @@ namespace T3D
 		}
 		
 		// draw the global grid and axes if necessary		
-		glEnable(GL_DEPTH_TEST);	
+		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_LIGHTING);
 		if (showAxes)
 		{
 			// +ve axes
@@ -166,6 +167,7 @@ namespace T3D
 			glEnd();
 			glDisable (GL_LINE_STIPPLE);	
 		}
+		glEnable(GL_LIGHTING);
 
 		//fog?
 		if (showFog){
