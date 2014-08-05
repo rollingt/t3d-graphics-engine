@@ -608,9 +608,9 @@ namespace T3D
 		glTexCoord2f(0.0f, 0.0f); 
 		glVertex2f(x    , y + h);
 		glEnd();
-	
+		glDisable(GL_TEXTURE_2D);
+
 		glFinish();
-	
 	}
 
 
@@ -633,7 +633,7 @@ namespace T3D
 
 			glEnable(GL_BLEND);                         // Enable Blending
 			//glBlendFunc(GL_SRC_COLOR,GL_ONE);			// transparent black background (sort of)
-			glBlendFunc(GL_ONE,GL_ONE);			// add overlay (works well for white text)
+			glBlendFunc(GL_ONE,GL_ONE);					// add overlay (works well for white text)
 
 			std::list<overlay2D *>::iterator i;
 			for (i = overlays.begin(); i != overlays.end(); i++)
@@ -648,8 +648,7 @@ namespace T3D
 
 				glPopMatrix();
 			}
-
-
+			glDisable(GL_BLEND);
 		}
 	}
 
