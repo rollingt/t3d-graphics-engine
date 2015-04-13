@@ -190,6 +190,8 @@ namespace T3D
 		glEnable(GL_LIGHTING);
 		glEnable(GL_DEPTH_TEST);		
 		glDisable(GL_BLEND);
+
+		glPointSize(3.0);
 	}
 
 	void GLRenderer::postrender()
@@ -330,7 +332,9 @@ namespace T3D
 		glTexCoordPointer(2, GL_FLOAT, 0, mesh->getUVs());
 		//glColorPointer(4,GL_FLOAT,0,mesh->getColors());
 		glDrawElements(GL_TRIANGLES,3*mesh->getNumTris(),GL_UNSIGNED_INT,mesh->getTriIndices());
-		glDrawElements(GL_QUADS,4*mesh->getNumQuads(),GL_UNSIGNED_INT,mesh->getQuadIndices());
+		glDrawElements(GL_QUADS, 4 * mesh->getNumQuads(), GL_UNSIGNED_INT, mesh->getQuadIndices());
+
+		if (showPoints) glDrawArrays(GL_POINTS, 0, mesh->getNumVerts());
 	}
 
 

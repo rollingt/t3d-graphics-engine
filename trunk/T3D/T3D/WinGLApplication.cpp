@@ -153,13 +153,16 @@ namespace T3D
 					renderer->toggleAxes();
 				if (Input::keyDown[KEY_F3])
 					renderer->toggleGrid();
+				if (Input::keyDown[KEY_F4])
+					renderer->togglePoints();
 				if (Input::keyDown[KEY_F9])
 				{
 					int line = 0;
 					addTask(new DiagMessageTask(this, "ESCAPE     quit", 2, 600-(line++*20), true, 5.0));
 					addTask(new DiagMessageTask(this, "F1         wireframe", 2, 600-(line++*20), true, 5.0));
 					addTask(new DiagMessageTask(this, "F2         axes", 2, 600-(line++*20), true, 5.0));
-					addTask(new DiagMessageTask(this, "F3         grid", 2, 600-(line++*20), true, 5.0));
+					addTask(new DiagMessageTask(this, "F3         grid", 2, 600 - (line++ * 20), true, 5.0));
+					addTask(new DiagMessageTask(this, "F4         points", 2, 600 - (line++ * 20), true, 5.0));
 					addTask(new DiagMessageTask(this, "F9         show help", 2, 600-(line++*20), true, 5.0));
 					addTask(new DiagMessageTask(this, "F10        show stats", 2, 600-(line++*20), true, 5.0));
 				}
