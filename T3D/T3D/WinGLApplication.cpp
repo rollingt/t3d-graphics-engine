@@ -26,6 +26,15 @@
 #include "SoundManager.h"
 
 
+// stdin, stdout, and stderr are defined differently in Visual Studio 2015
+// This is required to give backward combatibility with the version of SDL being used.
+FILE _iob[] = { *stdin, *stdout, *stderr };
+extern "C" FILE * __cdecl __iob_func(void)
+{
+	return _iob;
+}
+
+
 
 namespace T3D 
 {

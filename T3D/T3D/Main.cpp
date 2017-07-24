@@ -13,6 +13,11 @@
 #include "ShaderTest.h"
 #include "GLTestApplication.h"
 
+#ifdef main
+#undef main
+#endif
+
+
 using namespace T3D;
 
 int main(int argc, char* argv[]){
