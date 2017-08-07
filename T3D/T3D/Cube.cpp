@@ -16,9 +16,12 @@ namespace T3D
 {
 	Cube::Cube(float size)
 	{
-		numVerts = 4*6;
+		// Init vertex and index arrays
+		initArrays(4 * 6,	// num vertices
+			       0,		// num tris
+			       6);		// num quads
 
-		vertices = new float[numVerts*3];
+		// Set vertices
 
 		int pos=0;
 		//front
@@ -52,28 +55,28 @@ namespace T3D
 		setVertex(pos++,size,size,size);
 		setVertex(pos++,size,size,-size);
 
-		numQuads = 6;
-		quadIndices = new unsigned int[numQuads*4];
+		// Build quads
 		pos = 0;
 		//front
-		setFace(0,3,2,1,0);
+		setFace(pos++,3,2,1,0);
 		//back
-		setFace(1,4,5,6,7);
+		setFace(pos++,4,5,6,7);
 		//left
-		setFace(2,11,10,9,8);
+		setFace(pos++,11,10,9,8);
 		//right
-		setFace(3,12,13,14,15);
+		setFace(pos++,12,13,14,15);
 		//bottom
-		setFace(4,19,18,17,16);
+		setFace(pos++,19,18,17,16);
 		//top
-		setFace(5,20,21,22,23);
+		setFace(pos++,20,21,22,23);
 
-		numTris = 0;
-		
-		normals = new float[numVerts*3];
-		calcNormals();		
-		
-		colors = new float[numVerts*4];
+		// Check vertex and index arrays
+		checkArrays();
+
+		// Calculate normals
+		calcNormals();	
+
+		// Setup other arrays		
 		pos = 0;
 		//front
 		for (int i=0; i<4; i++){
@@ -101,7 +104,6 @@ namespace T3D
 		}	
 
 		//uvs
-		uvs = new float[numVerts*2];
 		pos = 0;
 		for (int f = 0; f<6; f++){
 			uvs[pos++] = 0; uvs[pos++] = 0; 

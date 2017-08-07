@@ -54,6 +54,8 @@ namespace T3D
 			return quadIndices;
 		}
 
+		void initArrays(int numVerts, int numTris, int numQuads);
+		bool checkArrays();
 		void calcNormals();
 		void invertNormals();
 		void calcUVSphere();

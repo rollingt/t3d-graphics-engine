@@ -10,6 +10,7 @@
 // Triangle meshes only.  Unoptimised.
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "Mesh.h"
 #include "Math.h"
 
@@ -37,6 +38,77 @@ namespace T3D
 		if (normals) delete []normals;
 		if (colors) delete []colors;
 		if (uvs) delete []uvs;
+	}
+
+	void Mesh::initArrays(int numVerts, int numTris, int numQuads) {
+		this->numVerts = numVerts;
+		this->numTris = numTris;
+		this->numQuads = numQuads;
+
+		if (numVerts > 0) {
+			vertices = new float[numVerts * 3];
+			for (int i = 0; i < numVerts * 3; i++) {
+				vertices[i] = nanf("");
+			}
+
+			uvs = new float[numVerts * 2];
+			for (int i = 0; i < numVerts * 2; i++) {
+				uvs[i] = 0.0f;
+			}
+
+			normals = new float[numVerts * 3];
+			for (int i = 0; i < numVerts * 3; i++) {
+				normals[i] = 0.0f;
+			}
+
+			colors = new float[numVerts * 4];
+			for (int i = 0; i < numVerts * 4; i++) {
+				colors[i] = 1.0f;
+			}
+
+			if (numQuads > 0) {
+				quadIndices = new unsigned int[numQuads * 4];
+				for (int i = 0; i < numQuads * 4; i++) {
+					quadIndices[i] = -1;
+				}
+			}
+			if (numTris > 0) {
+				triIndices = new unsigned int[numTris * 3];
+				for (int i = 0; i < numTris * 3; i++) {
+					triIndices[i] = -1;
+				}
+			}
+		}
+	}
+
+	bool Mesh::checkArrays() {
+		bool ok = true;
+		for (int i = 0; i < numVerts; i++) {
+			Vector3 v = getVertex(i);
+			if (isnan(v.x) || isnan(v.y) || isnan(v.z)) {
+				std::cout << "Vertex " << i << " has not been set\n";
+				ok = false;
+			}
+		}
+
+		for (int i = 0; i < numQuads; i++) {
+			if (quadIndices[i * 4] < 0 || quadIndices[i * 4 + 1] < 0 || quadIndices[i * 4 + 2] < 0 || quadIndices[i * 4 + 3] < 0 ||
+				quadIndices[i * 4] > numVerts-1 || quadIndices[i * 4 + 1] > numVerts - 1 || quadIndices[i * 4 + 2] > numVerts - 1 || quadIndices[i * 4 + 3] > numVerts - 1) {
+				std::cout << "Quad Face " << i << " has not been set: " << quadIndices[i * 4] << "," << quadIndices[i * 4+1]<< "," << quadIndices[i * 4+2]<< "," << quadIndices[i * 4+3] << "\n";
+				ok = false;
+			}
+		}
+
+
+		for (int i = 0; i < numTris; i++) {
+			if (triIndices[i * 3] < 0 || triIndices[i * 3 + 1] < 0 || triIndices[i * 3 + 2] < 0 || 
+				triIndices[i * 3] > numVerts - 1 || triIndices[i * 3 + 1] > numVerts - 1 || triIndices[i * 3 + 2] > numVerts - 1) {
+				std::cout << "Tri Face " << i << " has not been set: " << triIndices[i * 3] << "," << triIndices[i * 3 + 1] << "," << triIndices[i * 3 + 2] << "\n";
+				ok = false;
+			}
+		}
+
+		return ok;
 	}
 		
 	void Mesh::setVertex(int i, float x, float y, float z){
