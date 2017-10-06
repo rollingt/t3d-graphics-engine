@@ -17,12 +17,13 @@ namespace T3D{
 
 	Sphere::Sphere(float radius, int density)
 	{
-		numVerts = density*(density-1)+2;
+		int numVerts = density*(density-1)+2;
+		int numTris = density * 2 + density*(density - 2) * 2;
+		int numQuads = 0;
+
+		initArrays(numVerts, numTris, numQuads);
 
 		// VERTICES
-
-		vertices = new float[numVerts*3];
-
 		int pos=0;
 
 		float dPhi = Math::PI/density;
@@ -44,18 +45,13 @@ namespace T3D{
 		setVertex(density*(density-1)+1,0,radius,0);
 		
 		// COLORS
-		colors = new float[numVerts*4];
-		
 		for (int i=0; i<numVerts; i++){
 			setColor(i,1,1,1,1);
 		}
 
 		// FACES
-		numTris = density*2+density*(density-2)*2;
-		
-		triIndices = new unsigned int[numTris*3];
-		
 		int face = 0;
+
 		//top and bottom
 		for (int j=0; j<density; j++){
 			setFace(face++, density*(density-1)+1,(j+1)%density,j);
@@ -69,12 +65,12 @@ namespace T3D{
 				setFace(face++, (i-1)*density + (j+1)%density, i*density + (j+1)%density, i*density + j);
 			}
 		}
+
+		checkArrays();
 		
 		// NORMALS
-		normals = new float[numVerts*3];
 		calcNormals();
 		
-		uvs = new float[numVerts*2];
 		calcUVSphere();
 	}
 

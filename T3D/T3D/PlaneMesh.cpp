@@ -4,13 +4,12 @@ namespace T3D{
 
 	PlaneMesh::PlaneMesh(int density) : density(density)
 	{
-		numVerts = (density+1)*(density+1);
-		numTris = density*density*2;
-		numQuads = 0;
+		int numVerts = (density+1)*(density+1);
+		int numTris = density*density*2;
+		int numQuads = 0;
 
-		vertices = new float[numVerts*3];		
-		triIndices = new unsigned int[numTris*3];
-		
+		initArrays(numVerts, numTris, numQuads);
+
 		for (int i=0; i<=density; i++){
 			for (int j=0; j<=density; j++){
 				setVertex(i,j,float(i)/float(density)-0.5f,0,float(j)/float(density)-0.5f);
@@ -25,19 +24,17 @@ namespace T3D{
 			}
 		}
 
+		checkArrays();
+
 		// COLORS
-		colors = new float[numVerts*4];
-		
 		for (int i=0; i<numVerts; i++){
 			setColor(i,1,1,1,1);
 		}
 
 		// NORMALS
-		normals = new float[numVerts*3];
 		calcNormals();
 		
 		// UVS
-		uvs = new float[numVerts*2];
 		calcUVPlaneXZ();
 	}
 

@@ -24,6 +24,8 @@ ExportedObj/
 *.booproj
 *.svd
 *.pdb
+*.ilk
+*.exe
 
 # Folder config file
 Desktop.ini

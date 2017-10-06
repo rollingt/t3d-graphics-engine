@@ -10,16 +10,16 @@ namespace T3D
 		*/
 	Sweep::Sweep(std::vector<Vector3> points, SweepPath &path, bool closed)
 	{
-		numVerts = path.size()*points.size();
+		int numVerts = path.size()*points.size();
+		int numTris = 0;
+		int numQuads = 0;
 
 		if (closed)
 			numQuads = path.size()*points.size();
 		else
 			numQuads = (path.size()-1)*points.size();
 
-
-		vertices = new float[numVerts*3];
-		quadIndices = new unsigned int[numQuads*4];		
+		initArrays(numVerts, numTris, numQuads);
 		
 		int vpos = 0;
 		int fpos = 0;
@@ -36,12 +36,12 @@ namespace T3D
 								   (j+((i+1)%path.size())*points.size()));
 				}
 			}
-		}		
+		}
+
+		checkArrays();
 		
-		normals = new float[numVerts*3];
 		calcNormals();		
 		
-		colors = new float[numVerts*4];
 		int pos = 0;
 		for (int i=0; i<numVerts; i++){
 			colors[pos++] = 1; colors[pos++] = 0; colors[pos++] = 1; colors[pos++] = 1;
