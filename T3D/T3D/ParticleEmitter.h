@@ -19,6 +19,8 @@
 
 namespace T3D
 {
+	class ParticleBehaviour;
+
 	//! Standard Particle Emitter
 	/*! The particle emitter generates and lauches reusable particles s
 	  \author  David Pentecost
@@ -26,49 +28,42 @@ namespace T3D
 	class ParticleEmitter :
 		public Component
 	{
+	friend class ParticleBehaviour;
 	public:
-		ParticleEmitter(float rampUpDuration, float startEmitRate, float runDuration, float emitRate, 
-			float rampDownDuration, float endEmitRate, float emitVariability);
+		ParticleEmitter(float duration, float startRate, float emitRate, float endRate,
+			float startUpTime, float windDownTime);
 		virtual ~ParticleEmitter();
 
-		void addInactiveList(ParticleBehaviour *particle);	// only particles should call this!
-
-		void addParticle(ParticleBehaviour *particle, bool start);	/// add particle for use
-		void createBillboardParticles(int n, float lifeSpanMin, float lifeSpanMax, Material *material, float scale, Transform *parent); 
-
-		// particle attributes
-		void setPositionRange(float dx, float dy, float dz);
-		void setDirection(float theta_y, float theta_z, float variance);
-		void setStartVelocity(float min, float max);
-		void setAcceleration(float acceleration, float speedMinMax);
-		void setAlphaFade(float start, float end);
-
-
-		void windDown() { elapsed = rampUpDuration + runDuration; }
-		void restart() { elapsed = 0; emitted = 0; }
+		void addParticle(ParticleBehaviour *particle, bool start);	// add particle to pool
+		void emit(int n);
 		void stop(bool clear);
-		void emit(int n, bool count=false);
+		void restart() { emitted = 0;  elapsed = 0; }				// restart from time 0
+
 		void update(float dt);
 
-
 	private:
-		float emitRamp(float start, float end, float duration, float time, float variability);
+		void addInactiveList(ParticleBehaviour *particle);	// only particles should call this!
 
 	protected:
 		std::vector<ParticleBehaviour *> particles;			// all particles
-		std::queue<ParticleBehaviour *> particlesInactive;	// inactive particles that can be started
+		std::queue<ParticleBehaviour *> particlesInactive;	// inactive particles that can be reused
 
-		float elapsed;					//elapsed system time
-		int emitted;					//number of particles emitted during run
+		float elapsed;					// elapsed time
 
-		float rampUpDuration;
-		float startEmitRate;
-		float runDuration;
-		float emitRate;
-		float rampDownDuration;
-		float endEmitRate;
-		float emitVariability;			// random variability in emit rate (+/- fraction)
+		float duration;					// total run time (particle emission stops when this reached)
+
+		int emitted;					// number of particles emitted, excluding those from emit(n)
+
+		float startRate;				// particles per second at time 0
+		float emitRate;					// normal particles per second emit rate
+		float endRate;					// particles per second when duration time reached
+
+		float rampUpDuration;			// ramp up time from startRate to emitRate
+		float rampDownDuration;			// wind down time from emitRate to endRate
 	
+	private:
+		float emitRamp(float start, float end, float duration, float time, float variability);
+
 	};
 
 }

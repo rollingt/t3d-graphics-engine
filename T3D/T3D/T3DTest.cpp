@@ -19,7 +19,7 @@
 #include "Terrain.h"
 #include "Camera.h"
 #include "ParticleEmitter.h"
-#include "ParticleBehaviour.h"
+#include "ParticleGravity.h"
 #include "PerfLogTask.h"
 #include "DiagMessageTask.h"
 #include "Material.h"
@@ -186,17 +186,41 @@ namespace T3D{
 		anim->addKey("Torus",5.0,Quaternion(Vector3(0,0,Math::HALF_PI)),Vector3(5,0,0));
 		anim->loop(true);	
 		
-		//Add a particle system to the sphere
-		ParticleEmitter *particleSys = new ParticleEmitter(0.0f, 20.0f, 20.0f, 20.0f, 5.0f, 5.0f, 0.2f);
-		sphere->addComponent(particleSys);
-		particleSys->createBillboardParticles(100, 1.0, 1.0, sparklemat, 1.0, root);
-		particleSys->setPositionRange(0.01f, 0.01f, 0.01f);
-		particleSys->setDirection(0*Math::DEG2RAD, 0.0*Math::DEG2RAD, 180*Math::DEG2RAD);
-		particleSys->setStartVelocity(20.0f, 20.0f);
-		particleSys->setAcceleration(-30.0f, 1.0f);
-		particleSys->setAlphaFade(1.0f, 0.0f);
-		particleSys->emit(40);
-		
+		//Add a cube to act as a source for particle system
+		GameObject *cubeF = new GameObject(this);
+		cubeF->setMesh(new Cube(1));
+		cubeF->setMaterial(red);
+		cubeF->getTransform()->setLocalPosition(Vector3(-3, -3, 0));
+		cubeF->getTransform()->setLocalScale(Vector3(0.5f, 0.5f, 0.5f));
+		cubeF->getTransform()->setParent(root);
+		cubeF->getTransform()->name = "Fountain";
+
+		// A simple fireworks fountain using the particle system
+		ParticleEmitter *particleSys = new ParticleEmitter(10.0f, 1.0f, 20.0f, 2.0f, 3.0f, 3.0f);
+		cubeF->addComponent(particleSys);			// make cube source of particles
+		// Create a pool of particles
+		for (int i = 0; i<100; i++)
+		{
+			GameObject *particle = new GameObject(this);
+			Billboard *bbComponent = new Billboard(camObj->getTransform(), true);
+			particle->addComponent(bbComponent);
+
+			// start gravity particle with random velocity (mostly upwards)
+			ParticleGravity *behaviour = new ParticleGravity(particleSys,
+				Vector3(Math::randRange(-2,2), Math::randRange(5,9), Math::randRange(-2,2)), -9.8f, 1.2f);
+			behaviour->setAlphaFade(1.0f, 0.1f);		// fade out particle during lifespan
+			particle->addComponent(behaviour);			// add to particle system
+
+			particle->setMaterial(sparklemat);
+			particle->getTransform()->setLocalScale(Vector3(0.8, 0.8, 0.8));	// make them a bit smaller
+			particle->getTransform()->setParent(root);		// particles movement independent of emitter 
+			particle->getTransform()->name = "particle";
+
+			particleSys->addParticle(behaviour, false);
+		}
+		particleSys->emit(3);						// emit some particles to start
+
+
 		//Add a behaviour to the Cube to make it "look at" the sphere
 		cube->addComponent(new LookAtBehaviour(sphere->getTransform()));
 

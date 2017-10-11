@@ -219,6 +219,9 @@
     <ClCompile Include="GLTestRenderer.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleGravity.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mesh.h">
@@ -379,6 +382,9 @@
     </ClInclude>
     <ClInclude Include="SoundManager.h">
       <Filter>Header Files\Miscellaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleGravity.h">
+      <Filter>Header Files\Component</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

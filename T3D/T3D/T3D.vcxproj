@@ -40,6 +40,7 @@
     <ClCompile Include="Music.cpp" />
     <ClCompile Include="ParticleBehaviour.cpp" />
     <ClCompile Include="ParticleEmitter.cpp" />
+    <ClCompile Include="ParticleGravity.cpp" />
     <ClCompile Include="PerfLogTask.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="PlaneMesh.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="Music.h" />
     <ClInclude Include="ParticleBehaviour.h" />
     <ClInclude Include="ParticleEmitter.h" />
+    <ClInclude Include="ParticleGravity.h" />
     <ClInclude Include="PerfLogTask.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="PlaneMesh.h" />
