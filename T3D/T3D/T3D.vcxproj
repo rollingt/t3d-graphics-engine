@@ -44,6 +44,7 @@
     <ClCompile Include="PerfLogTask.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="PlaneMesh.cpp" />
+    <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RotateBehaviour.cpp" />
@@ -63,6 +64,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Tutorial1.cpp" />
+    <ClCompile Include="Tutorial4.cpp" />
     <ClCompile Include="WinGLApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +100,7 @@
     <ClInclude Include="PerfLogTask.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="PlaneMesh.h" />
+    <ClInclude Include="Pyramid.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RotateBehaviour.h" />
@@ -117,6 +120,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Tutorial1.h" />
+    <ClInclude Include="Tutorial4.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector4.h" />
     <ClInclude Include="WinGLApplication.h" />
