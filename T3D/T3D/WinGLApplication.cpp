@@ -15,6 +15,8 @@
 #include <sdl\SDL_ttf.h>
 
 #include "WinGLApplication.h"
+
+#include "DefaultDebugOptions.h"
 #include "GLRenderer.h"
 #include "Transform.h"
 #include "GameObject.h"
@@ -61,6 +63,16 @@ namespace T3D
 		if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 			return false;
 		}
+
+		//Load from DefaultDebugOptions
+		if (DefaultDebugOptions::showWireframe)
+			renderer->toggleWireframe();
+		if (DefaultDebugOptions::showAxes)
+			renderer->toggleAxes();
+		if (DefaultDebugOptions::showGrid)
+			renderer->toggleGrid();
+		if (DefaultDebugOptions::showVertices)
+			renderer->togglePoints();
 		
 		//Initialize SDL_mixer
 		soundManager->init();

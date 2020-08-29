@@ -101,6 +101,7 @@
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RotateBehaviour.h" />
+    <ClInclude Include="DefaultDebugOptions.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderTest.h" />
     <ClInclude Include="Sound.h" />
