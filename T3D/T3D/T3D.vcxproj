@@ -18,6 +18,7 @@
     <ClCompile Include="Colour.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="DiagMessageTask.cpp" />
     <ClCompile Include="DrawTask.cpp" />
     <ClCompile Include="Font.cpp" />
@@ -29,6 +30,7 @@
     <ClCompile Include="GLTestRenderer.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="KeyboardController.cpp" />
+    <ClCompile Include="Lamp.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LookAtBehaviour.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -64,7 +66,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Tutorial1.cpp" />
-    <ClCompile Include="Tutorial4.cpp" />
+    <ClCompile Include="Tutorials.cpp" />
     <ClCompile Include="WinGLApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +77,7 @@
     <ClInclude Include="Colour.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Cylinder.h" />
     <ClInclude Include="DiagMessageTask.h" />
     <ClInclude Include="DrawTask.h" />
     <ClInclude Include="Font.h" />
@@ -86,6 +89,7 @@
     <ClInclude Include="GLTestRenderer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyboardController.h" />
+    <ClInclude Include="Lamp.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LookAtBehaviour.h" />
     <ClInclude Include="Material.h" />
@@ -121,6 +125,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Tutorial1.h" />
     <ClInclude Include="Tutorial4.h" />
+    <ClInclude Include="Tutorials.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector4.h" />
     <ClInclude Include="WinGLApplication.h" />
