@@ -19,6 +19,14 @@
 
 namespace T3D
 {
+	#define WINDOW_WIDTH		1024
+	#define	WINDOW_HEIGHT		640
+
+	// Width of the window provided by the OS layer, in pixels.
+	const uint32_t WindowWidth = WINDOW_WIDTH;
+	// Height of the window provided by the OS layer, in pixels.
+	const uint32_t WindowHeight = WINDOW_HEIGHT;
+
 	class Camera;
 
 	//! Generic class for renderers

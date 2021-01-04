@@ -30,6 +30,17 @@ namespace T3D{
 
 	private:
 		Texture *drawArea;
+
+		void pushPixel(int x, int y, Colour colour);
+		void flushPixelQueue();
+
+		struct Pixel
+		{
+			int x = 0;
+			int y = 0;
+			Colour colour = { 0xFF, 0, 0xFF, 0xFF }; // Anything dodgy should show up as purple.
+		};
+		std::vector<Pixel> pixelPlotQueue;
 	};
 
 }
