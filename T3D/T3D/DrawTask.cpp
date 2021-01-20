@@ -13,6 +13,15 @@
 
 namespace T3D {
 
+	// Creates a DrawTask that draws onto the Texture tex once per frame.
+	//
+	// Usage notes:
+	// - `tex` should be initialised, and registered with the renderer as both a loaded Texture and a 2D Overlay.
+	//   This can be done using `new Texture(...)`, `loadTexture(...)`, and finally `add2DOverlay(...)`.
+	//
+	// - If nothing is drawing on the screen, ensure the returned DrawTask object is added to the list of Tasks from the callsite using `addTask(...).
+	//
+	// - If there is nothing on the screen still, check the visual studio console for error messages in case something is out of bounds.
 	DrawTask::DrawTask(T3DApplication *app, Texture* tex) : Task(app)
 	{
 		drawArea = tex;
@@ -67,15 +76,16 @@ namespace T3D {
 	}
 
 
-	DrawTask::~DrawTask(void)
-	{
-	}
-
-	void DrawTask::init(){		
+	// Ensures all pre-conditions are met for following calls to the `update` function.
+	// NOTE(Evan): This should really be inlined into the constructor or at least made private.
+	void DrawTask::init	(){		
 		drawArea->clear(Colour(255,255,255,255));
 		drawDDALine(100,100,200,200,Colour(0,0,0,255));
 	}
 
+
+	// Draw a coloured line from (x1, y1) to (x2, y2) using the floating-point 
+	// Digital Differential Algorithm (DDA) algorithm from the 2D drawing lectures.
 	void DrawTask::drawDDALine(int x1, int y1, int x2, int y2,Colour c){
 		float ystep = float(y2-y1)/(x2-x1);
 		float y = y1;
@@ -85,12 +95,19 @@ namespace T3D {
 		}
 	}
 		
+
+	// Draw a coloured line from (x1, y1) to (x2, y2) using the integer-only
+	// Bresenham algorithm from the 2D drawing lectures.
+	// FIXME:
+	// - Not implemented yet! That's your job.
 	void DrawTask::drawBresLine(int x1, int y1, int x2, int y2,Colour c){
 	}
 
+
+	// Provides one frames' worth of pixels to draw onto the screen.
 	void DrawTask::update(float dt){
 		drawArea->clear(Colour(255, 255, 255, 255));
-		drawDDALine(100, 100, 200, 200, Colour(255,0,0,255));
+		drawDDALine(100, 10000, 200, 200, Colour(255,0,0,255));
 
 		// Plots pixels made to the drawing area this frame and clears the pixel queue.
 		flushPixelQueue();
