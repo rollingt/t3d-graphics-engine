@@ -15,13 +15,4 @@
 
 namespace T3D
 {
-	Component::Component(void)
-	{
-		gameObject = NULL;
-	}
-
-
-	Component::~Component(void)
-	{
-	}
 }

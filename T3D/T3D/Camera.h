@@ -11,7 +11,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <vector>
 #include "Component.h"
 #include "Plane.h"
 #include "Transform.h"
@@ -28,12 +27,17 @@ namespace T3D
 		} projectionType;
 
 		// Safe default perspective camera
-		Camera();
+		Camera::Camera() : type      (Camera::PERSPECTIVE),
+						   near      (0.1),
+						   far       (500.0),
+						   fovy      (45.0),
+						   aspect    (1.6) { }
+
 		// constructor optimised with perspective parameters
 		Camera(projectionType type, double near, double far, double fovy, double aspect);
 		// constructor with orthographic parameters
 		Camera(projectionType type, double near, double far, double left, double right, double bottom, double top);
-		virtual ~Camera();
+		virtual ~Camera() = default;
 
 	public:
 		projectionType type;	// projection type
@@ -41,7 +45,7 @@ namespace T3D
 		double far;				// far z plane (distance from viewer)
 		double near;			// near Z plane (distance from viewer)
 
-		// Perspectve projection only
+		// Perspective projection only
 		double fovy;			// field of view (angle in degrees)
 		double aspect;			// field of view in X direction - ratio of x(width) to y(height)
 
