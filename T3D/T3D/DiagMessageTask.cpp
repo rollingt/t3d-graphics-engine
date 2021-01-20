@@ -74,7 +74,7 @@ namespace T3D{
 		{
 			time -= dt;
 			if (time < 0.0f)
-				setFinsihed(true);
+				setFinished(true);
 		}
 
 		if (refresh)
