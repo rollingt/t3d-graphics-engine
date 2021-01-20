@@ -15,4 +15,5 @@
 
 namespace T3D
 {
+	/* Abstract class : Implementation not provided */ 
 }
