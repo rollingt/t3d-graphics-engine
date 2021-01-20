@@ -31,7 +31,7 @@ namespace T3D
 	{
 	public:
 		Animation(float duration);
-		virtual ~Animation();
+		virtual ~Animation() = default;
 		
 		virtual void update(float dt);
 

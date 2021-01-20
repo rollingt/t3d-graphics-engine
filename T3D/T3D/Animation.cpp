@@ -14,17 +14,11 @@
 
 namespace T3D
 {
-	Animation::Animation(float duration) : duration(duration)
-	{
-		time = 0;
-		looping = false;
-		playing = false;
-	}
+	Animation::Animation(float duration) : duration(duration),
+										   time(0),
+										   looping(false),
+										   playing(false) { }
 
-
-	Animation::~Animation(void)
-	{
-	}
 
 	void Animation::addKey(std::string n, float time, Quaternion rot, Vector3 pos){
 		BoneMap::iterator it = bones.find(n);
