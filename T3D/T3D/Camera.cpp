@@ -14,20 +14,6 @@
 
 namespace T3D
 {
-
-	// Safe default perspective camera
-	Camera::Camera()
-	{
-		gameObject = 0;
-
-		// Default perspective camera
-		this->type = Camera::PERSPECTIVE;
-		this->near = 0.1;
-		this->far = 500.0;
-		this->fovy = 45.0;
-		this->aspect = 1.6;
-	}
-
 	// constructor with perspective parameters
 	Camera::Camera(projectionType type, double near, double far, double fovy, double aspect)
 	{
@@ -61,10 +47,6 @@ namespace T3D
 		this->right = right;
 		this->bottom = bottom;
 		this->top = top;
-	}
-
-	Camera::~Camera(void)
-	{
 	}
 
 }

@@ -18,6 +18,8 @@ namespace T3D
 	class Colour
 	{
 	public:
+		// Create a Colour from 'rgba' components.
+		// _Assumes 0 > (r|g|b|a) > 255_.
 		Colour(int r, int g, int b, int a) : r(r), b(b), g(g), a(a){}
 
 		Colour(uint32_t hex){
@@ -27,7 +29,7 @@ namespace T3D
 			a = hex & 0xff;
 		}
 
-		~Colour(void);
+		~Colour(void) = default;
 
 		int r,g,b,a;
 	};

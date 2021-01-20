@@ -19,8 +19,8 @@ namespace T3D{
 		int face = 0;
 		for (int i=0; i<density; i++){
 			for (int j=0; j<density; j++){
-				setFace(face++, i*(density+1)+j, i*(density+1)+j+1, (i+1)*(density+1)+j);
-				setFace(face++, (i+1)*(density+1)+j, i*(density+1)+j+1, (i+1)*(density+1)+j+1);
+				setTriFace(face++, i*(density+1)+j, i*(density+1)+j+1, (i+1)*(density+1)+j);
+				setTriFace(face++, (i+1)*(density+1)+j, i*(density+1)+j+1, (i+1)*(density+1)+j+1);
 			}
 		}
 

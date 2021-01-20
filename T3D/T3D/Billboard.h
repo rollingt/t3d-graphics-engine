@@ -21,13 +21,18 @@ namespace T3D
 		public Component
 	{
 	public:
-		Billboard(Transform* camera, bool lockY = false) : lockY(lockY),camera(camera){};
-		~Billboard(void);
+		// Creates a Billboard associated with a Camera. May rotate about the Y axis by default.
+		// A Billboard should be initialised with a parent GameObject using its init method before it can be used.
+		Billboard(Transform* camera, bool lockY = false) : lockY(lockY),
+		                                                   camera(camera) { };
+		~Billboard(void) = default;
 
+		// Update the Billboard's facing every frame to ensure it's looking at the camera.
 		virtual void update(float dt);
 		virtual void init(GameObject* go);
 
-		void lockYAxis(){ lockY = true; }
+		// Helper functions.
+		void lockYAxis()  { lockY = true; }
 		void unlockYAxis(){ lockY = false; }
 
 	private:

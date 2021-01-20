@@ -12,7 +12,6 @@
 #define BONE_H
 
 #include <vector>
-#include <list>
 #include "Transform.h"
 
 namespace T3D
@@ -27,18 +26,17 @@ namespace T3D
 	class Bone
 	{
 	public:
-		Bone(void);
-		~Bone(void);
+		Bone(void) = default;
+		~Bone(void) = default;
 
-		void interpolate(int numFrames);
 		void update(float time);
-
 		void addFrame(KeyFrame f);
 
-		void printFrames();
+		// Dump information for this bone to standard output.
 		void printKeyFrames();
 
-		Transform* transform;
+		// Accessed by Animation.
+		Transform* transform = NULL;
 		std::vector<KeyFrame> keyframes;
 	};
 }

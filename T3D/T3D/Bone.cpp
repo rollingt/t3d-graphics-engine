@@ -12,20 +12,8 @@
 
 namespace T3D
 {	
-	bool frameCompare (KeyFrame f1, KeyFrame f2) { 
-		return (f1.time<f2.time); 
-	}
-
-	Bone::Bone(void)
-	{
-	}
-
-
-	Bone::~Bone(void)
-	{
-	}
-
-	
+	// Add a KeyFrame to the Animation Bone. 
+	// Works for arbitrary times -- Bones do not need to be declared and inserted in order.
 	void Bone::addFrame(KeyFrame f){
 		if (keyframes.empty()){
 			keyframes.push_back(f);
@@ -39,7 +27,7 @@ namespace T3D
 	}
 	
 
-
+	// Update the Bone's position by interpolating between the current and next keyframes.
 	void Bone::update(float time){
 		int frame = 0;
 		if (!keyframes.empty())
@@ -63,6 +51,7 @@ namespace T3D
 		}
 	}
 
+	// Dump information for this bone to standard output.
 	void Bone::printKeyFrames(){
 		std::vector<KeyFrame>::iterator kfi;
 		for (kfi=keyframes.begin(); kfi!=keyframes.end(); kfi++){

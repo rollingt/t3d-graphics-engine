@@ -30,31 +30,25 @@ namespace T3D
 		public Component
 	{
 	public:
+		// Create an animation of length `duration`. 
+		// Does not play or loop by default.
 		Animation(float duration);
-		virtual ~Animation();
-		
+		virtual ~Animation() = default;
 		virtual void update(float dt);
 
+		// Adds a bone to the parent game object.
 		void addBone(std::string n);
+
+		// Adds a named keyframe describing a rotation and position beginning at a provided timestep.
 		void addKey(std::string n, float time, Quaternion rot, Vector3 pos);
 
-		void play(){ time = 0; playing = true; }
-		void pause(){ playing = false; }
-		void loop(bool loop){ looping = loop; } 
+		// Runtime helper functions.
+		void play()          { time = 0; playing = true; }
+		void pause()         { playing = false;          }
+		void loop(bool loop) { looping = loop;           } 
 
-		void printFrames()
-        {
-            std::cout << "Animation:\n";
-			BoneMap::iterator it;
-			for (it = bones.begin(); it!= bones.end(); it++){
-				std::cout << "bone: " << it->first << "\n";
-				Bone *b = it->second;
-				b->printFrames();
-			}
-        }
-
-		void printKeyFrames()
-        {
+		// Log all keyframes for the animation.
+		void printFrames() {
             std::cout << "Animation:\n";
 			BoneMap::iterator it;
 			for (it = bones.begin(); it!= bones.end(); it++){
@@ -66,12 +60,10 @@ namespace T3D
 
 	protected:
 		BoneMap bones;
-		float duration;
-		int frames;
-
-		float time;
-		bool playing;
-		bool looping;
+		float   duration;
+		float   time;
+		bool    playing;
+		bool    looping;
 	};
 }
 

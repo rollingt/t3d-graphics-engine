@@ -30,7 +30,7 @@ namespace T3D
 				setVertex(vpos++,v.x,v.y,v.z);
 
 				if (closed || i<path.size()-1){
-					setFace(fpos++,(j+i*points.size()),
+					setQuadFace(fpos++,(j+i*points.size()),
 								   ((j+1)%points.size()+i*points.size()),
 								   ((j+1)%points.size()+((i+1)%path.size())*points.size()),
 								   (j+((i+1)%path.size())*points.size()));

@@ -20,11 +20,11 @@ namespace T3D
 	class Component
 	{
 	public:
-		Component(void);
-		virtual ~Component(void);
+		Component(void) : gameObject(nullptr) { }
+		virtual ~Component(void) = default;
 
-		virtual void update(float dt){};
-		virtual void init(GameObject* go){ gameObject = go; };
+		virtual void update(float dt)     { /* overridden */ };
+		virtual void init(GameObject* go) { gameObject = go; };
 
 	public:
 		GameObject *gameObject;

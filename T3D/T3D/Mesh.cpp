@@ -146,12 +146,12 @@ namespace T3D
 	Vector3 Mesh::getNormal(int i){
 		return Vector3(normals[i*3], normals[i*3+1], normals[i*3+2]);
 	}
-	void Mesh::setFace(int i, int a, int b, int c){
+	void Mesh::setTriFace(int i, int a, int b, int c){
 		triIndices[i*3] = a;
 		triIndices[i*3+1] = b;
 		triIndices[i*3+2] = c;
 	}
-	void Mesh::setFace(int i, int a, int b, int c, int d){
+	void Mesh::setQuadFace(int i, int a, int b, int c, int d){
 		quadIndices[i*4] = a;
 		quadIndices[i*4+1] = b;
 		quadIndices[i*4+2] = c;

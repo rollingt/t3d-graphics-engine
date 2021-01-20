@@ -12,9 +12,5 @@
 
 namespace T3D
 {
-
-	Colour::~Colour(void)
-	{
-	}
-
+	/* Plain old data class : Implementation inside header */ 
 }

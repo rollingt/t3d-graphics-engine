@@ -14,18 +14,17 @@
 
 namespace T3D
 {
-	Animation::Animation(float duration) : duration(duration)
-	{
-		time = 0;
-		looping = false;
-		playing = false;
-	}
+	// Create an animation of length `duration`. 
+	// Does _not_ play or loop by default.
+	Animation::Animation(float duration) : duration(duration),
+										   time(0),
+										   looping(false),
+										   playing(false) { }
 
 
-	Animation::~Animation(void)
-	{
-	}
-
+	// Adds a named keyframe describing a rotation and position beginning at a provided timestep.
+	// NOTE(Evan): This is incorrect if the provided time is outside the animation's range.
+	//             Should this be clamped to the animation's range and logged?
 	void Animation::addKey(std::string n, float time, Quaternion rot, Vector3 pos){
 		BoneMap::iterator it = bones.find(n);
 
@@ -38,6 +37,7 @@ namespace T3D
 		bones[n]->addFrame(f);
 	}
 
+	// Adds a bone to the parent game object.
 	void Animation::addBone(std::string n)
 	{
 		Bone *b = new Bone();
@@ -49,6 +49,8 @@ namespace T3D
 		}
 	}
 
+	// Integrate the change in time `dt` to the animation's state.
+	// Looping animations are reset to the beginning, and non-looping animations are flagged as finished.
 	void Animation::update(float dt){		
 		if (playing){
 			time += dt;

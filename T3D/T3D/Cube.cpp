@@ -58,17 +58,17 @@ namespace T3D
 		// Build quads
 		pos = 0;
 		//front
-		setFace(pos++,3,2,1,0);
+		setQuadFace(pos++,3,2,1,0);
 		//back
-		setFace(pos++,4,5,6,7);
+		setQuadFace(pos++,4,5,6,7);
 		//left
-		setFace(pos++,11,10,9,8);
+		setQuadFace(pos++,11,10,9,8);
 		//right
-		setFace(pos++,12,13,14,15);
+		setQuadFace(pos++,12,13,14,15);
 		//bottom
-		setFace(pos++,19,18,17,16);
+		setQuadFace(pos++,19,18,17,16);
 		//top
-		setFace(pos++,20,21,22,23);
+		setQuadFace(pos++,20,21,22,23);
 
 		// Check vertex and index arrays
 		checkArrays();
