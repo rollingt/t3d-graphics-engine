@@ -54,7 +54,7 @@ namespace T3D
 			for (it = bones.begin(); it!= bones.end(); it++){
 				std::cout << "bone: " << it->first << "\n";
 				Bone *b = it->second;
-				b->printFrames();
+				b->printKeyFrames();
 			}
         }
 
