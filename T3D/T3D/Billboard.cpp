@@ -17,10 +17,7 @@
 
 namespace T3D
 {
-	Billboard::~Billboard(void)
-	{
-	}
-	
+	// Initialise the Billboard component with its parent GameObject.
 	void Billboard::init(GameObject* go){
 		gameObject = go;
 		
@@ -28,6 +25,7 @@ namespace T3D
 		gameObject->setMesh(mesh);
 	}
 	
+	// Update the Billboard's facing every frame to ensure it's looking at the camera.
 	void Billboard::update(float dt){	
 		Vector3 target = camera->getWorldPosition();
 
