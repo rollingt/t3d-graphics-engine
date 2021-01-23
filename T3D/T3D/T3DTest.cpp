@@ -29,18 +29,9 @@
 #include "Sweep.h"
 #include "SweepPath.h"
 
-namespace T3D{
+namespace T3D {
 
-	T3DTest::T3DTest(void)
-	{
-	}
-
-
-	T3DTest::~T3DTest(void)
-	{
-	}
-
-	bool T3DTest::init(){
+	bool T3DTest::init() {
 		// Call init of superclass (sets up sdl and opengl)
 		WinGLApplication::init();
 
