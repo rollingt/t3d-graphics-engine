@@ -20,7 +20,10 @@ namespace T3D
 	class Mesh : public Component
 	{
 	public:
+		// Create a Mesh with initialised buffers and zero counts.
 		Mesh(void);
+
+		// Delete a Mesh's buffers with non-zero counts.
 		virtual ~Mesh(void);
 
 		// Accessors.
@@ -36,7 +39,7 @@ namespace T3D
 
 
 
-		// Initialises internal Vertex, Index and Colour buffers based on
+		// Initialises internal buffers (Vertex, Index, UV, etc) based on
 		// the number of vertices the caller requires to render primitives.
 		void initArrays(int numVerts, int numTris, int numQuads);
 
@@ -71,6 +74,7 @@ namespace T3D
 		virtual void    setQuadFace(int i, int a, int b, int c, int d);
 		virtual void    setUV(int i, float u, float v);
 
+
 	protected:
 		int numVerts, numTris, numQuads;
 
@@ -81,6 +85,9 @@ namespace T3D
 
 		unsigned int *triIndices;
 		unsigned int *quadIndices;
+
+	private:
+		void calcUVPlane(uint32_t vectorOffsetOne, uint32_t vectorOffsetTwo);
 	};
 }
 
