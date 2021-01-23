@@ -233,21 +233,42 @@ namespace T3D
 			 Vector3 v2 = getVertex(triIndices[i*3+1]); 
 			 Vector3 v3 = getVertex(triIndices[i*3+2]);
 			 Vector3 normal = (v2-v1).cross(v3-v2);
+			// normalise so that primitives of different sizes have equal weight
+			 normal.normalise();
 			 addNormal(triIndices[i*3],normal);			 
 			 addNormal(triIndices[i*3+1],normal);
 			 addNormal(triIndices[i*3+2],normal);
 		}
 
 		// add normal for all quads
-		for (int i=0; i<numQuads; i++){
-			 Vector3 v1 = getVertex(quadIndices[i*4]); 
-			 Vector3 v2 = getVertex(quadIndices[i*4+1]); 
-			 Vector3 v3 = getVertex(quadIndices[i*4+2]);
-			 Vector3 normal = (v2-v1).cross(v3-v2);
-			 addNormal(quadIndices[i*4],normal);			 
-			 addNormal(quadIndices[i*4+1],normal);
-			 addNormal(quadIndices[i*4+2],normal);
-			 addNormal(quadIndices[i*4+3],normal);
+		// nonplanar quads are given non-uniform normals to simulate curvature
+		// quads with 3 points collinear are treated as a tri
+		for (int i = 0; i < numQuads; i++) {
+			Vector3 vs[4];
+			for (int j = 0; j < 4; j++) {
+				vs[j] = getVertex(quadIndices[i * 4 + j]);
+			}
+			Vector3 normals[4];
+			bool isTri = false;
+			Vector3 triNormal = Vector3(0.0f, 0.0f, 0.0f);
+			for (int j = 0; j < 4; j++) {
+				Vector3 v1 = vs[(j+3)%4];
+				Vector3 v2 = vs[j];
+				Vector3 v3 = vs[(j+1)%4];
+				Vector3 normal = (v2 - v1).cross(v3 - v2);
+				if (normal.length() > 1e-08) {
+					// normalise so that primitives of different sizes have equal weight
+					normal.normalise();
+					normals[j] = normal;
+					triNormal = normal;
+				}
+				else {
+					isTri = true;
+				}
+			}
+			for (int j = 0; j < 4; j++) {
+				addNormal(quadIndices[i*4+j], isTri ? triNormal : normals[j]);
+			}
 		}
 
 		// normalise normals
