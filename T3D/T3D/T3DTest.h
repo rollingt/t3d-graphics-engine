@@ -19,8 +19,8 @@ class T3DTest :
 	public WinGLApplication
 {
 public:
-	T3DTest(void);
-	~T3DTest(void);
+	T3DTest(void)  = default;
+	~T3DTest(void) = default;
 
 	bool init();
 };
