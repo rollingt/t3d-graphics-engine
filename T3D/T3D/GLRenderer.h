@@ -25,7 +25,7 @@ namespace T3D
 	// no way to manage a 2D rendering context.
 	typedef struct {
 		Texture *texture;
-		int x,y;					// screen/window coordinates
+		int x,y;					// screen/window coordinates. NOTE(Evan): X increases left-to-right, Y increases up-to-down.
 	} overlay2D;
 
 
@@ -33,8 +33,8 @@ namespace T3D
 		public Renderer
 	{
 	public:
-		GLRenderer(void);
-		virtual ~GLRenderer(void);
+		GLRenderer(void)          = default;
+		virtual ~GLRenderer(void) = default;
 
 		void prerender();
 		void postrender();

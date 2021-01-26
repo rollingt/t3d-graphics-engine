@@ -21,8 +21,8 @@ namespace T3D
 		public Component
 	{
 	public:
-		LookAtBehaviour(Transform *t) : target(t){};
-		~LookAtBehaviour(void);
+		LookAtBehaviour(Transform *t) : target(t) { };
+		~LookAtBehaviour(void) = default;
 				
 		virtual void update(float dt);
 
