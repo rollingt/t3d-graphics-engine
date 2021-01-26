@@ -21,12 +21,15 @@ namespace T3D
 	public:
 		enum { AMBIENT, DIRECTIONAL, POINT, SPOT };
 
-		Light(int type = AMBIENT);
-		virtual ~Light(void);
+		Light(int type = AMBIENT) : Component(), 
+									type(type),
+									enabled(true) { }
+		~Light(void) = default;
 
-		void setAmbient(float r, float g, float b, float a = 1.0){ ambient[0] = r; ambient[1] = g; ambient[2] = b; ambient[3] = a; }
-		void setDiffuse(float r, float g, float b, float a = 1.0){ diffuse[0] = r; diffuse[1] = g; diffuse[2] = b; diffuse[3] = a; }
-		void setSpecular(float r, float g, float b, float a = 1.0){ specular[0] = r; specular[1] = g; specular[2] = b; specular[3] = a; }
+		// Initialise (Blinn-)Phong lighting model terms
+		void setAmbient(float r, float g, float b, float a = 1.0)  { ambient[0]  = r; ambient[1]  = g; ambient[2]  = b; ambient[3]  = a; }
+		void setDiffuse(float r, float g, float b, float a = 1.0)  { diffuse[0]  = r; diffuse[1]  = g; diffuse[2]  = b; diffuse[3]  = a; }
+		void setSpecular(float r, float g, float b, float a = 1.0) { specular[0] = r; specular[1] = g; specular[2] = b; specular[3] = a; }
 
 	public:
 		int type;
