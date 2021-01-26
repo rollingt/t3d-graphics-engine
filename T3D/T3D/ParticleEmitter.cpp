@@ -38,6 +38,7 @@ namespace T3D
 
 	// Destructor
 	// deletes all particles
+	// TODO(Evan): This is redundant, STL containers call destructors already!
 	ParticleEmitter::~ParticleEmitter()
 	{
 		for (unsigned int i=0; i<particles.size(); i++)
