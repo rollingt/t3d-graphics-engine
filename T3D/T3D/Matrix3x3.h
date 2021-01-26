@@ -32,6 +32,7 @@ namespace T3D
             @note
                 It does <b>NOT</b> initialize the matrix for efficiency.
         */
+        #pragma warning(suppress: 26495) /* uninitialised member warning */
 		inline Matrix3x3 () {}
 
         inline explicit Matrix3x3 (const float arr[3][3])

@@ -27,6 +27,7 @@ namespace T3D
         float x, y, z, w;
 
     public:
+        #pragma warning(suppress: 26495) /* uninitialised member warning */
         inline Vector4()
         {
         }
