@@ -58,6 +58,7 @@ namespace T3D{
 		logfile.close();
 	}
 
+	// TODO(Evan): This should really use SDL's high resolution timer functionality
 	void PerfLogTask::update(float dt){
 		frameCount++;
 		elapsedTime += dt;
