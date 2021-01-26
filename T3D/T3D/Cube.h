@@ -19,8 +19,11 @@ namespace T3D
 		public Mesh
 	{
 	public:
+		// Create a cube with volume = size^3.
 		Cube(float size);
-		virtual ~Cube(void);
+
+		// Mesh deletes arrays if they have been created, not need to do anything here
+		virtual ~Cube(void) = default;
 	};
 }
 
