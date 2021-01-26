@@ -17,9 +17,8 @@ namespace T3D
 		public Mesh
 	{
 	public:
-		Sweep(std::vector<Vector3> points, SweepPath &path, bool closed = false);
-
-		virtual ~Sweep(void);
+		Sweep(std::vector<Vector3> &points, SweepPath &path, bool closed = false);
+		virtual ~Sweep(void) = default;
 	};
 }
 
