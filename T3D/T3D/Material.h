@@ -23,12 +23,13 @@ namespace T3D
 	class Material
 	{
 	public:
-		typedef enum {
-			BLEND_NONE,				// no texture blending
-			BLEND_DEFAULT,			// alpha blending (sourcd alpha=0.0 invisible, alpha=1.0 opaque)
-			BLEND_ADD,				// source and destination colour added
-			BLEND_MULTIPLY			// Source and Destination colour multiplied
-		} blendMode;
+		enum class BlendMode 
+		{
+			NONE,				// no texture blending
+			DEFAULT,			// alpha blending (sourcd alpha=0.0 invisible, alpha=1.0 opaque)
+			ADD,				// source and destination colour added
+			MULTIPLY			// Source and Destination colour multiplied
+		};
 
 		Material(void);
 		Material(float r, float g, float b, float a);
@@ -40,7 +41,7 @@ namespace T3D
 		void setShininess(float s){ shininess = s; }
 		void setFlatShading() { smooth = false; }
 		void setSmoothShading() { smooth = true; }
-		void setBlending(blendMode mode) { blending = mode; }
+		void setBlending(BlendMode mode) { blending = mode; }
 
 		bool isTextured(){ return textured; }
 		unsigned int getTexID(){ return texture->getID(); }
@@ -61,7 +62,7 @@ namespace T3D
 		float getShininess(){ return shininess; }
 
 		bool getSmoothShading() { return smooth; }
-		blendMode getBlending() { return blending; }
+		BlendMode getBlending() { return blending; }
 
 		void setSortedDraw(bool sort, bool noDepthWrite) { sortedDraw = sort; disableDepth = noDepthWrite; }
 		bool getSortedDraw() { return sortedDraw; }
@@ -80,7 +81,7 @@ namespace T3D
 		Shader *shader;
 
 		bool smooth;			// or flat shading
-		blendMode blending;		// basic pixel blending
+		BlendMode blending;		// basic pixel blending
 
 		bool sortedDraw;		// requires depth sorting when drawn
 		bool disableDepth;		// disables depth buffer updating (will still read)

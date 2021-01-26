@@ -39,14 +39,19 @@ namespace T3D{
 		fixedGreen->setDiffuse(0,1,0,1);
 
 		GameObject *camObj = new GameObject(this);
-		renderer->camera = new Camera(Camera::PERSPECTIVE, 0.1, 500.0, 45.0, 1.6);
+		float near   = 0.1f;
+		float far    = 500.0f;
+		float fovy   = 45.0f;
+		float aspect = 1.6f;
+
+		renderer->camera = new Camera(near, far, fovy, aspect);
 		camObj->getTransform()->setLocalPosition(Vector3(0,0,5));
 		camObj->getTransform()->setLocalRotation(Vector3(0,0,0));
 		camObj->setCamera(renderer->camera);
 		camObj->getTransform()->setParent(root);
 		
 		GameObject *lightObj = new GameObject(this);
-		Light *light = new Light(Light::DIRECTIONAL); 
+		Light *light = new Light(Light::Type::DIRECTIONAL); 
 		light->setAmbient(1,1,1);
 		light->setDiffuse(1,1,1);
 		light->setSpecular(1,1,1);

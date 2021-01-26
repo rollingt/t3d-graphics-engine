@@ -21,26 +21,33 @@ namespace T3D
 		public Component
 	{
 	public:
-		typedef enum {
+		enum class Type 
+		{
 			PERSPECTIVE,
 			ORTHOGRAPHIC
-		} projectionType;
+		};
 
 		// Safe default perspective camera
-		Camera::Camera() : type      (Camera::PERSPECTIVE),
+		Camera::Camera() : type      (Camera::Type::PERSPECTIVE),
 						   near      (0.1),
 						   far       (500.0),
 						   fovy      (45.0),
-						   aspect    (1.6) { }
+						   aspect    (1.6) ,
+						   left      (0), 
+						   right     (0), 
+						   bottom    (0), 
+						   top       (0)
+		{ }
 
-		// constructor optimised with perspective parameters
-		Camera(projectionType type, double near, double far, double fovy, double aspect);
-		// constructor with orthographic parameters
-		Camera(projectionType type, double near, double far, double left, double right, double bottom, double top);
+		// Perspective Camera
+		Camera(double near, double far, double fovy, double aspect);
+		// Orthographic Camera
+		Camera(double near, double far, double left, double right, double bottom, double top);
+
 		virtual ~Camera() = default;
 
 	public:
-		projectionType type;	// projection type
+		Type type;	// projection type
 
 		double far;				// far z plane (distance from viewer)
 		double near;			// near Z plane (distance from viewer)

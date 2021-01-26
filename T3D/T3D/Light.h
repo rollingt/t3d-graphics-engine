@@ -19,11 +19,18 @@ namespace T3D
 		public Component
 	{
 	public:
-		enum { AMBIENT, DIRECTIONAL, POINT, SPOT };
+		enum class Type { AMBIENT, DIRECTIONAL, POINT, SPOT };
 
-		Light(int type = AMBIENT) : Component(), 
-									type(type),
-									enabled(true) { }
+		Light(Type type = Type::AMBIENT) : Component(),        /* super */
+									       type                (type),
+									       enabled             (true),
+										   intensity           (0),
+										   constantAttenuation (0.0f),
+										   linearAttenuation   (0.0f),
+										   quadraticAttenuation(0.0f),
+										   ambient			   (/* zero */),
+										   diffuse 			   (/* zero */),
+										   specular			   (/* zero */) { }
 		~Light(void) = default;
 
 		// Initialise (Blinn-)Phong lighting model terms
@@ -32,7 +39,7 @@ namespace T3D
 		void setSpecular(float r, float g, float b, float a = 1.0) { specular[0] = r; specular[1] = g; specular[2] = b; specular[3] = a; }
 
 	public:
-		int type;
+		Type type;
 		bool enabled;
 
 		float ambient[4];

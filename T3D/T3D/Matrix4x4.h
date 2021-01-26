@@ -34,6 +34,7 @@ namespace T3D
             @note
                 It does <b>NOT</b> initialize the matrix for efficiency.
         */
+        #pragma warning(suppress: 26495) /* uninitialised member warning */
         inline Matrix4x4()
         {
         }
@@ -91,14 +92,14 @@ namespace T3D
 
 		inline float* operator [] ( int iRow )
         {
-            assert( iRow < 4 );
-            return m[iRow];
+            assert( iRow >= 0 && iRow < 4 );
+            return &_m[iRow * 4];  /* warning suppression */
         }
 
         inline const float *operator [] ( int iRow ) const
         {
-            assert( iRow < 4 );
-            return m[iRow];
+            assert( iRow >= 0 && iRow < 4 );
+            return &_m[iRow * 4];  /* warning suppression */
         }
 
         inline Matrix4x4 concatenate(const Matrix4x4 &m2) const

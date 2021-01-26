@@ -88,7 +88,7 @@ namespace T3D {
 	// Digital Differential Algorithm (DDA) algorithm from the 2D drawing lectures.
 	void DrawTask::drawDDALine(int x1, int y1, int x2, int y2,Colour c){
 		float ystep = float(y2-y1)/(x2-x1);
-		float y = y1;
+		float y = float(y1);
 		for (int x = x1; x<x2; x++){
 			pushPixel(x, int(y), c);
 			y += ystep;
@@ -98,10 +98,8 @@ namespace T3D {
 
 	// Draw a coloured line from (x1, y1) to (x2, y2) using the integer-only
 	// Bresenham algorithm from the 2D drawing lectures.
-	// FIXME:
-	// - Not implemented yet! That's your job.
-	void DrawTask::drawBresLine(int x1, int y1, int x2, int y2,Colour c){
-	}
+	void DrawTask::drawBresLine(int x1, int y1, int x2, int y2,Colour c)
+	{ /* UNIMPLEMENTED */ }
 
 
 	// Provides one frames' worth of pixels to draw onto the screen.

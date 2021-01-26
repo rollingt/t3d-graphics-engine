@@ -31,19 +31,19 @@ namespace T3D{
 
 	protected:
 		long int frameCount;	// total frame count
-		float elapsedTime;		// total elapsed time
+		double elapsedTime;		// total elapsed time
 
-		float sampleElapsed;	// elapsed performance sampling period (up to PERF_SAMPLING_PERIOD)
-		float sampleFrames;		// number of frames within sampling period
+		double sampleElapsed;	// elapsed performance sampling period (up to PERF_SAMPLING_PERIOD)
+		double sampleFrames;		// number of frames within sampling period
 
 		// Recorded frame rates
-		float avgFrameRate;
-		float minFrameRate;
-		float maxFrameRate;
+		double avgFrameRate;
+		double minFrameRate;
+		double maxFrameRate;
 
 		// Alternate way of calculating avergae frame rate
 		long int sampleCount;
-		float frameRateTotal;
+		double frameRateTotal;
 
 		bool diagDisplay;		// text overlay display flag
 		Texture *diagOverlay;	// last overlay texture generated

@@ -8,50 +8,50 @@ namespace T3D
 		\param path		Defines the path to sweep along
 		\param closed		If true, the last profile along the path will be connected back to the first profile
 		*/
-	Sweep::Sweep(std::vector<Vector3> points, SweepPath &path, bool closed)
+	Sweep::Sweep(std::vector<Vector3> &profilePoints, SweepPath &path, bool closed) : Mesh()
 	{
-		int numVerts = path.size()*points.size();
-		int numTris = 0;
-		int numQuads = 0;
+		/* Add an extra step to the sweep path if its closed */
+		if (closed) 
+		{
+			path.addTransform(path[0]);
+		}
 
-		if (closed)
-			numQuads = path.size()*points.size();
-		else
-			numQuads = (path.size()-1)*points.size();
+		// MSVC cannot inline `size()` calls for a vector that is mutable, as its possible
+		// for the size to change during a loop body.
+		// So, grab the sizes here and use them throughout the rest of the function as we know they don't change.
+		const uint32_t pointsInPath      = path.size();
+		const uint32_t verticesInProfile = profilePoints.size();
 
-		initArrays(numVerts, numTris, numQuads);
+		int numVerts = pointsInPath * verticesInProfile;
+		int numQuads = numVerts;
+
+			       /* triangles not used */
+		initArrays(numVerts, 0, numQuads);
 		
 		int vpos = 0;
 		int fpos = 0;
-		for (unsigned int i=0; i<path.size(); i++){
-			for(unsigned int j = 0; j < points.size(); j++)
+
+		for (uint32_t i = 0; i < pointsInPath; i++){
+			for(uint32_t j = 0; j < verticesInProfile; j++)
 			{
-				Vector3 v = path[i].transformPoint(points[j]);
+				Vector3 v = path[i].transformPoint(profilePoints[j]);
 				setVertex(vpos++,v.x,v.y,v.z);
 
-				if (closed || i<path.size()-1){
-					setQuadFace(fpos++,(j+i*points.size()),
-								   ((j+1)%points.size()+i*points.size()),
-								   ((j+1)%points.size()+((i+1)%path.size())*points.size()),
-								   (j+((i+1)%path.size())*points.size()));
-				}
+				setQuadFace(fpos++,
+							( (j + 0)                      + (i + 0)                  * verticesInProfile),
+							(((j + 1) % verticesInProfile) + (i + 0)                  * verticesInProfile),
+							(((j + 1) % verticesInProfile) + ((i + 1) % pointsInPath) * verticesInProfile),
+							( (j + 0)                      + ((i + 1) % pointsInPath) * verticesInProfile));
 			}
 		}
 
 		checkArrays();
-		
 		calcNormals();		
 		
 		int pos = 0;
 		for (int i=0; i<numVerts; i++){
 			colors[pos++] = 1; colors[pos++] = 0; colors[pos++] = 1; colors[pos++] = 1;
 		}
-	}
-
-	
-	//! Destructor
-	Sweep::~Sweep(void)
-	{
 	}
 
 }

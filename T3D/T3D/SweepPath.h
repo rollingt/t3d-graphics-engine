@@ -15,7 +15,7 @@ namespace T3D
 
 		Transform operator[](int index) const;
 		void addTransform(Transform &t);
-		int size(){ return path.size(); }
+		uint32_t size(){ return path.size(); }
 
 		void makeCirclePath(float radius, int density);
 

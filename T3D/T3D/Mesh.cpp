@@ -48,51 +48,55 @@ namespace T3D
 	// the number of vertices the caller requires to render primitives.
 	// For example, if you are creating a Cube out of Quads with flat (Gouraud) shading, 
 	// you would require 24 (4 * 6) vertices, 0 tris, and 6 quads.
-	void Mesh::initArrays(int numVerts, int numTris, int numQuads) {
+	void Mesh::initArrays(uint32_t numVerts, uint32_t numTris, uint32_t numQuads) {
 		this->numVerts = numVerts;
 		this->numTris = numTris;
 		this->numQuads = numQuads;
 
-		if (numVerts > 0) {
-			vertices = new float[numVerts * 3];
-			for (int i = 0; i < numVerts * 3; i++) {
-				vertices[i] = nanf("");
-			}
+		if (numVerts == 0) return; // TODO(Evan): Log!
 
-			uvs = new float[numVerts * 2];
-			for (int i = 0; i < numVerts * 2; i++) {
-				uvs[i] = 0.0f;
-			}
+		vertices = new float[numVerts * 3];
+		for (uint32_t i = 0; i < numVerts * 3; i++) {
+			vertices[i] = nanf("");
+		}
 
-			normals = new float[numVerts * 3];
-			for (int i = 0; i < numVerts * 3; i++) {
-				normals[i] = 0.0f;
-			}
+		uvs = new float[numVerts * 2];
+		for (uint32_t i = 0; i < numVerts * 2; i++) {
+			uvs[i] = 0.0f;
+		}
 
-			colors = new float[numVerts * 4];
-			for (int i = 0; i < numVerts * 4; i++) {
-				colors[i] = 1.0f;
-			}
+		normals = new float[numVerts * 3];
+		for (uint32_t i = 0; i < numVerts * 3; i++) {
+			normals[i] = 0.0f;
+		}
 
-			if (numQuads > 0) {
-				quadIndices = new unsigned int[numQuads * 4];
-				for (int i = 0; i < numQuads * 4; i++) {
-					quadIndices[i] = -1;
-				}
+		colors = new float[numVerts * 4];
+		for (uint32_t i = 0; i < numVerts * 4; i++) {
+			colors[i] = 1.0f;
+		}
+
+		if (numQuads > 0) {
+			quadIndices = new unsigned int[numQuads * 4];
+			for (uint32_t i = 0; i < numQuads * 4; i++) {
+				quadIndices[i] = -1;
 			}
-			if (numTris > 0) {
-				triIndices = new unsigned int[numTris * 3];
-				for (int i = 0; i < numTris * 3; i++) {
-					triIndices[i] = -1;
-				}
+		}
+		if (numTris > 0) {
+			triIndices = new unsigned int[numTris * 3];
+			for (uint32_t i = 0; i < numTris * 3; i++) {
+				triIndices[i] = -1;
 			}
 		}
 	}
 
 	// Checks all internal buffers for erroneous values, logging relevant messages.
 	bool Mesh::checkArrays() {
+		if (!numVerts) return true; /*  TODO(Evan): Log an empty mesh! */
+		uint32_t quadIndicesMax  = numQuads ? (numQuads * 4u) - 1u : 0; /* prevent overflow */
+		uint32_t triIndicesMax   = numTris  ? (numTris  * 3u) - 1u : 0; /* prevent overflow */
+
 		bool ok = true;
-		for (int i = 0; i < numVerts; i++) {
+		for (uint32_t i = 0; i < numVerts; i++) {
 			Vector3 v = getVertex(i);
 			if (isnan(v.x) || isnan(v.y) || isnan(v.z)) {
 				std::cout << "Vertex " << i << " has not been set\n";
@@ -100,19 +104,37 @@ namespace T3D
 			}
 		}
 
-		for (int i = 0; i < numQuads; i++) {
-			if (quadIndices[i * 4] < 0 || quadIndices[i * 4 + 1] < 0 || quadIndices[i * 4 + 2] < 0 || quadIndices[i * 4 + 3] < 0 ||
-				quadIndices[i * 4] > numVerts-1 || quadIndices[i * 4 + 1] > numVerts - 1 || quadIndices[i * 4 + 2] > numVerts - 1 || quadIndices[i * 4 + 3] > numVerts - 1) {
-				std::cout << "Quad Face " << i << " has not been set: " << quadIndices[i * 4] << "," << quadIndices[i * 4+1]<< "," << quadIndices[i * 4+2]<< "," << quadIndices[i * 4+3] << "\n";
+		for (uint32_t i = 0; i < quadIndicesMax; i += 4) {
+			if (quadIndices[i + 0] > numVerts ||
+				quadIndices[i + 1] > numVerts || 
+				quadIndices[i + 2] > numVerts || 
+				quadIndices[i + 3] > numVerts)
+			{
+				printf("QUAD INDICES MAX :: %u\n", quadIndicesMax);
+				// TODO(Evan): Log!
+				std::cout << "Quad Face " << i / 4 << " has not been set: " << 
+					quadIndices[i + 0] << "," << 
+					quadIndices[i + 1] << "," << 
+					quadIndices[i + 2] << "," << 
+					quadIndices[i + 3] << "\n";
+
 				ok = false;
 			}
 		}
 
 
-		for (int i = 0; i < numTris; i++) {
-			if (triIndices[i * 3] < 0 || triIndices[i * 3 + 1] < 0 || triIndices[i * 3 + 2] < 0 || 
-				triIndices[i * 3] > numVerts - 1 || triIndices[i * 3 + 1] > numVerts - 1 || triIndices[i * 3 + 2] > numVerts - 1) {
-				std::cout << "Tri Face " << i << " has not been set: " << triIndices[i * 3] << "," << triIndices[i * 3 + 1] << "," << triIndices[i * 3 + 2] << "\n";
+		for (uint32_t i = 0; i < triIndicesMax; i += 3) {
+			if (triIndices[i + 0] > numVerts ||
+				triIndices[i + 1] > numVerts || 
+				triIndices[i + 2] > numVerts)
+			{
+				printf("TRI INDICES MAX :: %u\n", triIndicesMax);
+				// TODO(Evan): Log!
+				std::cout << "Tri Face " << i / 3 << " has not been set: " << 
+					quadIndices[i + 0] << "," << 
+					quadIndices[i + 1] << "," << 
+					quadIndices[i + 2] << "," << "\n";
+
 				ok = false;
 			}
 		}
@@ -223,12 +245,12 @@ namespace T3D
 	// This is especially noticable when using the Sweep class.
 	void Mesh::calcNormals(){
 		// set all normals to zero
-		for (int i=0; i<numVerts; i++){
+		for (uint32_t i = 0; i < numVerts; i++){
 			setNormal(i,0,0,0);
 		}
 
 		// add normal for all tris
-		for (int i=0; i<numTris; i++){
+		for (uint32_t i = 0; i < numTris; i++){
 			 Vector3 v1 = getVertex(triIndices[i*3]); 
 			 Vector3 v2 = getVertex(triIndices[i*3+1]); 
 			 Vector3 v3 = getVertex(triIndices[i*3+2]);
@@ -243,7 +265,7 @@ namespace T3D
 		// add normal for all quads
 		// nonplanar quads are given non-uniform normals to simulate curvature
 		// quads with 3 points collinear are treated as a tri
-		for (int i = 0; i < numQuads; i++) {
+		for (uint32_t i = 0; i < numQuads; i++) {
 			Vector3 vs[4];
 			for (int j = 0; j < 4; j++) {
 				vs[j] = getVertex(quadIndices[i * 4 + j]);
@@ -266,7 +288,7 @@ namespace T3D
 					isTri = true;
 				}
 			}
-			for (int j = 0; j < 4; j++) {
+			for (uint32_t j = 0; j < 4u; j++) {
 				addNormal(quadIndices[i*4+j], isTri ? triNormal : normals[j]);
 			}
 		}
@@ -278,7 +300,7 @@ namespace T3D
 	// Reverse the direction of each normal, i.e. if pointing 'outwards', it now points 'inwards'.
 	// Preserve unit-length normals, but doesn't introduce normalization if they are not already unit length.
 	void Mesh::invertNormals(){
-		for (int i=0; i<numVerts; i++){
+		for (uint32_t i = 0; i < numVerts; i++){
 			Vector3 n = getNormal(i);
 			setNormal(i,-n.x,-n.y,-n.z);
 		}
@@ -288,7 +310,7 @@ namespace T3D
 	// NOTE(Evan): To be consistent with the inheritance hierarchy, this should probably be a member function
 	// of the Sphere subclass as it's not useful for all meshes.
 	void Mesh::calcUVSphere(){		
-		for (int i=0; i<numVerts; i++){
+		for (uint32_t i = 0; i < numVerts; i++){
 			Vector3 v = getVertex(i); 
 			float r = sqrt(v.x*v.x+v.z*v.z);
 			setUV(i,atan2f(v.x,v.z)/Math::PI+0.5f, atan2f(v.y,r)/Math::PI+0.5f);
@@ -331,7 +353,7 @@ namespace T3D
 		float maxP1 = 0; // Maximum for 1st plane
 		float maxP2 = 0; // Maximum for 2nd plane
 
-		for (int i = 0; i < numVerts; i++){
+		for (uint32_t i = 0; i < numVerts; i++){
 			Vector3 v = getVertex(i); 
 			float absP1 = fabs(v[vectorOffsetOne]);
 			float absP2 = fabs(v[vectorOffsetTwo]);
@@ -340,7 +362,7 @@ namespace T3D
 			maxP2 = std::max(absP2, maxP2);
 		}
 		
-		for (int i = 0; i < numVerts; i++){
+		for (uint32_t i = 0; i < numVerts; i++){
 			Vector3 v = getVertex(i); 
 
 			float U = v[vectorOffsetOne] / maxP1 / 2.0f + 0.5f;
@@ -352,7 +374,7 @@ namespace T3D
 
 	// Calculates and set every vertex normal to be unit length, i.e. normalized.
 	void Mesh::normalise(){
-		for (int i=0; i<numVerts; i++){
+		for (uint32_t i=0; i<numVerts; i++){
 			Vector3 v = getNormal(i);
 			v.normalise();
 			setNormal(i,v);
