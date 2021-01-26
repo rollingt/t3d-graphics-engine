@@ -386,5 +386,8 @@
     <ClInclude Include="ParticleGravity.h">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
+    <ClInclude Include="DefaultDebugOptions.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
