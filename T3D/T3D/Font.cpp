@@ -30,7 +30,9 @@ namespace T3D{
 		TTF_CloseFont(ttf);
 	}
 
-	bool font::isFont(const char *filename, int pointSize)
+	// Returns true if the font at the absolute path 'filename' exists and is available
+	// in at least 'pointSize' size
+	bool font::matches_family_and_size(const char *filename, int pointSize)
 	{
 		return name.compare(filename) == 0 && size == pointSize;
 	}

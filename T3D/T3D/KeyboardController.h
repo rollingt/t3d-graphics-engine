@@ -21,7 +21,7 @@ namespace T3D
 	{
 	public:
 		KeyboardController(void);
-		virtual ~KeyboardController(void);
+		~KeyboardController(void) = default;
 
 		virtual void update(float dt);
 		void keyDownResolve(float dt);
@@ -29,8 +29,8 @@ namespace T3D
 		void mouseMoveResolve();
 
 	private:
-		float keySensitivity;
-		float mouseSensitivity;
+		float keySensitivity,   keySensitivityMin,   keySensitivityMax;
+		float mouseSensitivity, mouseSensitivityMin, mouseSensitivityMax;
 	};
 
 }

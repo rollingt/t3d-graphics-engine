@@ -25,10 +25,10 @@ namespace T3D{
 	}
 
 	void SoundTestTask::update(float dt){
-		if (Input::keyDown[KEY_SPACE]){
+		if (Input::keysDown[KEY_SPACE]){
 			sound->play();
 		}
-		if (Input::keyDown[KEY_P]){
+		if (Input::keysDown[KEY_P]){
 			if (music->isPlaying()){
 				music->pause();
 			} else {

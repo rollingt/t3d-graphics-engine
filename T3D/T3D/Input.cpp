@@ -13,23 +13,23 @@
 
 namespace T3D
 {
-	bool Input::keyDown[512];
+	bool Input::keysDown[MAX_KEYS];
 	int Input::mouseX = 0;
 	int Input::mouseY = 0;
 
 	void Input::init(){
-		for (int i=0; i<512; i++){
-			keyDown[i] = false;
+		for (auto &key: keysDown) {
+			key = false;
 		}
 		mouseX = 0; mouseY = 0;
 	}
 
 	void Input::onKeyDown(int keycode){
-		keyDown[keycode] = true;
+		keysDown[keycode] = true;
 	}
 
 	void Input::onKeyUp(int keycode){
-		keyDown[keycode] = false;
+		keysDown[keycode] = false;
 	}
 
 	void Input::onMouseMotion(int dx, int dy){

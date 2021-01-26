@@ -7,8 +7,7 @@
 // cube.cpp
 //
 // Simple cube mesh with coloured sides
-// Note that faces are triangles only and that normals are repeated for each vertex
-// This allows use of gl array pointers
+// Faces are GL quads.
 
 #include "Cube.h"
 
@@ -111,11 +110,5 @@ namespace T3D
 			uvs[pos++] = 1; uvs[pos++] = 1; 
 			uvs[pos++] = 1; uvs[pos++] = 0; 
 		}
-	}
-
-
-	Cube::~Cube(void)
-	{
-		// Mesh delete arrays if they have been created, not need to do anything here
 	}
 }

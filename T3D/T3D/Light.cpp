@@ -12,17 +12,5 @@
 
 namespace T3D
 {
-
-	Light::Light(int type)
-	{
-		this->type = type;
-		gameObject = 0;
-		enabled = true;
-	}
-
-
-	Light::~Light(void)
-	{
-	}
-
+	/* Plain old data class (with a non-owning GameObject pointer) : Initialiser inside header. */
 }

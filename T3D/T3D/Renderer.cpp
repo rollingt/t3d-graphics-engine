@@ -43,8 +43,11 @@ namespace T3D
 	}
 
 	/*! Destructor
-	  The destructor is responsible for freeing all components
-	  \todo		Free materials and check for other stuff that might need freeing
+	  NOTE(Evan): Textures are loaded and owned by the callee. Textures do not properly clean up resources on destruction. 
+				  This means resource buffers and IDs will leak even if they are are stored in a RAII STL container, e.g. std::vector,
+				  One way to fix this without implementing an (OS-independent) asset & file system manager is have Textures 
+				  register themselves with e.g. GLRenderer upon initialisation, which manages their internal buffers, IDs, mip levels etc. 
+	  \todo	Free materials and check for other stuff that might need freeing
 	  */
 	Renderer::~Renderer(void)
 	{

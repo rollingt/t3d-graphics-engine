@@ -141,6 +141,8 @@ namespace T3D
 	#define KEY_F14			295 
 	#define KEY_F15			296 
 
+	#define MAX_KEYS 512
+
 	class Input
 	{
 	public:
@@ -148,9 +150,7 @@ namespace T3D
 		static void onKeyDown(int keycode);
 		static void onKeyUp(int keycode);
 		static void onMouseMotion(int dx, int dy);
-
-	public:
-		static bool keyDown[512];
+		static bool keysDown[MAX_KEYS];
 		static int mouseX, mouseY;
 	};
 

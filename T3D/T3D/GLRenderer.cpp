@@ -23,14 +23,6 @@
 
 namespace T3D
 {
-	GLRenderer::GLRenderer(void)
-	{
-	}
-
-	GLRenderer::~GLRenderer(void)
-	{
-	}
-
 	void GLRenderer::prerender()
 	{
 
@@ -422,6 +414,7 @@ namespace T3D
 		} else {
 			std::cout << "warning: the image is not truecolor..  this will probably break\n";
 			// this error should not go unhandled
+			// TODO(Evan) Logging!
 		}
 
 		return texture_format;
@@ -514,6 +507,7 @@ namespace T3D
 		}
 	}
 
+	// Free the OpenGL texture handle and GPU-side buffers associated with `tex`.
 	void GLRenderer::unloadTexture(Texture *tex)
 	{
 		GLuint textureID = tex->getID();

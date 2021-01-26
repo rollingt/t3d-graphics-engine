@@ -166,17 +166,17 @@ namespace T3D
 				break;
 			case SDL_KEYDOWN:				
 				Input::onKeyDown(e->key.keysym.sym);
-				if (Input::keyDown[KEY_ESCAPE])
+				if (Input::keysDown[KEY_ESCAPE])
 					running = false;
-				if (Input::keyDown[KEY_F1])
+				if (Input::keysDown[KEY_F1])
 					renderer->toggleWireframe();
-				if (Input::keyDown[KEY_F2])
+				if (Input::keysDown[KEY_F2])
 					renderer->toggleAxes();
-				if (Input::keyDown[KEY_F3])
+				if (Input::keysDown[KEY_F3])
 					renderer->toggleGrid();
-				if (Input::keyDown[KEY_F4])
+				if (Input::keysDown[KEY_F4])
 					renderer->togglePoints();
-				if (Input::keyDown[KEY_F9])
+				if (Input::keysDown[KEY_F9])
 				{
 					int line = 0;
 					addTask(new DiagMessageTask(this, "ESCAPE     quit", 2, 600-(line++*20), true, 5.0));
@@ -187,7 +187,7 @@ namespace T3D
 					addTask(new DiagMessageTask(this, "F9         show help", 2, 600-(line++*20), true, 5.0));
 					addTask(new DiagMessageTask(this, "F10        show stats", 2, 600-(line++*20), true, 5.0));
 				}
-				if (Input::keyDown[KEY_F10])
+				if (Input::keysDown[KEY_F10])
 				{
 					// find log task
 					PerfLogTask *task = (PerfLogTask *)findTask("PerfLogTask");
