@@ -150,7 +150,7 @@ namespace T3D
 		static void onKeyDown(int keycode);
 		static void onKeyUp(int keycode);
 		static void onMouseMotion(int dx, int dy);
-		static bool keyDown[MAX_KEYS];
+		static bool keysDown[MAX_KEYS];
 		static int mouseX, mouseY;
 	};
 
