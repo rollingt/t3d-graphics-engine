@@ -15,38 +15,41 @@
 namespace T3D
 {
 	// constructor with perspective parameters
-	Camera::Camera(projectionType type, double near, double far, double fovy, double aspect)
+	Camera::Camera(double near, double far, double fovy, double aspect) : Component()
 	{
-		gameObject = 0;
-
-		this->type = type;				// this constructor assumes this should be PERSPECTIVE
-		if (type != Camera::PERSPECTIVE)
-			std::cout << "Incorrect constructor for " << type << std::endl;
-
+		this->type = Camera::Type::PERSPECTIVE;
 		this->near = near;
 		this->far = far;
 		this->fovy = fovy;
 		this->aspect = aspect;
 
+		/* Zeroed orthographic parameters */
+		this->left   = 0;
+		this->right  = 0;
+		this->bottom = 0;
+		this->top    = 0;
+
 		if (near <= 0.0)
+		{
 			std::cout << "Camera's near clip plane is 0 or less " << near << std::endl;
+			// TODO(Evan): Log!
+		}
 	}
 
 	// constructor with orthographic parameters
-	Camera::Camera(projectionType type, double near, double far, double left, double right, double bottom, double top)
+	Camera::Camera(double near, double far, double left, double right, double bottom, double top) : Component()
 	{
-		gameObject = 0;
-
-		this->type = type;				// this constructor assumes this should be ORTHOGRAPHIC
-		if (type != Camera::ORTHOGRAPHIC)
-			std::cout << "Incorrect constructor for " << type << std::endl;
-
+		this->type = Camera::Type::ORTHOGRAPHIC;
 		this->near = near;
 		this->far = far;
 		this->left = left;
 		this->right = right;
 		this->bottom = bottom;
 		this->top = top;
+
+		/* Zeroed perspective parameters */
+		this->fovy   = 0;
+		this->aspect = 1.0f;
 	}
 
 }

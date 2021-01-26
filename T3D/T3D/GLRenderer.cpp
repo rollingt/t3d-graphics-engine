@@ -38,7 +38,7 @@ namespace T3D
 				glEnable(lightid);
 				
 				float positiondata[4];
-				if (lights[i]->type == Light::DIRECTIONAL)
+				if (lights[i]->type == Light::Type::DIRECTIONAL)
 				{
 					Matrix3x3 rot;
 					lights[i]->gameObject->getTransform()->getWorldMatrix().extract3x3Matrix(rot);
@@ -200,10 +200,10 @@ namespace T3D
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
 
-			if (cam->type == Camera::PERSPECTIVE) {
+			if (cam->type == Camera::Type::PERSPECTIVE) {
 				gluPerspective(cam->fovy, cam->aspect, cam->near, cam->far);
 			}
-			else if (cam->type == Camera::ORTHOGRAPHIC) {
+			else if (cam->type == Camera::Type::ORTHOGRAPHIC) {
 				glOrtho(cam->left, cam->right, cam->bottom, cam->top, cam->near, cam->far);
 			}
 
@@ -226,7 +226,7 @@ namespace T3D
 			glShadeModel(mat->getSmoothShading() ? GL_SMOOTH : GL_FLAT);
 			glDepthMask(mat->getDisablDepth() ?  GL_FALSE : GL_TRUE);	// enable/disable depth buffer write
 
-			if (mat->getBlending() == Material::BLEND_NONE) {
+			if (mat->getBlending() == Material::BlendMode::NONE) {
 				glDisable(GL_BLEND);						// No Blending (although diffuse alpha will still be used)
 
 				// enable "on/off" transparency ("cookie cutter alpha")
@@ -239,16 +239,16 @@ namespace T3D
 				glEnable(GL_BLEND);						// Enable Blending
 
 				// Material only supports a limited number of predefined blending modes
-				if (mat->getBlending() == Material::BLEND_ADD) {
+				if (mat->getBlending() == Material::BlendMode::ADD) {
 					// colors are added (values >1 are clipped to 1)
 					glBlendFunc(GL_ONE, GL_ONE);
 				}
-				else if (mat->getBlending() == Material::BLEND_MULTIPLY) {
+				else if (mat->getBlending() == Material::BlendMode::MULTIPLY) {
 					// colors are multiplied (values >1 are clipped to 1)
 					glBlendFunc(GL_ZERO, GL_SRC_COLOR);
 				}
 				else {
-					// Assume Material::BLEND_DEFAULT
+					// Assume Material::BlendMode::BLEND_DEFAULT
 					// transparency: alpha=0 - invisible, alpha=1 - no transparency
 					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				}
@@ -393,7 +393,7 @@ namespace T3D
 	// Helper function to get the GL texture format from a texture
 	int GLRenderer::getTextureFormat(Texture *tex){
 
-		GLenum texture_format;
+		GLenum texture_format = GL_RGBA;
 		GLint  nOfColors;
 
 		// get the number of channels in the SDL surface
@@ -594,18 +594,22 @@ namespace T3D
 
 		/* Draw a quad at location */
 		glBegin(GL_QUADS);
-		/* Recall that the origin is in the lower-left corner
-			That is why the TexCoords specify different corners
-			than the Vertex coors seem to. */
-		glTexCoord2f(0.0f, 1.0f); 
-		glVertex2f(x    , y);
-		glTexCoord2f(1.0f, 1.0f); 
-		glVertex2f(x + w, y);
-		glTexCoord2f(1.0f, 0.0f); 
-		glVertex2f(x + w, y + h);
-		glTexCoord2f(0.0f, 0.0f); 
-		glVertex2f(x    , y + h);
+		{
+			/* Recall that the origin is in the lower-left corner and in clip space / screen space, Y increases upwards.
+				That is why the TexCoords specify different corners
+				than the Vertex coors seem to. */
+			float xLeft   = float(x);
+			float xRight  = float(x + w);
+			float yBottom = float(y);
+			float yTop    = float(y + h);
+
+			glTexCoord2f(0.0f, 1.0f);  glVertex2f(xLeft, yBottom);
+			glTexCoord2f(1.0f, 1.0f);  glVertex2f(xRight, yBottom);
+			glTexCoord2f(1.0f, 0.0f);  glVertex2f(xRight, yTop);
+			glTexCoord2f(0.0f, 0.0f);  glVertex2f(xLeft, yTop);
+		}
 		glEnd();
+
 		glDisable(GL_TEXTURE_2D);
 
 		glFinish();
@@ -617,37 +621,41 @@ namespace T3D
 	// This isn't ideal but a better soloution would be to implement 2D sprites withing
 	void GLRenderer::showD2DOverlays()
 	{
-		if (!overlays.empty())
+		if (overlays.empty()) return;
+
+		// Orthographic projection view is fixed to the GL viewport size.
+		int vPort[4] = {0};
+		glGetIntegerv(GL_VIEWPORT, vPort);
+
+		auto near   = -1;
+		auto far    = 1;
+		auto left   = 0;
+		auto right  = vPort[2];
+		auto bottom = 0;
+		auto top    = vPort[3];
+
+		// temp hardwired camera for overlay
+		Camera overlayCam = Camera(near, far, left, right, bottom, top);		
+		setCamera(&overlayCam);
+
+		glDisable(GL_DEPTH_TEST);		
+		glDisable(GL_LIGHTING);
+		glDisable(GL_FOG);
+
+		glEnable(GL_BLEND);                         // Enable Blending
+		//glBlendFunc(GL_SRC_COLOR,GL_ONE);			// transparent black background (sort of)
+		glBlendFunc(GL_ONE,GL_ONE);					// add overlay (works well for white text)
+
+		for (auto &overlay : overlays)
 		{
-			// orthographic projection view is fixed to the GL viewport size
-			int vPort[4];
-			glGetIntegerv(GL_VIEWPORT, vPort);
-			Camera overlayCam(Camera::ORTHOGRAPHIC, -1, 1, 0, vPort[2], 0, vPort[3]);		// temp hardwired camera for overlay
-			setCamera(&overlayCam);
+			glMatrixMode(GL_MODELVIEW);
+			glPushMatrix();
+			glLoadIdentity();
 
-			glDisable(GL_DEPTH_TEST);		
-			glDisable(GL_LIGHTING);
-			glDisable(GL_FOG);
-
-			glEnable(GL_BLEND);                         // Enable Blending
-			//glBlendFunc(GL_SRC_COLOR,GL_ONE);			// transparent black background (sort of)
-			glBlendFunc(GL_ONE,GL_ONE);					// add overlay (works well for white text)
-
-			std::list<overlay2D *>::iterator i;
-			for (i = overlays.begin(); i != overlays.end(); i++)
-			{
-
-				glMatrixMode(GL_MODELVIEW);
-				glPushMatrix();
-				glLoadIdentity();
-
-				overlay2D *overlay = *i;
-				draw2DMesh(overlay);
-
-				glPopMatrix();
-			}
-			glDisable(GL_BLEND);
+			draw2DMesh(overlay);
+			glPopMatrix();
 		}
+		glDisable(GL_BLEND);
 	}
 
 }

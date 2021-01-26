@@ -13,6 +13,8 @@
 #include "Texture.h"
 #include "Math.h"
 
+#include <assert.h>
+
 namespace T3D
 {
 
@@ -156,7 +158,10 @@ namespace T3D
 
 	void Texture::clear(Colour c){
 		Uint32 colour = SDL_MapRGBA(image->format, c.r, c.g, c.b, c.a);
-		SDL_Rect all = {0,0,image->w,image->h};
+		assert(image->w < UINT16_MAX);
+		assert(image->h < UINT16_MAX);
+
+		SDL_Rect all = {0, 0, uint16_t(image->w), uint16_t(image->h)};
 		SDL_FillRect(image, &all, colour);
 	}
 

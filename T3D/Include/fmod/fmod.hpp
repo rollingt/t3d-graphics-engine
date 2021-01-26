@@ -32,7 +32,9 @@ namespace FMOD
     /*
         FMOD global system functions (optional).
     */
+#pragma warning(suppress: 26812) /* unscoped enum warning */
     inline FMOD_RESULT Memory_Initialize(void *poolmem, int poollen, FMOD_MEMORY_ALLOCCALLBACK useralloc, FMOD_MEMORY_REALLOCCALLBACK userrealloc, FMOD_MEMORY_FREECALLBACK userfree, FMOD_MEMORY_TYPE memtypeflags = FMOD_MEMORY_ALL) { return FMOD_Memory_Initialize(poolmem, poollen, useralloc, userrealloc, userfree, memtypeflags); }
+   
     inline FMOD_RESULT Memory_GetStats  (int *currentalloced, int *maxalloced, bool blocking = true) { return FMOD_Memory_GetStats(currentalloced, maxalloced, blocking); }
     inline FMOD_RESULT Debug_SetLevel(FMOD_DEBUGLEVEL level)  { return FMOD_Debug_SetLevel(level); }
     inline FMOD_RESULT Debug_GetLevel(FMOD_DEBUGLEVEL *level) { return FMOD_Debug_GetLevel(level); }

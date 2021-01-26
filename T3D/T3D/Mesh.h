@@ -41,7 +41,7 @@ namespace T3D
 
 		// Initialises internal buffers (Vertex, Index, UV, etc) based on
 		// the number of vertices the caller requires to render primitives.
-		void initArrays(int numVerts, int numTris, int numQuads);
+		void initArrays(uint32_t numVerts, uint32_t numTris, uint32_t numQuads);
 
 		// Verbosely logs any vertices that are uninitialised.
 		// Call this at the end of _any_ procedural mesh generation!
@@ -76,7 +76,7 @@ namespace T3D
 
 
 	protected:
-		int numVerts, numTris, numQuads;
+		unsigned int numVerts, numTris, numQuads;
 
 		float *vertices;
 		float *normals;

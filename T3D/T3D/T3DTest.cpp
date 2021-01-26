@@ -42,7 +42,7 @@ namespace T3D {
 
 		//Add a light
 		GameObject *lightObj = new GameObject(this);
-		Light *light = new Light(Light::DIRECTIONAL); 
+		Light *light = new Light(Light::Type::DIRECTIONAL); 
 		light->setAmbient(1,1,1);
 		light->setDiffuse(1,1,1);
 		light->setSpecular(1,1,1);
@@ -68,7 +68,7 @@ namespace T3D {
 		renderer->loadTexture(sparkletex);
 		Material *sparklemat = renderer->createMaterial(Renderer::PR_TRANSPARENT);
 		sparklemat->setEmissive(1, 1, 1, 1);
-		sparklemat->setBlending(Material::BLEND_DEFAULT);
+		sparklemat->setBlending(Material::BlendMode::DEFAULT);
 		sparklemat->setSortedDraw(true, false);
 		sparklemat->setTexture(sparkletex);
 
@@ -95,7 +95,11 @@ namespace T3D {
 
 		//Create a camera
 		GameObject *camObj = new GameObject(this);
-		renderer->camera = new Camera(Camera::PERSPECTIVE, 0.1, 500.0, 45.0, 1.6);
+		float near   = 0.1f;
+		float far    = 500.0f;
+		float fovy   = 45.0f;
+		float aspect = 1.6f;
+		renderer->camera = new Camera(near, far, fovy, aspect);
 		camObj->getTransform()->setLocalPosition(Vector3(0,0,20));
 		camObj->getTransform()->setLocalRotation(Vector3(0,0,0));
 		camObj->setCamera(renderer->camera);
@@ -135,7 +139,7 @@ namespace T3D {
 		//Create an empty node to use as a rotation point
 		GameObject *rotateOrigin = new GameObject(this);
 		rotateOrigin->getTransform()->setParent(root);
-		rotateOrigin->addComponent(new RotateBehaviour(Vector3(0,1,0)));
+		//rotateOrigin->addComponent(new RotateBehaviour(Vector3(0,1,0)));
 		
 		//Create a torus using the Sweep class as a child of rotateOrigin
 		SweepPath sp;
@@ -203,7 +207,7 @@ namespace T3D {
 			particle->addComponent(behaviour);			// add to particle system
 
 			particle->setMaterial(sparklemat);
-			particle->getTransform()->setLocalScale(Vector3(0.8, 0.8, 0.8));	// make them a bit smaller
+			particle->getTransform()->setLocalScale(Vector3(0.8f, 0.8f, 0.8f));	// make them a bit smaller
 			particle->getTransform()->setParent(root);		// particles movement independent of emitter 
 			particle->getTransform()->name = "particle";
 
