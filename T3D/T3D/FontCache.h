@@ -22,8 +22,8 @@ namespace T3D{
 		std::vector<font *> fonts;
 
 	public:
-		FontCache(void);
-		~FontCache(void);
+		FontCache(void)  = default;
+		~FontCache(void) = default;
 
 		font *getFont(const char *filename, int pointSize);
 	};

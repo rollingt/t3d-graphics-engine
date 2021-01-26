@@ -27,7 +27,7 @@ namespace T3D{
 		font(const char *filename, int pointSize);
 		~font(void);
 
-		bool isFont(const char *filename, int pointSize);
+		bool matches_family_and_size(const char *filename, int pointSize);
 
 		TTF_Font *getFont() { return ttf; }
 

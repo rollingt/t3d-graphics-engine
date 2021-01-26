@@ -13,40 +13,28 @@
 
 namespace T3D{
 
-	FontCache::FontCache(void)
-	{
-	}
-
-	FontCache::~FontCache(void)
-	{
-		font *entry;
-		std::vector<font *>::iterator i;
-		for (i = fonts.begin(); i != fonts.end(); i++)
-		{
-			entry = *i;
-			delete entry;
-		}
-	}
-
-	// Get font from cache or load as required
+	// Get font from cache or load as required.
 	// returns NULL if font not available
 	font *FontCache::getFont(const char *filename, int pointSize)
 	{
-		font *entry;
-		std::vector<font *>::iterator i;
-
-		// find font
-		for (i = fonts.begin(); i != fonts.end(); i++)
+		// check the cache in case font is loaded
+		for (auto &font: fonts)
 		{
-			entry = *i;
-			if (entry->isFont(filename, pointSize))
-				return entry;				// found matching font for reuse
+			if (font->matches_family_and_size(filename, pointSize)) return font;				
 		}
 
-		entry = new font(filename, pointSize);
+		// try to load the font -- NULL if unable to load
+		auto *maybe_font = new font(filename, pointSize);
+		if (maybe_font) 
+		{
+			fonts.push_back(maybe_font);
+		} 
+		else
+		{
+			// TODO(Evan): Log!
+		}
 
-		fonts.push_back(entry);
-		return entry;
+		return maybe_font;
 	}
 
 }
