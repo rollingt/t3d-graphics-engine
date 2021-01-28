@@ -58,12 +58,12 @@ namespace T3D
 		float distance = getDistance(p);
 
 		if ( distance < 0.0 )
-			return Plane::NEGATIVE_SIDE;
+			return Plane::Side::NEGATIVE_SIDE;
 
 		if ( distance > 0.0 )
-			return Plane::POSITIVE_SIDE;
+			return Plane::Side::POSITIVE_SIDE;
 
-		return Plane::NO_SIDE;
+		return Plane::Side::NO_SIDE;
 	}
 	//-----------------------------------------------------------------------
 	Vector3 Plane::projectVector(const Vector3& p) const

@@ -14,15 +14,6 @@
 
 namespace T3D
 {
-	/*! Constructor
-	  Initialises members
-	  */
-	ParticleBehaviour::ParticleBehaviour(ParticleEmitter *emitter)
-	{
-		this->emitter = emitter;
-	}
-
-
 	/*! stop
 	  stop and hide particle
 	  */

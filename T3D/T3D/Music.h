@@ -20,8 +20,11 @@ namespace T3D{
 	{
 	friend class SoundManager;
 	public:
-		Music(SoundManager* sm);
-		~Music(void);
+		Music::Music(SoundManager* sm) : soundManager(sm),
+										 channel     (nullptr),
+										 theMusic    (nullptr),
+										 volume      (1.0f) { }
+		~Music(void) = default;
 
 		void play();	
 		void pause();

@@ -28,8 +28,8 @@ namespace T3D{
 		public Component
 	{
 	public:
-		Terrain();
-		virtual ~Terrain(void);
+		Terrain() : size(0), gridSize(0) { }
+		virtual ~Terrain(void) = default;
 
 		float getHeight(Vector3 pos);
 

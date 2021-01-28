@@ -42,6 +42,7 @@ namespace T3D{
 		FMOD_RESULT result;
 		unsigned int version;
 		int numdrivers;
+#pragma warning(suppress: 26812) /* unscoped enum warning */
 		FMOD_SPEAKERMODE speakermode;
 		FMOD_CAPS caps;
 		char name[256];

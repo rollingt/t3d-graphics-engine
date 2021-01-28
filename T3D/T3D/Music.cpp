@@ -12,18 +12,6 @@
 
 namespace T3D{
 
-	Music::Music(SoundManager* sm) : soundManager(sm)
-	{
-		channel = NULL;
-
-		volume = 1.0;
-	}
-
-
-	Music::~Music(void)
-	{
-	}
-
 	void Music::play(){
 		if (channel){			
             channel->setPaused(false);

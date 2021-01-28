@@ -16,16 +16,6 @@
 
 namespace T3D{
 
-	GLShader::GLShader(std::string vertFilename, std::string fragFilename) : Shader(vertFilename, fragFilename)
-	{
-
-	}
-
-
-	GLShader::~GLShader(void)
-	{
-	}
-
 	void GLShader::compileShader(){
 		//std::cout << "Compiling shader...\n";
 		//std::cout << vertSource << "\n\n";

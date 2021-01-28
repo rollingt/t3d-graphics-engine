@@ -24,7 +24,11 @@ namespace T3D
 		/* initialize random seed: */
 		srand((unsigned int)time(NULL));
 
+		lastFrame = 0.0f;
+		dt = 0.0f;
 		root = NULL;
+		renderer = NULL;
+		running = true;
 		Input::init();
 		soundManager = new SoundManager();
 	}
@@ -32,11 +36,9 @@ namespace T3D
 
 	T3DApplication::~T3DApplication(void)
 	{
-		list<Task*>::iterator it;
-
-		for ( it=tasks.begin() ; it != tasks.end(); it++ )
+		for (auto &task: tasks)
 		{
-			delete (*it);
+			delete task;
 		}
 	}
 	
@@ -51,14 +53,11 @@ namespace T3D
 
 	Task *T3DApplication::findTask(const char *name)
 	{
-		list<Task*>::iterator it;
-
-		for ( it=tasks.begin() ; it != tasks.end(); it++ )
+		for (auto *task : tasks)
 		{
-			if ((*it)->getName().compare(name) == 0)
-				return (*it);
+			if (task->getName().compare(name) == 0) return task;
 		}
-		return NULL;			// task not found
+		return nullptr;	// task not found
 	}
 
 	bool T3DApplication::validTask(Task *t)				// test that task is still alive
@@ -80,7 +79,7 @@ namespace T3D
 	}
 
 	void T3DApplication::updateTasks(){
-		list<Task*>::iterator it=tasks.begin();
+		std::list<Task*>::iterator it=tasks.begin();
 		bool taskFinished;
 		Task *task;
 
