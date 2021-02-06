@@ -1,7 +1,18 @@
-#include "planemesh.h"
+// =========================================================================================
+// KXG363 - Advanced Games Programming, 2012
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// PlaneMesh.cpp
+//
+// Create a Mesh from a Plane representation
+// Adapted from Ogre3D
 
-namespace T3D{
+#include "PlaneMesh.h"
 
+namespace T3D
+{
 	PlaneMesh::PlaneMesh(int density) : density(density)
 	{
 		int numVerts = (density+1)*(density+1);
@@ -36,11 +47,6 @@ namespace T3D{
 		
 		// UVS
 		calcUVPlaneXZ();
-	}
-
-
-	PlaneMesh::~PlaneMesh(void)
-	{
 	}
 
 		

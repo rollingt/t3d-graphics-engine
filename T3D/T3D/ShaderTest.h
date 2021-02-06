@@ -7,12 +7,13 @@
 // ShaderTest.cpp
 //
 // A simple application used for testing lighting shaders
-
 #pragma once
-#include "winglapplication.h"
+
+#include "WinGLApplication.h"
 
 namespace T3D{
 
+	//! \brief For testing OpenGL Lighting shaders.
 	class ShaderTest :
 		public WinGLApplication
 	{

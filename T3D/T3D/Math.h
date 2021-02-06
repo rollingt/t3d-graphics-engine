@@ -8,19 +8,23 @@
 //
 // Currently just a few constants
 // Adapted from Ogre3D
-
-#ifndef MATH_H
-#define MATH_H
+#pragma once
 
 #include <cstdlib>
 #include <algorithm>
 
+// TODO: Fix windows.h using preprocessor symbol NOMINMAX. IIRC, SDL includes windows.h -- maybe do it before then?
+#ifdef min
 #undef min
+#endif
+
+#ifdef max
 #undef max
+#endif
 
 namespace T3D
 {
-
+	//! \brief Helpful constants and free functions.
 	class Math
 	{
 	public:
@@ -31,7 +35,14 @@ namespace T3D
 		static const float RAD2DEG;
 		static const float LOG2;
 
-		static float lerp(float first, float second, float t){ return t*(second-first)+first; }
+		//! \brief Linearly interpolate between two values, based on time t.
+		/*
+		 * \param first starting value
+		 * \param second ending value
+		 * \param t time (aka alpha)
+		 *
+		 */
+		static float lerp(float first, float second, float t) { return t*(second-first)+first; }
 
 		static float** generateFractal(int size, float min, float max, float roughness, bool tile = false);
 
@@ -40,7 +51,7 @@ namespace T3D
 		  \param minimum	range from 
 		  \param maximum	range to 
 		  */
-		static float randRange(float minimum, float maximum){ 
+		static float randRange(float minimum, float maximum) { 
 			float r = float(rand())/RAND_MAX;
 			return r*(maximum-minimum)+minimum; 
 		}
@@ -51,7 +62,7 @@ namespace T3D
 		  limit theorem.
 		  \param minimum	range from 
 		  \param maximum	range to 
-		  \param maximum	iterations (more for better distribution curve)
+		  \param iterations	iterations (more for better distribution curve)
 		  */
 		static float randRangeND(float minimum, float maximum, int iterations=3){ 
 			float r = 0;
@@ -60,6 +71,13 @@ namespace T3D
 			return r / (float)iterations * (maximum - minimum) + minimum; 
 		}
 
+		//! \brief Ensure value lies between an inclusive min and max
+		/*
+		 * \param value value to clamp
+		 * \param minimum lower bound (inclusive)
+		 * \param maximum upper bound (inclusive)
+		 *
+		 */
 		static float clamp(float value, float minimum, float maximum){ 
 			return std::max(
 				std::min(maximum,value),minimum
@@ -67,6 +85,3 @@ namespace T3D
 		}
 	};
 }
-
-#endif
-

@@ -8,7 +8,6 @@
 //
 // t3d application for windows and OpenGL
 
-#include <windows.h>
 #include <gl/glew.h>
 #include <GL/GL.h>
 #include <GL/GLU.h>
@@ -26,6 +25,7 @@
 #include "PerfLogTask.h"
 #include "DiagMessageTask.h"
 #include "SoundManager.h"
+#include "Logger.h"
 
 
 // stdin, stdout, and stderr are defined differently in Visual Studio 2015
@@ -59,7 +59,6 @@ namespace T3D
 	}
 
 	bool WinGLApplication::init(){
-		cout << "init\n";
 		if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 			return false;
 		}
@@ -73,7 +72,24 @@ namespace T3D
 			renderer->toggleGrid();
 		if (DefaultDebugOptions::showVertices)
 			renderer->togglePoints();
-		
+
+		/* Logger Initialization */
+		{
+		 /* All categories are disabled by default, e.g. Video, Animation, Platform, Audio and so on. 
+			You may not care about all of them, but if a different system needs debugging such as
+			music, loading textures, etc, you can enable all of them at once here (or individually as below). 
+
+			As a rule of thumb for priorities stick with "Info" for 'everyday' diagnostics, init messages and 
+			codepaths that aren't hit inside the game loop except for objects that are created once 
+			and/or static initializers/managers that live for the Applications lifetime , such as DrawTasks.
+			*/
+
+			logger::Initialise(priority::Tracing, output_stream::All, true);
+			//logger::DisableCategory(category::Task);
+			logger::Log(priority::Info, output_stream::All, category::Platform, "T3D Initialized\n");
+			
+		}
+
 		//Initialize SDL_mixer
 		soundManager->init();
 
@@ -94,18 +110,19 @@ namespace T3D
 
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,  2);
 
-		if((surf = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32, SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER | SDL_OPENGL)) == NULL) {
+		if((surf = SDL_SetVideoMode(renderer->WindowWidth, renderer->WindowHeight, 32, SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER | SDL_OPENGL)) == NULL) {
 			return false;
+			SDL_Quit();
 		}
 		glewInit();
 		glClearColor(0, 0, 0, 0);
 		glClearDepth(1.0f);
-		glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+		glViewport(0, 0, renderer->WindowWidth, renderer->WindowHeight);
 
 		// Initialize SDL_ttf library
 		if (TTF_Init() != 0)
 		{
-			std::cout << "TTF_Init() Failed: " << TTF_GetError() << endl;
+			logger::Log(priority::Error, output_stream::All, category::Platform, "TTF_Init() Failed: %s\n", TTF_GetError());
 			SDL_Quit();
 			exit(1);
 		}
@@ -114,7 +131,7 @@ namespace T3D
 
 		SDL_ShowCursor(SDL_DISABLE);
 
-		std::cout<<glGetString(GL_VERSION)<<"\n";
+		logger::Log(priority::Tracing, output_stream::File, category::Platform, "%s", glGetString(GL_VERSION));
 
 		return true;
 	}
@@ -156,7 +173,6 @@ namespace T3D
 	}
 
 	void WinGLApplication::quit(void){	
-		SDL_Quit();
 	}
 
 	void WinGLApplication::handleEvent(SDL_Event *e){

@@ -4,14 +4,12 @@
 //
 // Author: Robert Ollington
 //
-// sphere.cpp
+// Sphere.cpp
 //
 // A simple sphere mesh with variable size and polygon density
 
-#include <math.h>
-#include "sphere.h"
+#include "Sphere.h"
 #include "Math.h"
-#include <iostream>
 
 namespace T3D{
 
@@ -72,11 +70,6 @@ namespace T3D{
 		calcNormals();
 		
 		calcUVSphere();
-	}
-
-
-	Sphere::~Sphere(void)
-	{
 	}
 
 }

@@ -10,6 +10,7 @@
 
 #include "GLTestApplication.h"
 #include "GLTestRenderer.h"
+#include "Transform.h"
 
 namespace T3D{
 

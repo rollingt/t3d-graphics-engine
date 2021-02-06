@@ -336,7 +336,7 @@ paket-files/
 
 # JetBrains Rider
 .idea/
-*.sln.iml
+*.sln.imlG
 
 # CodeRush
 .cr/
@@ -366,3 +366,8 @@ __pycache__/
 
 *.msp
 
+# T3D specific
+T3D_Log.txt
+perflog.txt
+
+Doxyfile

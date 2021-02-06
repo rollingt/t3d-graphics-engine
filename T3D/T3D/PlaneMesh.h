@@ -1,15 +1,25 @@
-#ifndef PLANEMESH_H
-#define PLANEMESH_H
+// =========================================================================================
+// KXG363 - Advanced Games Programming, 2012
+// =========================================================================================
+//
+// Author: Robert Ollington
+//
+// PlaneMesh.h
+//
+// Create a Mesh from a Plane representation
+// Adapted from Ogre3D
+#pragma once
 
-#include "mesh.h"
+#include "Mesh.h"
 
-namespace T3D{
+namespace T3D
+{
 	class PlaneMesh :
 		public Mesh
 	{
 	public:
 		PlaneMesh(int density);
-		~PlaneMesh(void);
+		~PlaneMesh(void) = default;
 
 		void setVertex(int i, int j, float x, float y, float z);
 		Vector3 getVertex(int i, int j);
@@ -17,6 +27,3 @@ namespace T3D{
 		int density;
 	};
 }
-
-#endif
-

@@ -4,35 +4,16 @@
 //
 // A simple particle that applies gravity to a velocity for the particles lifespace
 
-
 #include "GameObject.h"
-#include "Math.h"
 #include "Transform.h"
 #include "ParticleGravity.h"
 
 namespace T3D
 {
-	// Constructor
-	ParticleGravity::ParticleGravity(ParticleEmitter *emitter, Vector3 initVelocity, float gravity, float lifeSpan) : ParticleBehaviour(emitter)
-	{
-		this->elapsed = 0;
-
-		this->initVelocity = initVelocity;
-		this->velocity = initVelocity;
-		this->gravity = gravity;
-		this->lifeSpan = lifeSpan;
-
-		this->alphaStart = 1.0f;
-		this->alphaEnd = 1.0f;
-	}
-
-
-	/*! start
-	Starts particle activity sequence
-	\param from		object to derive world position from
-
+	/*!
+	 * \param from	GameObject to derive world position from
 	*/
-	void ParticleGravity::start(Transform *from)			// start or restart particle
+	void ParticleGravity::start(Transform *from)
 	{
 		elapsed = 0;
 
@@ -47,18 +28,15 @@ namespace T3D
 	}
 
 
-	// setAlphaFade
-	// Sets alpha blending (fade) gradient from start to end
-	// of particle lifespan.
+	/* 
+	 * \todo ParticleGravity's constructor could take these as default parameters, along with Gravity.
+	 */
 	void ParticleGravity::setAlphaFade(float start, float end)
 	{
 		alphaStart = start;
 		alphaEnd = end;
 	}
 
-	// update
-	// regular update
-	//   param dt		elapsed (delta) time from last frame
 	void ParticleGravity::update(float dt)
 	{
 		if (active)		// particle is alive and running in particle system?

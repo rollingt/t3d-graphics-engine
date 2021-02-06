@@ -4,91 +4,160 @@
 //
 // Author: Robert Ollington
 //
-// mesh.h
+// Mesh.h
 //
-// Basic mesh class to store vertices, normals, colors, uvs(currently not used), and indices
-// Triangle meshes only.  Unoptimised.
-
-#ifndef MESH_H
-#define MESH_H
+// Basic mesh class to store vertices, normals, colors(currently not used), uvs, and indices
+// Unoptimised.
+#pragma once
 
 #include "Component.h"
 #include "Vector4.h"
 
 namespace T3D
 {
+	//! \brief Mesh component, stores vertices and their attributes such as normals, uvs, and indices.
+	/* A Mesh is intended to be used for procedurally generated shapes, by inheriting from the Mesh class
+	 * and implementing a constructor to do so. See `Cube.cpp` for an example.
+	 */
 	class Mesh : public Component
 	{
 	public:
-		// Create a Mesh with initialised buffers and zero counts.
+		//! \brief Create Mesh with initialised, empty buffers.
 		Mesh(void);
 
-		// Delete a Mesh's buffers with non-zero counts.
+		//! \brief Destroy Mesh, freeing buffers.
 		virtual ~Mesh(void);
 
 		// Accessors.
-		int           getNumVerts()    { return numVerts;    }
-		int           getNumTris()     { return numTris;     }
-		int           getNumQuads()    { return numQuads;    }
-		float*        getVertices()    { return vertices;    }
-		float*        getNormals()     { return normals;     }
-		float*        getColors()      { return colors;      }
-		float*        getUVs()         { return uvs;         }
-		unsigned int* getTriIndices()  { return triIndices;  }
-		unsigned int* getQuadIndices() { return quadIndices; }
+
+		//! \brief Get number of vertices.
+		int getNumVerts()    { return numVerts;    }
+
+		//! \brief Get number of triangles.
+		int getNumTris()     { return numTris;     }
+
+		//! \brief Get number of quads.
+		int getNumQuads()    { return numQuads;    }
+
+		//! \brief Get number of vertices.
+		float *getVertices()    { return vertices;    }
+
+		//! \brief Get number of normals.
+		float *getNormals()     { return normals;     }
+
+		//! \brief Get number of colors. \note Colors isn't really used!
+		float *getColors()      { return colors;      }
+
+		//! \brief Get number of UVs.
+		float *getUVs()         { return uvs;         }
+
+		//! \brief Get a pointer to the triangle index buffer.
+		uint32_t *getTriIndices()  { return triIndices;  }
+
+		//! \brief Get a pointer to the quad index buffer.
+		uint32_t *getQuadIndices() { return quadIndices; }
 
 
 
-		// Initialises internal buffers (Vertex, Index, UV, etc) based on
-		// the number of vertices the caller requires to render primitives.
+		//! \brief Initialises internal buffers (Vertex, Index, UV, etc) given vertex and index counts.
 		void initArrays(uint32_t numVerts, uint32_t numTris, uint32_t numQuads);
 
-		// Verbosely logs any vertices that are uninitialised.
-		// Call this at the end of _any_ procedural mesh generation!
+		//! \brief Issue warnings to console/log file if vertex, index, uv or colour buffers contain _obviously_ uninitialized/erroneous contents.
 		bool checkArrays();
 
-		// Calculates normals for Triangles and Quads. 
-		// - Quad normals may look a bit off.
+		//! \brief Calculates normals for Triangles and Quads. 
+		/* 
+		 * \note The Mesh may contain more then numVerts after this function returns if any of the quads are nonplanar (i.e. has a curvature).
+		 */
 		void calcNormals();
 		
-		// Negates all normals (i.e. flips them facing inwards to outwards, and vice versa)
+		//! \brief Negates all normals (i.e. flips them facing inwards to outwards, and vice versa)
 		void invertNormals();
 
+
 		// Procedural texture coordinate calculations for the primitives provided by T3D.
+
+		//! \brief Calculates UVs to wrap a spherical bounding mesh.
 		void calcUVSphere();
+
+		//! \brief Calculates UVs to wrap a XY-oriented plane.
 		void calcUVPlaneXY();
+
+		//! \brief Calculates UVs to wrap a YZ-oriented plane.
 		void calcUVPlaneYZ();
+
+		//! \brief Calculates UVs to wrap a XZ-oriented plane.
 		void calcUVPlaneXZ();
+
+		//! \brief Calculates UVs to wrap a cube. 
 		void calcUVCube();
 
-		virtual void    setVertex(int i, float x, float y, float z);
+		//! \brief Sets the ith vertex to have components x, y, z.
+		virtual void setVertex(int i, float x, float y, float z);
+
+		//! \brief Returns the ith vertex.
 		virtual Vector3 getVertex(int i);
-		virtual void    setColor(int i, float r, float g, float b, float a);
+
+		// \brief Sets the ith color to have components r, g, b, a
+		virtual void setColor(int i, float r, float g, float b, float a);
+
+		// \brief Returns the ith color.
 		virtual Vector4 getColor(int i);
-		virtual void    setNormal(int i, float x, float y, float z);
-		virtual void    setNormal(int i, Vector3 n);
-		virtual void    addNormal(int i, Vector3 n);
-		virtual void    normalise();
+
+		// \brief Sets the ith normal to have components x, y, z.
+		virtual void setNormal(int i, float x, float y, float z);
+
+		// \brief Sets the ith normal to the vector n.
+		virtual void setNormal(int i, Vector3 n);
+
+		// \brief Adds the vector n to the ith normal.
+		virtual void addNormal(int i, Vector3 n);
+
+		// \brief Calculates and set every vertex normal to be unit length, i.e. normalized.
+		virtual void normalise();
+
+		// \brief Returns the ith normal.
 		virtual Vector3 getNormal(int i);
-		virtual void    setTriFace(int i, int a, int b, int c);
-		virtual void    setQuadFace(int i, int a, int b, int c, int d);
-		virtual void    setUV(int i, float u, float v);
+
+		// \brief Sets the ith triFace to contain indices referring to vertices at positions a, b, c.
+		virtual void setTriFace(int i, int a, int b, int c);
+
+		// \brief Sets the ith quadFace to contain indices referring to vertices at positions a, b, c, d.
+		virtual void setQuadFace(int i, int a, int b, int c, int d);
+
+		//! \brief Sets the ith UV.
+		virtual void setUV(int i, float u, float v);
 
 
 	protected:
-		unsigned int numVerts, numTris, numQuads;
+		//! \brief Vertex count.
+		uint32_t numVerts; 
 
+		//! \brief Triangle count. Can be 0
+		uint32_t numTris;
+
+		//! \brief Quad count. Can be 0
+		uint32_t numQuads;
+
+		//! \brief Vertex buffer. Vertices are stored packed.
 		float *vertices;
+
+		//! \brief Normal buffer.
 		float *normals;
+
+		//! \brief Colour buffer. \note Currently unused.
 		float *colors;
+
+		//! \brief UV buffer.
 		float *uvs;
 
-		unsigned int *triIndices;
-		unsigned int *quadIndices;
+		//! \brief Triangle index buffer
+		uint32_t *triIndices;
 
-	private:
+		//! \brief Quad index buffer
+		uint32_t *quadIndices;
+
+		//! \brief Internal helper function for calculating UV planes.
 		void calcUVPlane(uint32_t vectorOffsetOne, uint32_t vectorOffsetTwo);
 	};
 }
-
-#endif

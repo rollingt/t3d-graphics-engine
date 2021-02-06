@@ -4,18 +4,16 @@
 //
 // Author: Robert Ollington
 //
-// keyboardcontroller.h
+// KeyboardController.h
 //
-// Component to add FPS-like controls to a game object
+// Component to add flying controls to a game object
+#pragma once
 
-#ifndef KEYBOARDCONTROLLER_H
-#define KEYBOARDCONTROLLER_H
-
-#include "component.h"
+#include "Component.h"
 
 namespace T3D
 {
-
+	//! \brief Add fly camera controls to a GameObject.
 	class KeyboardController :
 		public Component
 	{
@@ -34,6 +32,3 @@ namespace T3D
 	};
 
 }
-
-#endif
-

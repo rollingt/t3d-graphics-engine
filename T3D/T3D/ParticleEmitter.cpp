@@ -6,12 +6,8 @@
 // This is a generic particle creator that can be used with any particles that have the
 // ParticleBehaviour component.
 
-#include <stdlib.h>
-
 #include "Math.h"
 #include "GameObject.h"
-#include "Renderer.h"
-#include "T3DApplication.h"
 #include "Transform.h"
 #include "ParticleEmitter.h"
 #include "ParticleBehaviour.h"
@@ -19,37 +15,23 @@
 
 namespace T3D
 {
-	// Constructor
-	ParticleEmitter::ParticleEmitter(float duration, float startRate, float emitRate, float endRate,
-		float startUpTime, float windDownTime)
-	{
-		this->emitted = 0;							// no particles emitted
-		this->elapsed = 0;							// starting
-
-		this->duration = duration;					// total run time (particle emission stops when this reached)
-
-		this->startRate = startRate;				// particles per second at time 0
-		this->emitRate = emitRate;					// normal particles per second emit rate
-		this->endRate = endRate;					// particles per second when duration time reached
-
-		this->rampUpDuration = startUpTime;			// ramp up time from startRate to emitRate
-		this->rampDownDuration = windDownTime;		// wind down time from emitRate to endRate
-	}
-
-	// Destructor
-	// deletes all particles
+	/*
+	 * \note This will delete all `Transform`s of the particle system, not the GameObjects themselves. 
+	 * \todo When `Transform`s in the scenegraph have shared ownership lifetimes implemented, this may be redundant or as simple as decrementing a refcount
+	 */
 	ParticleEmitter::~ParticleEmitter()
 	{
-		for (unsigned int i=0; i<particles.size(); i++)
+		for (auto &particle: particles)
 		{
 			// NOTE: delete gameObjects by deleting their Transform
-			delete particles[i]->gameObject->getTransform();		
+			delete particle->gameObject->getTransform();		
 		}
 	}
 
-	// addParticle
-	// Adds a particle to the available pool.
-	// Particles can be started (emitted) immediately if required
+	/* Particles can be started (emitted) immediately if required
+	 * \param particle Particle to add
+	 * \param start Start immediately?
+	 */
 	void ParticleEmitter::addParticle(ParticleBehaviour *particle, bool start)
 	{
 		particles.push_back(particle);			// add to pool
@@ -62,58 +44,50 @@ namespace T3D
 		}
 	}
 
-	// addInactiveList
-	//  Adds particle to inactive list for reuse
-	// This is intended only to be used by particles
-	// to add themselves back into the inactive list for reuse
+	/* 
+	 * \note This is intended only to be used by particles to add themselves back into the inactive list for reuse.
+	 * \todo This level of abstraction is not necessary.
+	 */
 	void ParticleEmitter::addInactiveList(ParticleBehaviour *particle)
 	{
 		particlesInactive.push(particle);
 	}
 
-	// stop
-	// Stop particle system (moves elapsed time to full duration)
-	//   param clear	stops and hide all active particles immediately
+	/* Moves elapsed time to full duration.
+	 *
+	 * \param clear immediately stop and hide all active particles
+	 */
 	void ParticleEmitter::stop(bool clear)
 	{
 		elapsed = duration;			// no more particles will be emitted
 
 		if (clear)					// stop and remove all active particles?
 		{
-			for (unsigned int i=0; i<particles.size(); i++)
+			for (auto &particle: particles)
 			{
-				if (!particles[i]->isActive())
-					particles[i]->stop();
+				if (!particle->isActive()) particle->stop();
 			}
 		}
-
 	}
 
-	// emit particles immediately
-	//    param n		number of particles to emit
-	// Note the total number of particles is limited by the particle pool size
-	void ParticleEmitter::emit(int n)
+	/* 
+	 * \param n	Number of particles in the pool to emit.
+	*/
+	void ParticleEmitter::emit(uint32_t n)
 	{
-		ParticleBehaviour *particle;
-
 		// Emit required number of particles but only up to what is available
 		while (n > 0 && !particlesInactive.empty())
 		{
-			particle = particlesInactive.front();
+			auto particle = particlesInactive.front();
 			particlesInactive.pop();		// remove from inactive list
 			particle->start(this->gameObject->getTransform());
 			n--;
 		}
 	}
 
-	// update
-	// regular system update, generate particles as required
-	//   param dt	elapsed time since last frame
 	void ParticleEmitter::update(float dt)
 	{
 		float count;
-		std::list<ParticleBehaviour *>::iterator i;
-
 		elapsed += dt;			// total particle system run time
 
 		if (elapsed < duration)
@@ -143,21 +117,21 @@ namespace T3D
 	}
 
 	/*! emitRamp
-	  get total expected particle count for a time position along an acceleration ramp
-	  \param start		particles per second at start
-	  \param end		particles per second at end
-	  \param duration	duration of ramp
-	  \param time		time pos (no particles if < 0 or max particles if > duration)
-	  \param			random varaibility (+/- fraction)
+	  * get total expected particle count for a time position along an acceleration ramp
+	  * \param start		particles per second at start
+	  * \param end			particles per second at end
+	  * \param duration		duration of ramp
+	  * \param time			time pos (no particles if < 0 or max particles if > duration)
+	  * \param				random variability (+/- fraction)
 	  */
 	float ParticleEmitter::emitRamp(float start, float end, float duration, float time, float variability)
 	{
 		float accel;		// calculated acceration rate for ramp
 		float count;		// expected number of particles produced to the given time
 
-		if (time < 0 || duration <= 0) return 0;		// not in ramp or no ramp
+		if (time < 0 || duration <= 0) return 0; // not in ramp or no ramp
 
-		if (time > duration) time = duration;	// clamp time to max duration of ramp
+		if (time > duration) time = duration;	 // clamp time to max duration of ramp
 
 		accel = (end - start) / duration;		// particles per second per second
 		count = start * time + (accel * time * time) / 2.0f;

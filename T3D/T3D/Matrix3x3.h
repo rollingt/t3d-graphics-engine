@@ -8,17 +8,16 @@
 //
 // 3x3 matrix class
 // Adapted from Ogre3D
+#pragma once
 
-#ifndef MATRIX3X3_H
-#define MATRIX3X3_H
-
-#include <algorithm>
 #include <assert.h>
+#include <string>
 
 #include "Vector3.h"
 
 namespace T3D
 {
+	//! \brief 3x3 Matrix, suitable for 2D affine transformations using homogeneous coordinates or storing 3d rotation/scale.
     class Matrix3x3
     {
     protected:
@@ -153,5 +152,3 @@ namespace T3D
 	/** @} */
 	/** @} */
 }
-
-#endif

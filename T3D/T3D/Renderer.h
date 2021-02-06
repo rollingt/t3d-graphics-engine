@@ -7,27 +7,22 @@
 // renderer.h
 //
 // Abstract base class for all rendering operations
+#pragma once
 
-#ifndef RENDERER_H
-#define RENDERER_H
-
-#include "Transform.h"
-#include "GameObject.h"
+#include <string>
+#include <vector>
+#include "DefaultDebugOptions.h"
 #include "Light.h"
-#include "Mesh.h"
-#include "Texture.h"
 
 namespace T3D
 {
-	#define WINDOW_WIDTH		1024
-	#define	WINDOW_HEIGHT		640
-
-	// Width of the window provided by the OS layer, in pixels.
-	const uint32_t WindowWidth = WINDOW_WIDTH;
-	// Height of the window provided by the OS layer, in pixels.
-	const uint32_t WindowHeight = WINDOW_HEIGHT;
-
+	class Transform;
+	class Mesh;
 	class Camera;
+	class GameObject;
+	class Texture;
+	class Colour;
+	class Material;
 
 	//! Generic class for renderers
 	/*! The render is responsible for managing materials and drawing meshes
@@ -36,13 +31,13 @@ namespace T3D
 	class Renderer
 	{
 	public:
+
 		static const int PR_SKYBOX = 0;			//! Priority level for skybox (drawn first)
 		static const int PR_TERRAIN = 2;		//! Priority level for terrain
 		static const int PR_OPAQUE = 4;			//! Priority level for standard opaque meshes
 		static const int PR_TRANSPARENT = 6;	//! Priority level for transparent meshes
 		static const int PR_OVERLAY = 8;		//! Priority level for overlays (drawn last)
 		static const int PRIORITY_LEVELS = 10; 
-
 
 		Renderer(void);
 		virtual ~Renderer(void);
@@ -94,9 +89,13 @@ namespace T3D
 
 		bool showWireframe, showPoints, showGrid, showAxes;
 
+		// Width of the window provided by the OS layer, in pixels.
+		uint32_t WindowWidth = DefaultDebugOptions::DefaultWindowWidth;
+
+		// Height of the window provided by the OS layer, in pixels.
+		uint32_t WindowHeight = DefaultDebugOptions::DefaultWindowHeight;
+
 	private:
 		std::vector<Material*> materials[PRIORITY_LEVELS];
 	};
 }
-
-#endif

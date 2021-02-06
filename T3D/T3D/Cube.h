@@ -8,24 +8,23 @@
 //
 // Simple cube mesh with coloured sides
 
-#ifndef CUBE_H
-#define CUBE_H
-
-#include "mesh.h"
+#pragma once
+#include "Mesh.h"
 
 namespace T3D
 {
+	//! \brief A simple parametric Cube Mesh.
 	class Cube :
 		public Mesh
 	{
 	public:
-		// Create a cube with volume = size^3.
+		//! \brief Create Cube with volume = `size^3`.
 		Cube(float size);
 
-		// Mesh deletes arrays if they have been created, not need to do anything here
+		//! \brief Destroy Cube.
+		/*! \note Mesh superclass deletes arrays if they have been created, no need to do anything here
+		*/
 		virtual ~Cube(void) = default;
 	};
 }
-
-#endif
 

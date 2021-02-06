@@ -8,29 +8,22 @@
 //
 // Simple class used for managing Sound and Music objects.  Uses FMod: www.fmod.org
 
-#include <iostream>
-
+#include <string>
 #include "SoundManager.h"
 #include "Sound.h"
 #include "Music.h"
+#include "Logger.h"
 
 namespace T3D{
-
-	SoundManager::SoundManager(void)
-	{
-		system = NULL;
-	}
-
-
-	SoundManager::~SoundManager(void)
-	{
-	}
 
 	void SoundManager::errorCheck(FMOD_RESULT result)
 	{
 		if (result != FMOD_OK)
 		{
-			std::cout << "FMOD error! (" << result << ") " << FMOD_ErrorString(result) << std::endl;
+			logger::Log(priority::Error,
+						output_stream::All,
+						category::Audio,
+						"FMOD error: %s", FMOD_ErrorString(result));
 		}
 	}
 	
@@ -38,7 +31,12 @@ namespace T3D{
 		system->update();
 	}
 	
-	void SoundManager::init(){
+	void SoundManager::init() {
+		logger::Log(priority::Info,
+					output_stream::All,
+					category::Audio,
+					"Initialising SoundManager...");
+
 		FMOD_RESULT result;
 		unsigned int version;
 		int numdrivers;
@@ -56,8 +54,11 @@ namespace T3D{
 
 		if (version < FMOD_VERSION)
 		{
-			printf("Error! You are using an old version of FMOD %08x. This program requires %08x\n",
-			version, FMOD_VERSION);
+			logger::Log(priority::Error,
+						output_stream::File,
+						category::Audio,
+						"Error! You are using an old version of FMOD %08x. This program requires %08x.", 
+						version, FMOD_VERSION);
 		}
 
 		result = system->getNumDrivers(&numdrivers);
@@ -79,11 +80,13 @@ namespace T3D{
 			errorCheck(result);	
 			if (caps & FMOD_CAPS_HARDWARE_EMULATED)
 			{
-				std::cout << "acceleration off\n";
 				/*
-				The user has the 'Acceleration' slider set to off! This is really bad
-				for latency! You might want to warn the user about this.
+				The user has the 'Acceleration' slider set to off! This is really bad for latency! 
 				*/
+				logger::Log(priority::Warning,
+							output_stream::File,
+							category::Audio,
+							"FMOD is unable to use hardware acceleration! You may notice significant audio latency.");
 				result = system->setDSPBufferSize(1024, 10);
 				errorCheck(result);			
 			}
@@ -91,11 +94,15 @@ namespace T3D{
 			errorCheck(result);
 			if (strstr(name, "SigmaTel"))
 			{
-				std::cout << "sigmatel\n";
 				/*
 				Sigmatel sound devices crackle for some reason if the format is PCM 16bit.
 				PCM floating point output seems to solve it.
 				*/
+				logger::Log(priority::Info,
+							output_stream::File,
+							category::Audio,
+							"SigmaTel sound device detected. Changing PCM output to 16-bit float to (hopefully) prevent crackling.");
+
 				result = system->setSoftwareFormat(48000, FMOD_SOUND_FORMAT_PCMFLOAT, 0,0,
 				FMOD_DSP_RESAMPLER_LINEAR);
 				errorCheck(result);
@@ -104,13 +111,17 @@ namespace T3D{
 		result = system->init(100, FMOD_INIT_NORMAL, 0);
 		if (result == FMOD_ERR_OUTPUT_CREATEBUFFER)
 		{
-			std::cout << "speaker\n";
 			/*
 			Ok, the speaker mode selected isn't supported by this soundcard. Switch it
 			back to stereo...
 			*/
+			logger::Log(priority::Info,
+						output_stream::File,
+						category::Audio,
+						"Speaker mode unsupported by soundcard. Trying stereo mode...");
 			result = system->setSpeakerMode(FMOD_SPEAKERMODE_STEREO);
 			errorCheck(result);
+
 			/*
 			... and re-init.
 			*/

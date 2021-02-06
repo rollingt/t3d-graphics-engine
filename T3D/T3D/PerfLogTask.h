@@ -7,15 +7,16 @@
 // perflogtask.h
 //
 // Simple class to track framerates and write to file when app closes
+#pragma once
 
-#ifndef PERFLOGTASK_H
-#define PERFLOGTASK_H
+#include "Task.h"
 
-#include "task.h"
-
-namespace T3D{
-
+namespace T3D 
+{
 	#define PERF_SAMPLING_PERIOD	0.15			// calculation/update time period
+
+	class T3DApplication;
+	class Texture;
 
 	class PerfLogTask :
 		public Task
@@ -52,6 +53,3 @@ namespace T3D{
 		virtual void reset();		// reset elasped time, frame count, min/max frames times
 	};
 }
-
-#endif
-

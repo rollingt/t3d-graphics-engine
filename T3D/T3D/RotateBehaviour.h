@@ -7,13 +7,10 @@
 // RotateBehaviour.h
 //
 // Simple behaviour to rotate an object
+#pragma once
 
-#ifndef ROTATEBEHAVIOUR_H
-#define ROTATEBEHAVIOUR_H
-
-#include "component.h"
+#include "Component.h"
 #include "Vector3.h"
-#include "Quaternion.h"
 
 namespace T3D
 {
@@ -22,8 +19,8 @@ namespace T3D
 		public Component
 	{
 	public:
-		RotateBehaviour(Vector3);
-		~RotateBehaviour(void);
+		RotateBehaviour(Vector3 r) : rotation(r) { }
+		~RotateBehaviour(void) = default;
 		
 		virtual void update(float dt);
 	protected:
@@ -31,5 +28,3 @@ namespace T3D
 	};
 
 }
-
-#endif

@@ -8,9 +8,7 @@
 //
 // 3d homogeneous vector class
 // Adapted from Ogre3D
-
-#ifndef VECTOR4_H
-#define VECTOR4_H
+#pragma once
 
 #include <algorithm>
 #include <iostream>
@@ -21,6 +19,7 @@
 
 namespace T3D
 {
+	//! \brief 4-component Vector, with homogeneous w.
 	class Vector4
     {
     public:
@@ -276,5 +275,3 @@ namespace T3D
         }
     };
 }
-
-#endif

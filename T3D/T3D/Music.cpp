@@ -9,6 +9,7 @@
 // Simple class used for streaming large sound files.  Uses FMod: www.fmod.org
 
 #include "Music.h"
+#include "Logger.h"
 
 namespace T3D{
 
@@ -20,6 +21,11 @@ namespace T3D{
 			channel->setVolume(volume);
 			channel->setPaused(false);
 		}
+
+		logger::Log(priority::Tracing,
+					output_stream::File,
+					category::Audio,
+					"Started playing music...");
 	}
 
 	void Music::setVolume(float v){		
@@ -34,6 +40,11 @@ namespace T3D{
 		if (channel) {
             channel->setPaused(true);
 		}
+
+		logger::Log(priority::Tracing,
+					output_stream::File,
+					category::Audio,
+					"Paused music...");
 	}
 	
 	void Music::stop(){		
@@ -41,6 +52,11 @@ namespace T3D{
 			channel->stop();
 			channel = NULL;
 		}
+
+		logger::Log(priority::Tracing,
+					output_stream::File,
+					category::Audio,
+					"Stopped music...");
 	}
 
 	bool Music::isPlaying(){

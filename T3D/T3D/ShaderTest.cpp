@@ -12,6 +12,10 @@
 #include "Camera.h"
 #include "Sphere.h"
 #include "GLShader.h"
+#include "GameObject.h"
+#include "Material.h"
+#include "Renderer.h"
+#include "Transform.h"
 
 namespace T3D{
 

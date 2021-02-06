@@ -222,6 +222,9 @@
     <ClCompile Include="ParticleGravity.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Source Files\Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mesh.h">
@@ -388,6 +391,9 @@
     </ClInclude>
     <ClInclude Include="DefaultDebugOptions.h">
       <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Header Files\Miscellaneous</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

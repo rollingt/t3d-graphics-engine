@@ -8,14 +8,14 @@
 //
 // Represents a 3D plane
 // Adapted from Ogre3D
-
-#ifndef PLANE_H
-#define PLANE_H
+#pragma once
 
 #include <vector>
 #include "Vector3.h"
 
-namespace T3D {
+namespace T3D 
+{
+	// 3D plane with useful operator overloads for working with matrices and vectors.
     class Plane
     {
     public:
@@ -89,5 +89,3 @@ namespace T3D {
         friend std::ostream& operator<< (std::ostream& o, const Plane& p);
     };
 }
-
-#endif

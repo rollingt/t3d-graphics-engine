@@ -1,5 +1,5 @@
 // =========================================================================================
-// 
+// KXG363 - Advanced Games Programming
 // =========================================================================================
 //
 // Author: David Pentecost
@@ -8,13 +8,17 @@
 //
 // SDL ttf font manager to allow reuse of loaded fonts
 
-#include <iostream>
 #include "FontCache.h"
+#include "Logger.h"
 
 namespace T3D{
 
-	// Get font from cache or load as required.
-	// returns NULL if font not available
+	/*
+	 * \param filename Where the file is, as a relative path.
+	 * \param pointSize Font size. Differs per family, but 16 or so should be good.
+	 *
+	 * \note Returns `nullptr` if the font doesn't exist, and a diagnostic message is output to the console and log file.
+	 */
 	font *FontCache::getFont(const char *filename, int pointSize)
 	{
 		// check the cache in case font is loaded
@@ -31,7 +35,10 @@ namespace T3D{
 		} 
 		else
 		{
-			// TODO(Evan): Log!
+			logger::Log(priority::Warning, 
+						output_stream::All,
+						category::Platform,
+						"Font creation failed!");
 		}
 
 		return maybe_font;

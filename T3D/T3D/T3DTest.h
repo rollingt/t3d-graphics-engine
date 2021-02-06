@@ -7,24 +7,21 @@
 // t3dtest.h
 //
 // Example t3dapplication
+#pragma once
 
-#ifndef T3DTEST
-#define T3DTEST
+#include "WinGLApplication.h"
 
-#include "winglapplication.h"
-
-namespace T3D{
-
-class T3DTest :
-	public WinGLApplication
+namespace T3D
 {
-public:
-	T3DTest(void)  = default;
-	~T3DTest(void) = default;
 
-	bool init();
-};
+	class T3DTest :
+		public WinGLApplication
+	{
+	public:
+		T3DTest(void)  = default;
+		~T3DTest(void) = default;
+
+		bool init();
+	};
 
 }
-#endif
-

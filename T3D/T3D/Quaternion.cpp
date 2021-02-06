@@ -7,5 +7,3 @@
 // Quaternion.cpp
 //
 // Quaternion class - all implementation is in the header
-
-#include "Quaternion.h"

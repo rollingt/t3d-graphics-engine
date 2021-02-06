@@ -7,16 +7,14 @@
 // LookAtBehaviour.cpp
 //
 // A component used for making a component face another transform.  Basically just a wrapper for the Transform lookAt method.
+#pragma once
 
-#ifndef LOOKATBEHAVIOUR_H
-#define LOOKATBEHAVIOUR_H
-
-#include "component.h"
-#include "Vector3.h"
+#include "Component.h"
 #include "Transform.h"
 
 namespace T3D
 {
+	//! \brief A component that makes one Transform 'look at' another.
 	class LookAtBehaviour :
 		public Component
 	{
@@ -29,6 +27,3 @@ namespace T3D
 		Transform *target;
 	};
 }
-
-#endif
-

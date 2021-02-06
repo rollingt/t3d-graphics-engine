@@ -10,12 +10,12 @@
 
 #pragma once
 
-#include <string>
 #include "fmod/fmod.hpp"
 #include "SoundManager.h"
 
-namespace T3D{
+namespace T3D {
 
+	//! \brief Play and adjust sounds loaded by a SoundManager.
 	class Sound
 	{
 	friend class SoundManager;

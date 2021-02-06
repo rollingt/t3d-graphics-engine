@@ -8,19 +8,26 @@
 //
 // TTF_Font wrapper for font cache
 
-#include <iostream>
 #include "Font.h"
+#include "Logger.h"
 
 namespace T3D{
 
+	/*
+	 * \param filename Where the file is, as a relative path.
+	 * \param pointSize Font size. Differs per family, but 16 or so should be good.
+	 */
 	font::font(const char *filename, int pointSize)
 	{
 		name = filename;
 		size = pointSize;
 
 		ttf = TTF_OpenFont(filename, pointSize);
-		if (ttf == NULL) {
-			std::cout << "TTF_OpenFont() Failed: " << TTF_GetError() << std::endl;
+		if (!ttf) {
+			logger::Log(priority::Warning, 
+						output_stream::All,
+						category::Platform,
+						"TTF_OpenFont() Failed :: %s", TTF_GetError());
 		}
 
 	}

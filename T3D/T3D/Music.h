@@ -16,6 +16,7 @@
 
 namespace T3D{
 
+	//! \brief Play, pause and adjust sounds loaded by a SoundManager.
 	class Music
 	{
 	friend class SoundManager;
