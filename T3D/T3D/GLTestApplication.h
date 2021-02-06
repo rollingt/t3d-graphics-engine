@@ -9,10 +9,10 @@
 // A dummy application for running the GLTestRenderer (used as an OpenGL sandbox)
 
 #pragma once
-#include "winglapplication.h"
+#include "WinGLApplication.h"
 
 
-namespace T3D{
+namespace T3D {
 
 	class GLTestApplication :
 		public WinGLApplication

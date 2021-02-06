@@ -7,46 +7,63 @@
 // ParticleEmitter.h
 //
 // Particle emitter and controller
+#pragma once
 
-#ifndef PARTICLEEMITTER_H
-#define PARTICLEEMITTER_H
-
-#include <list>
+#include <vector>
 #include <queue>
+
 #include "Component.h"
 #include "ParticleBehaviour.h"
-
 
 namespace T3D
 {
 	class ParticleBehaviour;
 
-	//! Standard Particle Emitter
-	/*! The particle emitter generates and lauches reusable particles s
-	  \author  David Pentecost
-	  */
+	//! \brief Generate reusable particles.
 	class ParticleEmitter :
 		public Component
 	{
-	friend class ParticleBehaviour;
 	public:
-		ParticleEmitter(float duration, float startRate, float emitRate, float endRate,
-			float startUpTime, float windDownTime);
+		// \brief Create Particle emitter
+		ParticleEmitter(float duration, 
+						float startRate, 
+						float emitRate, 
+						float endRate,
+						float startUpTime, 
+						float windDownTime) :
+			duration(duration),
+			startRate(startRate),
+			emitRate(emitRate),
+			endRate(endRate),
+			rampUpDuration(startUpTime),
+			rampDownDuration(windDownTime),
+			emitted(0),
+			elapsed(0) { }
+
+		// \brief Deletes all particles
 		virtual ~ParticleEmitter();
 
-		void addParticle(ParticleBehaviour *particle, bool start);	// add particle to pool
-		void emit(int n);
-		void stop(bool clear);
-		void restart() { emitted = 0;  elapsed = 0; }				// restart from time 0
+		// \brief Adds a particle to the available pool.
+		void addParticle(ParticleBehaviour *particle, bool start);
 
+		// \brief Emit `n` particles immediatel	y
+		void emit(uint32_t n);											
+
+		// \brief Stop particle system
+		void stop(bool clear);
+
+		// \brief Restart timer
+		void restart() { emitted = 0;  elapsed = 0; }				
+
+		// \brief Tick particle system
 		void update(float dt);
 
-	private:
-		void addInactiveList(ParticleBehaviour *particle);	// only particles should call this!
-
 	protected:
-		std::vector<ParticleBehaviour *> particles;			// all particles
-		std::queue<ParticleBehaviour *> particlesInactive;	// inactive particles that can be reused
+		// \brief Set of all particles.
+		std::vector<ParticleBehaviour *> particles;
+
+		// \brief Inactive particles that can be reused.
+		std::queue<ParticleBehaviour *> particlesInactive;
 
 		float elapsed;					// elapsed time
 
@@ -62,10 +79,14 @@ namespace T3D
 		float rampDownDuration;			// wind down time from emitRate to endRate
 	
 	private:
+		// \brief Adds particle to inactive list for reuse
+		void addInactiveList(ParticleBehaviour *particle);	// only particles should call this!
+		// \brief Calculate expected particles at a timestep
 		float emitRamp(float start, float end, float duration, float time, float variability);
+
+	//! Need to maanage the members of ParticleBehaviour component instances.
+	friend class ParticleBehaviour;
 
 	};
 
 }
-
-#endif //PARTICLEEMITTER_H

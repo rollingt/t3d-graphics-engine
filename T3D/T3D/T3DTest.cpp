@@ -4,11 +4,11 @@
 //
 // Author: Robert Ollington
 //
-// t3dtest.cpp
+// T3DTest.cpp
 //
-// Example t3dapplication
+// Example T3Dapplication
 
-#include "t3dtest.h"
+#include "T3DTest.h"
 #include "Cube.h"
 #include "PlaneMesh.h"
 #include "Sphere.h"
@@ -28,6 +28,9 @@
 #include "Math.h"
 #include "Sweep.h"
 #include "SweepPath.h"
+
+#include "Light.h"
+#include "Renderer.h"
 
 namespace T3D {
 
@@ -95,11 +98,7 @@ namespace T3D {
 
 		//Create a camera
 		GameObject *camObj = new GameObject(this);
-		float near   = 0.1f;
-		float far    = 500.0f;
-		float fovy   = 45.0f;
-		float aspect = 1.6f;
-		renderer->camera = new Camera(near, far, fovy, aspect);
+		renderer->camera = new Camera(0.3, 300.0, 45.0, 1.6);
 		camObj->getTransform()->setLocalPosition(Vector3(0,0,20));
 		camObj->getTransform()->setLocalRotation(Vector3(0,0,0));
 		camObj->setCamera(renderer->camera);
@@ -139,13 +138,13 @@ namespace T3D {
 		//Create an empty node to use as a rotation point
 		GameObject *rotateOrigin = new GameObject(this);
 		rotateOrigin->getTransform()->setParent(root);
-		//rotateOrigin->addComponent(new RotateBehaviour(Vector3(0,1,0)));
-		
+		rotateOrigin->addComponent(new RotateBehaviour(Vector3(0,1,0)));
+	
 		//Create a torus using the Sweep class as a child of rotateOrigin
 		SweepPath sp;
 		sp.makeCirclePath(2,32);
 		GameObject *torus = new GameObject(this);
-		vector<Vector3> points;
+		std::vector<Vector3> points;
 		points.push_back(Vector3(0.2f,0.0f,0.0f));
 		points.push_back(Vector3(0.14f,0.14f,0.0f));
 		points.push_back(Vector3(0.0f,0.2f,0.0f));
@@ -171,15 +170,16 @@ namespace T3D {
 		//Create some animation for the sphere and torus
 		Animation *anim = new Animation(10.0);
 		torus->addComponent(anim);
-		anim->addKey("Sphere",10.0,Quaternion(),Vector3(0,5,0));
 		anim->addKey("Sphere",0,Quaternion(),Vector3(0,5,0));
-		anim->addKey("Sphere",7.0,Quaternion(),Vector3(0,0,0));
 		anim->addKey("Sphere",5.0,Quaternion(),Vector3(0,-5,0));
-		anim->addKey("Torus",10.0,Quaternion(),Vector3(10,0,0));
+		anim->addKey("Sphere",7.0,Quaternion(),Vector3(0,0,0));
+		anim->addKey("Sphere",10.0,Quaternion(),Vector3(0,5,0));
 		anim->addKey("Torus",0,Quaternion(),Vector3(10,0,0));
-		anim->addKey("Torus",7.0,Quaternion(),Vector3(15,0,0));
 		anim->addKey("Torus",5.0,Quaternion(Vector3(0,0,Math::HALF_PI)),Vector3(5,0,0));
+		anim->addKey("Torus",7.0,Quaternion(),Vector3(15,0,0));
+		anim->addKey("Torus",10.0,Quaternion(),Vector3(10,0,0));
 		anim->loop(true);	
+		anim->play();	
 		
 		//Add a cube to act as a source for particle system
 		GameObject *cubeF = new GameObject(this);
@@ -193,6 +193,7 @@ namespace T3D {
 		// A simple fireworks fountain using the particle system
 		ParticleEmitter *particleSys = new ParticleEmitter(10.0f, 1.0f, 20.0f, 2.0f, 3.0f, 3.0f);
 		cubeF->addComponent(particleSys);			// make cube source of particles
+
 		// Create a pool of particles
 		for (int i = 0; i<100; i++)
 		{

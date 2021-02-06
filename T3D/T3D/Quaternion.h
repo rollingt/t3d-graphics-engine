@@ -7,9 +7,7 @@
 // Quaternion.h
 //
 // Quaternion class - all implementation is in the header
-
-#ifndef QUATERNION_H
-#define QUATERNION_H
+#pragma once
 	
 #include "Vector3.h"
 #include "Matrix3x3.h"
@@ -396,6 +394,3 @@ namespace T3D {
         }
 	};
 }
-
-#endif 
-

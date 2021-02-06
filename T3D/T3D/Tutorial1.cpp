@@ -9,19 +9,17 @@
 // Base application for tutorial 1.  Used in conjunction with DrawTask, a task for drawing onto a 2D texture.
 
 #include "Tutorial1.h"
+#include "WinGLApplication.h"
+#include "GLRenderer.h"
 #include "Camera.h"
 
-namespace T3D{
-
+namespace T3D 
+{
 	Tutorial1::Tutorial1(void)
 	{
-		drawArea = new Texture(1024,640,false);
+		drawTask = nullptr;
+		drawArea = new Texture(renderer->WindowWidth, renderer->WindowHeight, false);
 		drawArea->clear(Colour(255,255,255,255));
-	}
-
-
-	Tutorial1::~Tutorial1(void)
-	{
 	}
 
 	bool Tutorial1::init(){

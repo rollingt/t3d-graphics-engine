@@ -11,13 +11,13 @@
 
 #include "Billboard.h"
 #include "PlaneMesh.h"
-#include "GameObject.h"
-#include "T3DApplication.h"
-#include "Camera.h"
 
 namespace T3D
 {
-	// Initialise the Billboard component with its parent GameObject.
+	/*!
+	 * \param go GameObject associated with this component. 
+	 * \note If no GameObject is associated with the Billboard, then `update` won't ever tick!
+	*/
 	void Billboard::init(GameObject* go){
 		gameObject = go;
 		
@@ -25,16 +25,18 @@ namespace T3D
 		gameObject->setMesh(mesh);
 	}
 	
-	// Update the Billboard's facing every frame to ensure it's looking at the camera.
+	/*!
+	 * \param dt Change in time
+	 *
+	 * \note This assumes a right-handed coordinate system like OpenGL is being used!
+	 */
 	void Billboard::update(float dt){	
 		Vector3 camera = this->camera->getWorldPosition();
 
-		if (lockY){
-			camera.y = gameObject->getTransform()->getWorldPosition().y;
-		}
+		if (lockY) camera.y = gameObject->getTransform()->getWorldPosition().y;
 
 		// Billboards require a 'special case' when using lookAt. 
-		// The lookAt matrix is defined with respect to the difference vector between the local and target transform, and an 'eye' (or camera) vector.
+		// The lookAt matrix is defined with respect to the difference between the local and target transform and the camera.
 		// When the camera is both the target _and_ the world-view camera in a right-hand coordinate system (i.e. OpenGL as in T3D), we need to compensate
 		// for the fact it is already 'looking down' the negative z axis, otherwise the XZ planemesh defining a billboard will be inverted.
 		auto *transform = gameObject->getTransform();

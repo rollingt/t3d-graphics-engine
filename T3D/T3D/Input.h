@@ -8,9 +8,7 @@
 //
 // Simple static class to track keyboard and mouse
 // Adapted from Ogre3D
-
-#ifndef INPUT_H
-#define INPUT_H
+#pragma once
 
 namespace T3D
 {
@@ -143,6 +141,7 @@ namespace T3D
 
 	#define MAX_KEYS 512
 
+	//! \brief Stores keyboard and mouse input for the current frame.
 	class Input
 	{
 	public:
@@ -155,6 +154,3 @@ namespace T3D
 	};
 
 }
-
-#endif
-

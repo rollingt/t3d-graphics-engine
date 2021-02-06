@@ -9,35 +9,34 @@
 #pragma once
 
 #include "Component.h"
-#include "Transform.h"
 
 namespace T3D
 {
+	class Transform;
 	class ParticleEmitter;
 
-	//  Standard Particle Behaviour
-	// Manages an individual particle for its lifetime
-	//    Particles are reusable
+	//! \brief Component to add Particle behaviour to a GameObject. Created from a parent ParticleEmitter. 
+	/* ParticleBehaviour manages an individual particle for its lifetime.
+	 * Particles are also reusable.
+	 */
+
 	class ParticleBehaviour  :
 		public Component
 	{
 	public:
-		/*! Constructor
-		  Initialises members
-		  */
+		// \brief Create ParticleBehaviour, initialising members
 		ParticleBehaviour::ParticleBehaviour(ParticleEmitter *emitter) : emitter(emitter),
-																	     active(0) { }
+																	     active(false) { }
+		virtual void start(Transform *from) = 0;		// start or restart particle
+		virtual void update(float dt) = 0;				// tick particle system
+		virtual void stop();							// stop and hide particle
+
 		bool isActive() { return active; }
-
-		virtual void start(Transform *from) = 0;			// start or restart particle
-		virtual void update(float dt) = 0;
-
-		virtual void stop();								// stop and hide particle
 
 	protected:
 		ParticleEmitter *emitter;		// parent emitter
 
-		bool active;			// particle is alive and active				
+		bool active;			// particle is alive and active
 	};
 
 }

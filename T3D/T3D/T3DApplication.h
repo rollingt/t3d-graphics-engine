@@ -4,27 +4,23 @@
 //
 // Author: Robert Ollington
 //
-// t3dapplication.cpp
+// T3Dapplication.cpp
 //
 // Abstract base class for a T3D application
 // Stores reference to root transform of scene graph and list of tasks
+#pragma once
 
-#ifndef T3DAPPLICATION_H
-#define T3DAPPLICATION_H
-
-
-#include "Transform.h"
-#include "renderer.h"
-#include "Font.h"
 #include <list>
-#include "SoundManager.h"
-
-using namespace std;
 
 namespace T3D
 {
 	class Task;
+	class Renderer;
+	class Transform;
+	class font;
+	class SoundManager;
 
+	//! \brief Base class for T3D driver applications, such as WinGLApplication.
 	class T3DApplication
 	{
 	public:
@@ -32,7 +28,7 @@ namespace T3D
 		virtual ~T3DApplication(void);
 
 		virtual bool init() = 0;
-		virtual int run() = 0;
+		virtual int  run() = 0;
 		virtual void quit() = 0;
 		virtual void updateTasks();
 		virtual void updateComponents(Transform *t);
@@ -59,6 +55,3 @@ namespace T3D
 	};
 
 }
-
-#endif
-

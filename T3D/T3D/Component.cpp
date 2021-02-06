@@ -10,9 +10,6 @@
 // Used to add behaviours and other functionality to game objects
 // Automatically updated by application
 
-#include "Component.h"
-#include "GameObject.h"
-
 namespace T3D
 {
 	/* Abstract class : Implementation not provided */ 

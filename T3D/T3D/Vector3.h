@@ -8,9 +8,7 @@
 //
 // 3d vector class
 // Adapted from Ogre3D
-
-#ifndef VECTOR3_H
-#define VECTOR3_H
+#pragma once
 
 #include <algorithm>
 #include <iostream>
@@ -19,6 +17,7 @@
 
 namespace T3D
 {
+	//! \brief 3-component Vector.
     class Vector3
     {
     public:
@@ -390,5 +389,3 @@ namespace T3D
     };
 
 }
-
-#endif

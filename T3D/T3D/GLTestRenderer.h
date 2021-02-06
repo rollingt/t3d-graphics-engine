@@ -9,7 +9,7 @@
 // A dummy renderer that ignores the scene entirely.  Intended to be used as an OpenGL snadbox.
 
 #pragma once
-#include "glrenderer.h"
+#include "GLRenderer.h"
 
 namespace T3D{
 

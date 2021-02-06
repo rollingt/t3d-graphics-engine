@@ -7,28 +7,31 @@
 // camera.h
 //
 // Simple camera class to be attached to GameObject(s) and referenced from Renderer
-
-#ifndef CAMERA_H
-#define CAMERA_H
+#pragma once
 
 #include "Component.h"
-#include "Plane.h"
-#include "Transform.h"
 
 namespace T3D
 {
+	//! \brief A camera for viewing the scene. Can be perspective or orthographic.
+	/*!
+	 *	Camera's are associated with a GameObject, like all Components. An idiom in T3D is to attach a Camera and KeyboardController component to a GameObject to act as a fly camera.
+	 */
 	class Camera :
 		public Component
 	{
 	public:
+
+		//! \brief What type of Camera an instance is
 		enum class Type 
 		{
 			PERSPECTIVE,
 			ORTHOGRAPHIC
 		};
 
-		// Safe default perspective camera
-		Camera::Camera() : type      (Camera::Type::PERSPECTIVE),
+		//! \brief Create a perspective camera with safe defaults.
+		Camera::Camera() : Component(), 
+						   type      (Camera::Type::PERSPECTIVE),
 						   near      (0.1),
 						   far       (500.0),
 						   fovy      (45.0),
@@ -39,28 +42,33 @@ namespace T3D
 						   top       (0)
 		{ }
 
-		// Perspective Camera
+		//! \brief Create a perspective camera.
 		Camera(double near, double far, double fovy, double aspect);
-		// Orthographic Camera
+
+		//! \brief Create an orthographic camera.
 		Camera(double near, double far, double left, double right, double bottom, double top);
 
+		//! \brief Destroy the camera.
 		virtual ~Camera() = default;
 
 	public:
-		Type type;	// projection type
+		//! \brief Projection type
+		Camera::Type type;
 
-		double far;				// far z plane (distance from viewer)
-		double near;			// near Z plane (distance from viewer)
+		//! \brief far Z plane (distance from viewer)
+		double far;				
+		//! \brief near Z plane (distance from viewer)
+		double near;
 
-		// Perspective projection only
-		double fovy;			// field of view (angle in degrees)
-		double aspect;			// field of view in X direction - ratio of x(width) to y(height)
+		/* Perspective projection only */
+		//! \brief field of view (angle in degrees)
+		double fovy;
+		//! \brief field of view in X direction - ratio of x(width) to y(height)
+		double aspect;
 
-		// Orthographic only
-		double left,right,top,bottom;	// view extent
+		/* Orthographic only */
+		//! \brief planes of view extent/frustrum 
+		double left, right, top, bottom;
 
 	};
 }
-
-#endif
-

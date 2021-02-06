@@ -10,21 +10,24 @@
 
 #pragma once
 
+#include <string>
+
 #include "fmod/fmod.hpp"
 #include "fmod/fmod_errors.h"
 
-namespace T3D{
+namespace T3D {
 	
 	class Sound;
 	class Music;
 
+	//! \brief Create, load and update sounds and music.
 	class SoundManager
 	{
 	friend class Sound;
 	friend class Music;
 	public:
-		SoundManager(void);
-		virtual ~SoundManager(void);
+		SoundManager(void) : system(nullptr) { }
+		virtual ~SoundManager(void) = default;
 
 		void init();
 		void update();

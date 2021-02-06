@@ -7,15 +7,14 @@
 // Bone.h
 //
 // Bone class used for animation in conjunction with the Animation class
-
-#ifndef BONE_H
-#define BONE_H
+#pragma once
 
 #include <vector>
 #include "Transform.h"
 
 namespace T3D
 {
+	//! \brief A rotation and position associated with a timestamp in seconds.
 	struct KeyFrame
 	{
 		float time;
@@ -23,23 +22,30 @@ namespace T3D
 		Vector3 position;
 	};
 
+	//! \brief Bones manage a collection of `KeyFrame`s associated with a named `Transform`, updating the `Transform` recursively every tick.
 	class Bone
 	{
 	public:
+		//! \brief Create a `Bone`.
 		Bone(void) = default;
+
+		//! \brief Destroy a `Bone`.
 		~Bone(void) = default;
 
+		//! \brief Update the `Bone`'s position by interpolating between the current and next keyframes.
 		void update(float time);
+
+		//! \brief Add a `KeyFrame` to the `Bone`. 
 		void addFrame(KeyFrame f);
 
-		// Dump information for this bone to standard output.
+		//! \brief Dump information for this `Bone` to standard output.
 		void printKeyFrames();
 
-		// Accessed by Animation.
+		//! \brief The `Transform` parent this `Bone` manipulates.
 		Transform* transform = NULL;
+
+		//! \brief The collection of `KeyFrame`s associated with the Bone.
+		// \note _This_ is ordered, even if keyframes can be added in arbitrary sequences.
 		std::vector<KeyFrame> keyframes;
 	};
 }
-
-#endif
-

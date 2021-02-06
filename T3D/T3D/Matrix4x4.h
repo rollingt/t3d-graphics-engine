@@ -8,11 +8,8 @@
 //
 // 4x4 matrix class
 // Adapted from Ogre3D
+#pragma once
 
-#ifndef MATRIX4X4_H
-#define MATRIX4X4_H
-
-#include <algorithm>
 #include <assert.h>
 #include "Vector3.h"
 #include "Vector4.h"
@@ -21,6 +18,7 @@
 
 namespace T3D
 {
+	//! \brief 4x4 Matrix, suitable for 3D affine transformations using homogeneous coordinates.
 	class Matrix4x4
 	{
     protected:
@@ -572,5 +570,3 @@ namespace T3D
 	/** @} */
 
 }
-
-#endif

@@ -11,7 +11,12 @@
 #include <sstream>
 #include <fstream>
 #include <iomanip>
-#include "perflogtask.h"
+
+#include "PerfLogtask.h"
+#include "Font.h"
+#include "Renderer.h"
+#include "Colour.h"
+#include "Texture.h"
 
 namespace T3D{
 
@@ -48,7 +53,7 @@ namespace T3D{
 
 	void PerfLogTask::log(){		
 		std::ofstream logfile;
-		logfile.open ("perflog.txt", fstream::in | fstream::out | fstream::app);
+		logfile.open ("perflog.txt", std::fstream::in | std::fstream::out | std::fstream::app);
 		logfile.precision(1);
 		logfile << std::fixed;
 		logfile << "frames: " << frameCount << "\n";

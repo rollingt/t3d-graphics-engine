@@ -7,23 +7,22 @@
 // Terrain.h
 //
 // Component used for creating terrains - from an image file, or procedurally.
-
-#ifndef TERRAIN_H
-#define TERRAIN_H
+#pragma once
 
 #include <string>
-#include "component.h"
+
+#include "Component.h"
 #include "Vector3.h"
 
-namespace T3D{
+namespace T3D {
 
-	//! A triangle mesh terrain class
-	/*! Can create a terrain from a texture or procudurally generate a fractal terrain
-	  \todo		Consider refactoring this class so that it is a subclass of Mesh
-	  
-	  \author	Robert Ollington
-	  */
-
+	//! \brief Create Terrain from heightmaps, or procedurally.
+	/*! 
+	 * Can create a terrain from a texture or procudurally generate a fractal terrain
+	 * \todo Consider refactoring this class so that it is a subclass of Mesh
+	 * 
+	 * \author	Robert Ollington
+	 */
 	class Terrain :
 		public Component
 	{
@@ -41,6 +40,3 @@ namespace T3D{
 	};
 
 }
-
-#endif
-

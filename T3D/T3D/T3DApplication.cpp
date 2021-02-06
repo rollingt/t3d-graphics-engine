@@ -13,12 +13,17 @@
 #include <time.h>       /* time */
 
 #include "T3DApplication.h"
+
+#include "Transform.h"
+#include "Renderer.h"
+#include "Font.h"
+#include "SoundManager.h"
+#include "GameObject.h"
 #include "Input.h"
 #include "Task.h"
 
 namespace T3D 
 {
-
 	T3DApplication::T3DApplication(void)
 	{
 		/* initialize random seed: */
@@ -53,7 +58,7 @@ namespace T3D
 
 	Task *T3DApplication::findTask(const char *name)
 	{
-		for (auto *task : tasks)
+		for (auto task : tasks)
 		{
 			if (task->getName().compare(name) == 0) return task;
 		}
@@ -62,43 +67,32 @@ namespace T3D
 
 	bool T3DApplication::validTask(Task *t)				// test that task is still alive
 	{
-		std::list<Task*>::iterator it = std::find(tasks.begin(), tasks.end(), t);
-		return it != tasks.end();
+		return (std::find(tasks.begin(), tasks.end(), t) != tasks.end());
 	}
 
-	void T3DApplication::updateComponents(Transform *t){
-		if (t->gameObject!=NULL)
-		{
-			t->gameObject->update(dt);
-		}
+	void T3DApplication::updateComponents(Transform *t) {
+		if (t->gameObject) t->gameObject->update(dt); /* Update root     */
 
-		for(unsigned int i = 0; i < t->children.size(); ++i)
+		for (auto &child : t->children)               /* Update children */
 		{
-			updateComponents(t->children[i]);
+			updateComponents(child);
 		}
 	}
 
-	void T3DApplication::updateTasks(){
-		std::list<Task*>::iterator it=tasks.begin();
-		bool taskFinished;
-		Task *task;
+	void T3DApplication::updateTasks() {
+		auto it = tasks.begin();
 
-		while (it != tasks.end())
-		{
-			task = (*it);
+		while (it != tasks.end()) {
+			auto task = *it;
+			task->update(dt);
 
-			taskFinished = task->getFinished();
-
-			if (!taskFinished)
-				task->update(dt);			// only update still active tasks (not finished)
-
-			it++;							// next (must be before deleting any finished task)
-
-			if (taskFinished)
-			{
-				// remove and delete finished task
-				tasks.remove(task);
-				delete task;
+			if (task->getFinished()) {
+				auto finishedTask = *it;
+				it = tasks.erase(it);
+				delete finishedTask;
+			}
+			else {
+				it++;
 			}
 		}
 	}

@@ -14,12 +14,12 @@
 
 namespace T3D
 {
-    const float Math::PI = float( 4.0 * atan( 1.0 ) );
-    const float Math::TWO_PI = float( 2.0 * PI );
-    const float Math::HALF_PI = float( 0.5 * PI );
-	const float Math::DEG2RAD = PI / float(180.0);
+    const float Math::PI      = float( 4.0f * atan( 1.0f ) );
+    const float Math::TWO_PI  = float( 2.0f * PI );
+    const float Math::HALF_PI = float( 0.5f * PI );
+	const float Math::DEG2RAD = PI / float(180.0f);
 	const float Math::RAD2DEG = float(180.0f) / PI;
-	const float Math::LOG2 = float(log(2.0f));
+	const float Math::LOG2    = float(log(2.0f));
 
 	
 	float** Math::generateFractal(int size, float low, float high, float roughness, bool tile){

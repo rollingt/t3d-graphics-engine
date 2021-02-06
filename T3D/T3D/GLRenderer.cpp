@@ -14,18 +14,22 @@
 #include <gl\glew.h>
 #include <gl\GL.h>
 #include <gl\GLU.h>
-#include <iostream>
+
+#include "Transform.h"
+#include "GameObject.h"
+#include "Texture.h"
+#include "Colour.h"
 
 #include "GLRenderer.h"
 #include "GameObject.h"
 #include "Camera.h"
 #include "Shader.h"
+#include "Logger.h"
 
 namespace T3D
 {
 	void GLRenderer::prerender()
 	{
-
 		// set up lighting
 		glEnable(GL_NORMALIZE);
 
@@ -34,26 +38,27 @@ namespace T3D
 		for(unsigned int i = 0; i < lights.size(); ++i)
 		{
 			int lightid = GL_LIGHT0+i;
-			if (lights[i]->enabled){
+			if (lights[i]->enabled) {
 				glEnable(lightid);
 				
 				float positiondata[4];
+				float w;
+				Vector3 position;
 				if (lights[i]->type == Light::Type::DIRECTIONAL)
 				{
 					Matrix3x3 rot;
 					lights[i]->gameObject->getTransform()->getWorldMatrix().extract3x3Matrix(rot);
-					Vector3 position = rot.GetColumn(2);
-					positiondata[0] = position.x;
-					positiondata[1] = position.y;
-					positiondata[2] = position.z;
-					positiondata[3] = 0;
+					position = rot.GetColumn(2);
+					w = 0;
 				} else {
-					Vector3 position = lights[i]->gameObject->getTransform()->getWorldPosition();
-					positiondata[0] = position.x;
-					positiondata[1] = position.y;
-					positiondata[2] = position.z;
-					positiondata[3] = 1.0;
+					position = lights[i]->gameObject->getTransform()->getWorldPosition();
+					w = 1.0f;
 				}
+
+				positiondata[0] = position.x;
+				positiondata[1] = position.y;
+				positiondata[2] = position.z;
+				positiondata[3] = w;
 
 				glLightfv(lightid, GL_POSITION, positiondata);					
 				glLightfv(lightid, GL_DIFFUSE, lights[i]->diffuse);
@@ -71,7 +76,7 @@ namespace T3D
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Set up camera
-		if (camera!=NULL){
+		if (camera) {
 
 			setCamera(camera);
 
@@ -189,7 +194,6 @@ namespace T3D
 	void GLRenderer::postrender()
 	{
 		showD2DOverlays();
-
 		SDL_GL_SwapBuffers();
 	}
 
@@ -273,10 +277,10 @@ namespace T3D
 				shader->bindShader();
 			}
 		}	
-	}
+	}		
 
 	void GLRenderer::unloadMaterial(Material* mat){
-		if (mat != NULL){
+			if (mat != NULL){
 			Shader *shader = mat->getShader();
 			if (shader) {
 				shader->unbindShader();
@@ -286,7 +290,7 @@ namespace T3D
 
 	void GLRenderer::draw(GameObject* object){
 		Mesh *mesh = object->getMesh();
-		if (mesh != NULL){
+		if (mesh != NULL) {
 
 			float *matdiffuse = NULL;
 			if (object->getAlpha() < 1.0)
@@ -412,9 +416,12 @@ namespace T3D
 			else
 				texture_format = GL_BGR;
 		} else {
-			std::cout << "warning: the image is not truecolor..  this will probably break\n";
-			// this error should not go unhandled
-			// TODO(Evan) Logging!
+			logger::Log(priority::Warning, 
+					    output_stream::All, 
+					    category::Video, 
+					    "Warning: loaded image is not truecolor..  this will probably break! Texture ID: %u\n"
+					    ,
+						tex->getID());
 		}
 
 		return texture_format;
@@ -427,12 +434,22 @@ namespace T3D
 
 		// Check that the image's width is a power of 2
 		if ( (tex->getWidth() & (tex->getWidth() - 1)) != 0 ) {
-			std::cout << "warning: " << tex << "'s width is not a power of 2\n";
+			logger::Log(priority::Warning, 
+					    output_stream::All, 
+					    category::Video, 
+					    "Warning: loaded texture's width is not a power of two. Texture ID: %u\n"
+					    ,
+						tex->getID());
 		}
  
 		// Also check if the height is a power of 2
 		if ( (tex->getHeight() & (tex->getHeight() - 1)) != 0 ) {
-			std::cout << "warning: " << tex << "'s height is not a power of 2\n";
+			logger::Log(priority::Warning, 
+					    output_stream::All, 
+					    category::Video, 
+					    "Warning: loaded texture's height is not a power of two. Texture ID: %u\n"
+					    ,
+						tex->getID());
 		}
  
 		// Have OpenGL generate a texture object handle for us
@@ -463,20 +480,18 @@ namespace T3D
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter );
 
 		// Set the texture's stretching properties
-		if (repeat){
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		} else {
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		}
+		auto StretchingProperty = GL_REPEAT;
+		if (!repeat) StretchingProperty = GL_CLAMP_TO_EDGE;
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, StretchingProperty);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, StretchingProperty);
 		
 		// really loading for the first time but reload works if texture ID has been generated
 		reloadTexture(tex);
 	}
 
 	// Reload the texture from the SDL surface.
-	// It is assumed that the cahracterisics of the texture are unchanged
+	// It is assumed that the characteristics of the texture are unchanged
 	void GLRenderer::reloadTexture(Texture *tex)
 	{
 		GLuint textureID = 0;			// This is a handle to our texture object
@@ -489,8 +504,27 @@ namespace T3D
 		nOfColors = tex->getSurface()->format->BytesPerPixel;
 		// get the GL texture format
 		texture_format = getTextureFormat(tex);
+		const char *formatString;
 
-		//std::cout << "Mode: " << texture_format << " GL_RGBA: " << GL_RGBA << " GL_RGB: " << GL_RGB << " GL_BGRA: " << GL_BGRA << " GL_BGR: " << GL_BGR << "\n";
+		if (texture_format == GL_RGBA) {
+			formatString = "GL_RGBA";
+		} else if (texture_format == GL_RGB) {
+			formatString = "GL_RGB";
+
+		} else if (texture_format == GL_BGRA) {
+			formatString = "GL_BGRA";
+		} else if (texture_format == GL_BGR) {
+			formatString = "GL_BGRA";
+		} else {
+			formatString = "Unknown?!";
+		}
+		logger::Log(priority::Tracing,
+					output_stream::File,
+					category::Video,
+					"Reloading texture.... Properties: "
+					"Mode:    %s "
+					,
+					formatString);
 
 		// Bind the texture object
 		glBindTexture( GL_TEXTURE_2D, textureID );
@@ -502,19 +536,38 @@ namespace T3D
 			// have GLU build mipmaps
 			int err = gluBuild2DMipmaps(GL_TEXTURE_2D, nOfColors, tex->getSurface()->w, tex->getSurface()->h, texture_format, GL_UNSIGNED_BYTE, tex->getSurface()->pixels);
 			if (err != 0) {
-				std::cout << "Failed to generate mipmaps : " << gluErrorString(err) << std::endl;
+				logger::Log(priority::Warning,
+							output_stream::All,
+							category::Video,
+							"Failed to generate mipmaps : %s", gluErrorString(err));
 			}
 		}
 	}
 
-	// Free the OpenGL texture handle and GPU-side buffers associated with `tex`.
 	void GLRenderer::unloadTexture(Texture *tex)
 	{
+		logger::Log(priority::Tracing,
+					output_stream::File,
+					category::Video,
+					"Unloaded texture, ID: %u", tex->getID());
 		GLuint textureID = tex->getID();
 		glDeleteTextures(1, &textureID);
 	}
 
-	void GLRenderer::loadSkybox(std::string tex){
+	/* 
+	 * Given the relative path `"Resources/Sunny1"`, this will attempt to load skybox as...
+	 * ` "Sunny1_" + ["up" | "down" | "left" | "right" | "front" | "back"] + ".bmp"`
+	 *
+	 * \param tex path and base name of texture
+	 *
+	 * \note The path is relative. No attempt is made to handle UTF16 paths or non bitmap files.
+	 */
+	void GLRenderer::loadSkybox(std::string tex) {
+		logger::Log(priority::Tracing,
+					output_stream::File,
+					category::Video,
+					"Loading skybox sides :: %s", tex.c_str());
+
 		skyboxup = new Texture(tex+"_up.bmp");
 		loadTexture(skyboxup);
 		skyboxdown = new Texture(tex+"_down.bmp");
@@ -534,13 +587,9 @@ namespace T3D
 	// is there a existing 2D overlay using this texture?
 	bool GLRenderer::exists2DOverlay(Texture *texture)
 	{
-		std::list<overlay2D *>::iterator i = overlays.begin();
-		while (i != overlays.end())
+		for (auto &overlay: overlays)
 		{
-			overlay2D *overlay = *i;
-			if (overlay->texture == texture)
-				return true;
-			i++;
+			if (overlay->texture == texture) return true;
 		}
 		return false;
 	}
@@ -558,16 +607,13 @@ namespace T3D
 	// remove overlay
 	void GLRenderer::remove2DOverlay(Texture *texture)
 	{
-		std::list<overlay2D *>::iterator i = overlays.begin();
-		while (i != overlays.end())
+		for (auto &overlay: overlays)
 		{
-			overlay2D *overlay = *i;
 			if (overlay->texture == texture)
 			{
 				overlays.remove(overlay);
 				return;
 			}
-			i++;
 		}
 	}
 
@@ -596,17 +642,16 @@ namespace T3D
 		glBegin(GL_QUADS);
 		{
 			/* Recall that the origin is in the lower-left corner and in clip space / screen space, Y increases upwards.
-				That is why the TexCoords specify different corners
-				than the Vertex coors seem to. */
+			   That is why the TexCoords specify different corners than the Vertex coords seem to. */
 			float xLeft   = float(x);
 			float xRight  = float(x + w);
 			float yBottom = float(y);
 			float yTop    = float(y + h);
 
-			glTexCoord2f(0.0f, 1.0f);  glVertex2f(xLeft, yBottom);
+			glTexCoord2f(0.0f, 1.0f);  glVertex2f(xLeft,  yBottom);
 			glTexCoord2f(1.0f, 1.0f);  glVertex2f(xRight, yBottom);
 			glTexCoord2f(1.0f, 0.0f);  glVertex2f(xRight, yTop);
-			glTexCoord2f(0.0f, 0.0f);  glVertex2f(xLeft, yTop);
+			glTexCoord2f(0.0f, 0.0f);  glVertex2f(xLeft,  yTop);
 		}
 		glEnd();
 

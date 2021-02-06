@@ -7,18 +7,16 @@
 // winglapplication.h
 //
 // t3d application for windows and OpenGL
-
-#ifndef WINGLAPPLICATION_H
-#define WINGLAPPLICATION_H
+#pragma once
 
 #include <sdl\SDL.h>
 
-#include "t3dapplication.h"
+#include "T3DApplication.h"
 #include "FontCache.h"
 
 namespace T3D 
 {
-
+	//! \brief Application driver using Win32, OpenGL 1.x and SDL.
 	class WinGLApplication :
 		public T3DApplication
 	{
@@ -41,6 +39,3 @@ namespace T3D
 	};
 
 }
-
-#endif
-

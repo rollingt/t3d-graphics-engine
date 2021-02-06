@@ -6,11 +6,9 @@
 //
 // light.cpp
 //
-// Compnent to add lights to a game object
-
-#include "Light.h"
+// Component to add lights to a game object
 
 namespace T3D
 {
-	/* Plain old data class (with a non-owning GameObject pointer) : Initialiser inside header. */
+	/* Plain old data class : Initialiser inside header. */
 }

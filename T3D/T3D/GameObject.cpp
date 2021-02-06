@@ -14,7 +14,7 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "Light.h"
-#include "Terrain.h"
+#include "Renderer.h"
 
 namespace T3D
 {
@@ -25,12 +25,12 @@ namespace T3D
 	{
 		this->app = app;
 		setTransform(new Transform());
-		camera = NULL;
-		mesh = NULL;
+		camera   = NULL;
+		mesh     = NULL;
 		material = NULL;
-		light = NULL;
-		visible = true;
-		alpha = 1.0f;
+		light    = NULL;
+		visible  = true;
+		alpha    = 1.0f;
 	}
 
 	/*! Destructor
@@ -41,17 +41,16 @@ namespace T3D
 	GameObject::~GameObject(void)
 	{
 		if (camera) delete camera;
-		if (mesh) delete mesh;
-		if (light) delete light; // TODO: should make sure that this is removed from renderer's list of lights
+		if (mesh)   delete mesh;
+		if (light)  delete light; // TODO: should make sure that this is removed from renderer's list of lights
 
-		std::vector<Component*>::iterator ci;
-		for (ci = components.begin(); ci != components.end(); ci++) {
-			delete (*ci);
+		for (auto &component: components) {
+			delete component;
 		}
 
 		// don't delete transform - normally gameobject delete will be called from transform delete
 	}
-
+			
 	/*! Sets the Transform for this component
 	  Set's the new Transform and updates the corrsponding link for the new Transform
 	  \param t		The new Transform
@@ -154,11 +153,9 @@ namespace T3D
 	  \param dt		The time that has passed since the last update (in seconds)
 	  */
 	void GameObject::update(float dt){
-		std::vector<Component*>::iterator it;
-
-		for ( it=components.begin() ; it < components.end(); it++ )
+		for (auto component: components)
 		{
-			(*it)->update(dt);
+			component->update(dt);
 		}
 	}
 }

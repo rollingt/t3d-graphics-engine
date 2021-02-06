@@ -9,68 +9,123 @@
 // Class for creating and compiling a GLSL shader
 
 #include "GLShader.h"
-
 #include <gl/glew.h>
 #include <gl/GL.h>
-#include <iostream>
 
-namespace T3D{
+#include "Logger.h"
 
-	void GLShader::compileShader(){
-		//std::cout << "Compiling shader...\n";
-		//std::cout << vertSource << "\n\n";
-		//std::cout << fragSource << "\n\n";
+namespace T3D {
 
+	void GLShader::compileShader()
+	{
 		vertID = glCreateShader(GL_VERTEX_SHADER);
 		fragID = glCreateShader(GL_FRAGMENT_SHADER);
 
-		GLchar const *vert = vertSource.c_str();
-		GLint const vertLength = vertSource.size();
-		GLchar const *frag = fragSource.c_str();
-		GLint const fragLength = fragSource.size();
-		
-		GLint result;
+		/* Grab strings and lengths. */
+		GLchar const *vert       = vertSource.c_str();
+		GLint  const  vertLength = vertSource.size();
+		GLchar const *frag       = fragSource.c_str();
+		GLint  const  fragLength = fragSource.size();
 
-		glShaderSource(vertID,1,&vert,&vertLength);
-		glShaderSource(fragID,1,&frag,&fragLength);
+		logger::Log(priority::Tracing,
+					output_stream::All,
+					category::Video,
+					"Compiling Shader...\nVertex Source :\n```\n%s\n```\nFragment Source :\n```\n%s\n```"
+					,
+					vert,
+					frag);
+		
+		/* Give the shader compiler our vertex and fragment sources, compile them, and check for errors */
+		glShaderSource(vertID, 1, &vert, &vertLength);
+		glShaderSource(fragID, 1, &frag, &fragLength);
 
 		glCompileShader(vertID);
-		glGetShaderiv(vertID, GL_COMPILE_STATUS, &result);
-		if (result!=GL_TRUE){
-			std::cout << "Vertex program "<< vertID << " did not compile...\n";
-			GLchar* log;
-			GLint length;
-			glGetShaderiv(vertID, GL_INFO_LOG_LENGTH, &length);
-			log = (GLchar*)malloc(length);
-			glGetShaderInfoLog(vertID,length,&length,log);
-			std::cout<<log<<"\n";
-		} else {
-			//std::cout << "Vertex program "<< vertID << " compiled successfully\n";
-		}
-		glCompileShader(fragID);
-		glGetShaderiv(fragID, GL_COMPILE_STATUS, &result);
-		if (result!=GL_TRUE){
-			std::cout << "Fragment program "<< fragID << " did not compile...\n";
-		} else {
-			//std::cout << "Fragment program "<< fragID << " compiled successfully\n";
-		}
+		checkShaderErrors(vertID);
 
-		//Check for compile errors (TODO)
+		glCompileShader(fragID);
+		checkShaderErrors(fragID);
 
 		id = glCreateProgram();
 
-		glAttachShader(id,vertID);
-		glAttachShader(id,fragID);
+		glAttachShader(id, vertID);
+		glAttachShader(id, fragID);
 
 		glLinkProgram(id);
-		glGetShaderiv(id, GL_LINK_STATUS, &result);
-		if (result!=GL_TRUE){
-			std::cout << "Error linking shader...\n";
-		} else {
-			//std::cout << "Shader program "<< id << " linked successfully\n";
-		}
+		checkProgramErrors(id);
+	}
 
-		//Check for link errors (TODO)
+	/* Helper functions for printing diagnostic messages at different stages of shader and program
+	   compilation and linkage.
+	   Note that the nomenclature for GL shaders isn't great. Also, these could be folded into a 
+	   small inline function or macro pretty easily, but are left as is for explicitness. */
+	void GLShader::checkProgramErrors(uint32_t programID)
+	{
+		GLint result;
+		GLchar *log;
+
+		glGetProgramiv(programID, GL_LINK_STATUS, &result);
+		if (result != GL_TRUE)
+		{
+			GLint length;
+			glGetShaderiv(programID, GL_INFO_LOG_LENGTH, &length);
+			log = (GLchar*)malloc(length);
+			glGetProgramInfoLog(programID, length, NULL, log);
+
+			logger::Log(priority::Error,
+						output_stream::All,
+						category::Video,
+						"Shader program did not link! ID :: %u\nReason: %s"
+						,
+						programID,
+						log);
+
+			free(log);
+		}
+		else
+		{
+			logger::Log(priority::Info,
+						output_stream::All,
+						category::Video,
+						"Shader program compiled successfully! ID :: %u"
+						,
+						programID);
+			
+		}
+	}
+
+
+	void GLShader::checkShaderErrors(uint32_t shaderID)
+	{
+		GLint result;
+		GLchar *log;
+
+		glGetShaderiv(shaderID, GL_COMPILE_STATUS, &result);
+		if (result != GL_TRUE)
+		{
+			GLint length;
+			glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &length);
+			log = (GLchar *) malloc(length);
+			glGetShaderInfoLog(shaderID, length, NULL, log);
+
+			logger::Log(priority::Error,
+						output_stream::All,
+						category::Video,
+						"Shader did not compile! ID :: %u\nReason: %s"
+						,
+						shaderID,
+						log);
+
+			free(log);
+		}
+		else
+		{
+			logger::Log(priority::Info,
+						output_stream::All,
+						category::Video,
+						"Shader compiled successfully! ID :: %u"
+						,
+						shaderID);
+		}
 	}
 
 	void GLShader::bindShader(){

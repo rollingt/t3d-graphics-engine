@@ -8,54 +8,66 @@
 //
 // Bone class used for animation in conjunction with the Animation class
 
-#include "bone.h"
+#include "Bone.h"
+#include "Logger.h"
 
 namespace T3D
 {	
-	// Add a KeyFrame to the Animation Bone. 
-	// Works for arbitrary times -- Bones do not need to be declared and inserted in order.
+	/*!
+	 * Works for arbitrary times -- `Bone`s do not need to be declared and inserted in order.
+	 */
 	void Bone::addFrame(KeyFrame f){
-		if (keyframes.empty()){
+		if (keyframes.empty()) {
 			keyframes.push_back(f);
-		} else {			
-			std::vector<KeyFrame>::iterator kfi = keyframes.begin();
-			while (kfi!=keyframes.end() && f.time>(*kfi).time){
-				kfi++;
-			}
-			keyframes.insert(kfi,f);
+		} else {
+			auto position = std::find_if(keyframes.begin(), 
+										 keyframes.end(), 
+										 [&] (KeyFrame &k) { return k.time > f.time; });
+			keyframes.insert(position, f);
 		}
 	}
 	
-
-	// Update the Bone's position by interpolating between the current and next keyframes.
 	void Bone::update(float time){
-		int frame = 0;
-		if (!keyframes.empty())
+		if (keyframes.empty()) return;
+
+		// If end of sequence, just use the last keyframe
+		if (time >= keyframes.back().time) {
+			transform->setLocalPosition(keyframes.back().position);
+			transform->setLocalRotation(keyframes.back().rotation);
+		}
+		else
 		{
-			if (time >= keyframes[keyframes.size()-1].time) {		// reached end of sequence?
-				// set to last keyframe
-				transform->setLocalPosition(keyframes[keyframes.size()-1].position);
-				transform->setLocalRotation(keyframes[keyframes.size()-1].rotation);
+			int frame = 0;
+			while (time >= keyframes[frame].time){
+				frame++;
 			}
-			else
-			{
-				// find position in sequence
-				while (time>=keyframes[frame].time){
-					frame++;
-				}
-				// Set to interpolated state bequence keyframes
-				float alpha = (time-keyframes[frame-1].time)/(keyframes[frame].time-keyframes[frame-1].time);
-				transform->setLocalPosition(Vector3::lerp(keyframes[frame-1].position,keyframes[frame].position,alpha));
-				transform->setLocalRotation(Quaternion::slerp(keyframes[frame-1].rotation,keyframes[frame].rotation,alpha));
-			}
+			auto &start = keyframes[frame - 1];
+			auto &end   = keyframes[frame];
+
+			// Set to interpolated state bequence keyframes
+			float alpha = (time - start.time) / (end.time - start.time);
+
+			transform->setLocalPosition(Vector3::lerp(start.position, end.position, alpha));
+			transform->setLocalRotation(Quaternion::slerp(start.rotation, end.rotation, alpha));
 		}
 	}
 
-	// Dump information for this bone to standard output.
-	void Bone::printKeyFrames(){
-		std::vector<KeyFrame>::iterator kfi;
-		for (kfi=keyframes.begin(); kfi!=keyframes.end(); kfi++){
-			std::cout << kfi->time << ": " << kfi->rotation << kfi->position << "\n";
+	/*!
+	 * \note This requires the application `Logger` class to be initialized to work correctly.
+	 */
+	void Bone::printKeyFrames() {
+		for (auto &keyFrame : keyframes)
+		{
+			logger::Log(priority::Tracing, 
+						output_stream::Console,
+						category::Animation,
+						"Time       :: [%.4f           m/s]        \n"
+					    "\tRotation :: [%.4f           radians]    \n"
+						"\tPosition :: [%.4f %.4f %.4f world space]"
+						,
+						keyFrame.time,
+						keyFrame.rotation,
+						keyFrame.position);
 		}
 	}
 }

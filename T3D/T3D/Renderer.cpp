@@ -14,38 +14,34 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "Cube.h"
+#include "Logger.h"
 
 namespace T3D
 {
 	/*! Constructor
 	  Initialises members
 	  */
-	Renderer::Renderer(void)
-	{
-		camera = NULL;
-		renderSkybox = false;
-
-		showFog = false;
-		fogDensity = 0;
-		fogColour[0] = 0;
-		fogColour[1] = 0;
-		fogColour[2] = 0;
-		fogColour[3] = 1;
-		ambient[0] = 0.1f;
-		ambient[1] = 0.1f;
-		ambient[2] = 0.1f;
-		ambient[3] = 1;
-
-		showWireframe = false;
-		showPoints = false;
-		showGrid = false;
-		showAxes = false;
-	}
+	Renderer::Renderer(void) : camera       (nullptr),
+	                           skyboxup     (nullptr),
+							   skyboxdown   (nullptr),
+							   skyboxleft   (nullptr),
+							   skyboxright  (nullptr),
+							   skyboxfront  (nullptr),
+							   skyboxback   (nullptr),
+							   renderSkybox (false),
+							   showFog      (false),
+							   showWireframe(false),
+							   showPoints   (false),
+							   showGrid     (false),
+							   showAxes     (false),
+							   fogDensity   (0.0f),
+							   fogColour    {0, 0, 0, 1},
+							   ambient      {0.1f, 0.1f, 0.1f, 1.0f} { }
 
 	/*! Destructor
 	  NOTE(Evan): Textures are loaded and owned by the callee. Textures do not properly clean up resources on destruction. 
 				  This means resource buffers and IDs will leak even if they are are stored in a RAII STL container, e.g. std::vector,
-				  One way to fix this without implementing an (OS-independent) asset & file system manager is have Textures 
+				  One way to fix this without implementing an some sort of asset manager is have Textures 
 				  register themselves with e.g. GLRenderer upon initialisation, which manages their internal buffers, IDs, mip levels etc. 
 	  \todo	Free materials and check for other stuff that might need freeing
 	  */
@@ -93,7 +89,6 @@ namespace T3D
 		Vector3 cameraPos;
 		float distance;
 		GameObject *object;
-		std::vector<Material*>::iterator mit;
 
 		// Single common camera for all rendering
 		if (camera)
@@ -103,18 +98,17 @@ namespace T3D
 
 		buildRenderQueue(root);
 
-		for (int i=0; i<PRIORITY_LEVELS; i++) {
-
+		for (auto &priorities : materials) {
 			// temp list of objects requiring sorted draw order (if any)
 			std::priority_queue<GameObject*, std::vector<GameObject*>, GameObjectCameraDistanceCompare> sorted;
 
-			for (mit = materials[i].begin(); mit!=materials[i].end(); mit++){
+			for (auto &material : priorities){
 				
-				std::queue<GameObject*> &q = (*mit)->getQueue();	// objects to be drawn
+				auto &q = material->getQueue();	// objects to be drawn
 
-				if (!(*mit)->getSortedDraw()) {
+				if (!material->getSortedDraw()) {
 					// objects for normal unsorted materials are drawn immediately
-					loadMaterial(*mit);
+					loadMaterial(material);
 					while (!q.empty()) {
 						object = q.front();
 						if (object->isVisible()) {
@@ -122,7 +116,7 @@ namespace T3D
 						}
 						q.pop();
 					}
-					unloadMaterial(*mit);
+					unloadMaterial(material);
 				}
 				else {
 					// objects to be sorted and drawn later
@@ -164,15 +158,9 @@ namespace T3D
 			if (m) m->addToQueue(root->gameObject);
 		}
 
-		if(!root->children.empty())
+		for (auto &child: root->children)
 		{
-			for(unsigned int i = 0; i < root->children.size(); ++i)
-			{
-				if(NULL != root->children[i])
-				{
-					buildRenderQueue(root->children[i]);
-				}
-			}
+			if (child) buildRenderQueue(child);
 		}
 	}
 }

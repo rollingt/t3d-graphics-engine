@@ -13,7 +13,7 @@
 #include "Sound.h"
 #include "Music.h"
 
-namespace T3D{
+namespace T3D {
 
 	class SoundTestTask :
 		public Task

@@ -7,16 +7,14 @@
 // mesh.cpp
 //
 // Basic mesh class to store vertices, normals, colors, uvs(currently not used), and indices
-// Triangle meshes only.  Unoptimised.
+// Unoptimised.
 
-#include <stdlib.h>
-#include <stdio.h>
 #include "Mesh.h"
 #include "Math.h"
+#include "Logger.h"
 
 namespace T3D
 {
-	// Create a Mesh with initialised buffers and zero counts.
 	Mesh::Mesh(void)
 	{
 		vertices    = NULL;
@@ -30,10 +28,11 @@ namespace T3D
 		numQuads    = 0;
 	}
 
-	// Delete a Mesh's buffers with non-zero counts.
-	// If you are reading this from a Visual Studio breakpoint, you have probably
-	// trampled base pointers in adjacent memory during your mesh creation, causing
-	// the allocators delete[] buffer bookkeeping to be incorrect and it throws.
+	/*
+	 * \note If you are reading this from a Visual Studio breakpoint, you have probably
+	 * trampled adjacent memory during your mesh creation. Check the console / log file!
+	 *
+	 */
 	Mesh::~Mesh(void)
 	{
 		if (vertices)    delete []vertices;
@@ -44,16 +43,30 @@ namespace T3D
 		if (uvs)         delete []uvs;
 	}
 
-	// Initialises internal buffers (Vertex, Index, UV, etc) based on
-	// the number of vertices the caller requires to render primitives.
-	// For example, if you are creating a Cube out of Quads with flat (Gouraud) shading, 
-	// you would require 24 (4 * 6) vertices, 0 tris, and 6 quads.
+	/* 
+	 * Example: If you are creating a Cube out of quads with flat shading, 
+	 * you would require 24 (4 * 6) vertices, 0 tris, and 6 quads.
+	 *
+	 * \param numVerts Vertices required for the entire mesh. Should be exactly `(numTris * 3 + numQuads * 4)`.
+	 * \param numTris Triangles required for the mesh. Can be 0 for an all-quad mesh.
+	 * \param numQuads Quads required for the mesh. Can be 0 for an all-tri mesh. 
+	 *
+	 * \note After you initialised and filled the Mesh's buffers, you should call `calcNormals` and then `checkArrays`.
+	 * \note These parameters are *unsigned*!
+	 */
 	void Mesh::initArrays(uint32_t numVerts, uint32_t numTris, uint32_t numQuads) {
 		this->numVerts = numVerts;
 		this->numTris = numTris;
 		this->numQuads = numQuads;
 
-		if (numVerts == 0) return; // TODO(Evan): Log!
+		if (numVerts == 0)
+		{
+			logger::Log(priority::Warning,
+						output_stream::All,
+						category::Video,
+						"Created a mesh with 0 vertices!");
+			return; 
+		}
 
 		vertices = new float[numVerts * 3];
 		for (uint32_t i = 0; i < numVerts * 3; i++) {
@@ -89,9 +102,16 @@ namespace T3D
 		}
 	}
 
-	// Checks all internal buffers for erroneous values, logging relevant messages.
 	bool Mesh::checkArrays() {
-		if (!numVerts) return true; /*  TODO(Evan): Log an empty mesh! */
+		if (!numVerts)
+		{
+			logger::Log(priority::Warning,
+						output_stream::All,
+						category::Video,
+						"Called checkArrays() on an empty mesh!");
+
+			return true; 
+		}
 		uint32_t quadIndicesMax  = numQuads ? (numQuads * 4u) - 1u : 0; /* prevent overflow */
 		uint32_t triIndicesMax   = numTris  ? (numTris  * 3u) - 1u : 0; /* prevent overflow */
 
@@ -99,7 +119,10 @@ namespace T3D
 		for (uint32_t i = 0; i < numVerts; i++) {
 			Vector3 v = getVertex(i);
 			if (isnan(v.x) || isnan(v.y) || isnan(v.z)) {
-				std::cout << "Vertex " << i << " has not been set\n";
+				logger::Log(priority::Warning,
+							output_stream::All,
+							category::Video,
+							"Vertex %u has not been set!", i);
 				ok = false;
 			}
 		}
@@ -110,14 +133,17 @@ namespace T3D
 				quadIndices[i + 2] > numVerts || 
 				quadIndices[i + 3] > numVerts)
 			{
-				printf("QUAD INDICES MAX :: %u\n", quadIndicesMax);
-				// TODO(Evan): Log!
-				std::cout << "Quad Face " << i / 4 << " has not been set: " << 
-					quadIndices[i + 0] << "," << 
-					quadIndices[i + 1] << "," << 
-					quadIndices[i + 2] << "," << 
-					quadIndices[i + 3] << "\n";
-
+				logger::Log(priority::Warning,
+							output_stream::All,
+							category::Video,
+							"Quad Face [%u] has not been set! Indices ::"
+							"\t%3u, %3u, %3u, %3u,"
+							,
+							i / 4,
+							quadIndices[i + 0],
+							quadIndices[i + 1],
+							quadIndices[i + 2],
+							quadIndices[i + 3]);
 				ok = false;
 			}
 		}
@@ -128,13 +154,16 @@ namespace T3D
 				triIndices[i + 1] > numVerts || 
 				triIndices[i + 2] > numVerts)
 			{
-				printf("TRI INDICES MAX :: %u\n", triIndicesMax);
-				// TODO(Evan): Log!
-				std::cout << "Tri Face " << i / 3 << " has not been set: " << 
-					quadIndices[i + 0] << "," << 
-					quadIndices[i + 1] << "," << 
-					quadIndices[i + 2] << "," << "\n";
-
+				logger::Log(priority::Warning,
+							output_stream::All,
+							category::Video,
+							"Tri Face [%u] has not been set! Indices ::"
+							"\t%3u, %3u, %3u"
+							,
+							i / 3,
+							triIndices[i + 0],
+							triIndices[i + 1],
+							triIndices[i + 2]);
 				ok = false;
 			}
 		}
@@ -142,25 +171,30 @@ namespace T3D
 		return ok;
 	}
 		
-	// Sets the ith vertex to have components x, y, z.
-	// Be careful to not mix up vertex counts and vertex indices, 
-	// as these are multiplied and divided out by 3 respectively.
+	/*
+	 * \param i Vertex to set, from `[0 ... numVerts - 1]`
+	 * \param x x value
+	 * \param y y value
+	 * \param z z value
+	 *
+	 * \note Be careful to not mix up vertex counts and vertex indices, 
+	 * as these are multiplied and divided out by 3 respectively.
+	 */
 	void Mesh::setVertex(int i, float x, float y, float z){
 		vertices[i*3] = x;
 		vertices[i*3+1] = y;
 		vertices[i*3+2] = z;
 	}
 
-	// Returns the ith vertex.
-	// Be careful to not mix up vertex counts and vertex indices, 
-	// as these are multiplied and divided out by 3 respectively.
+	/* 
+	 * \note Be careful to not mix up vertex counts and vertex indices, as these are multiplied and divided out by 3 respectively.
+	 */
 	Vector3 Mesh::getVertex(int i){
 		return Vector3(vertices[i*3], vertices[i*3+1], vertices[i*3+2]);
 	}
 
-	// Sets the ith color to have components r, g, b, a
-	// Be careful to not mix up color counts and color indices, 
-	// as these are multiplied and divided out by 4 respectively.
+	/* \note Be careful to not mix up color counts and color indices, as these are multiplied and divided out by 4 respectively.
+	*/
 	void Mesh::setColor(int i, float r, float g, float b, float a){
 		colors[i*4] = r;
 		colors[i*4+1] = g;
@@ -168,63 +202,58 @@ namespace T3D
 		colors[i*4+3] = a;
 	}
 
-	// Returns the ith color.
-	// Be careful to not mix up color counts and color indices, 
-	// as these are multiplied and divided out by 4 respectively.
+	/* \note Be careful to not mix up color counts and color indices, as these are multiplied and divided out by 4 respectively.
+	*/
 	Vector4 Mesh::getColor(int i){
 		return Vector4(colors[i*4], colors[i*4+1], colors[i*4+2], colors[i*4+3]);
 	}
 
-	// Sets the ith normal to have components x, y, z.
-	// Does not attempt to normalize these components.
-	// Be careful to not mix up normal counts and normal indices, 
-	// as these are multiplied and divided out by 3 respectively.
+	/* \note Does not attempt to normalize these components.
+	 * \note Be careful to not mix up normal counts and normal indices, as these are multiplied and divided out by 3 respectively.
+	*/
 	void Mesh::setNormal(int i, float x, float y, float z){
 		normals[i*3] = x;
 		normals[i*3+1] = y;
 		normals[i*3+2] = z;
 	}
 
-	// Sets the ith normal to the vector n.
-	// Does not check that the vector n is of unit length
-	// Be careful to not mix up normal counts and normal indices, 
-	// as these are multiplied and divided out by 3 respectively.
+	/* \note Does not check that the vector n is of unit length
+	 * \note Be careful to not mix up normal counts and normal indices,  as these are multiplied and divided out by 3 respectively.
+	 */
 	void Mesh::setNormal(int i, Vector3 n){
 		normals[i*3] = n.x;
 		normals[i*3+1] = n.y;
 		normals[i*3+2] = n.z;
 	}
 
-	// Adds the vector n to the ith normal.
-	// Do not assume that the ith normal is of unit length after this call.
-	// Be careful to not mix up normal counts and normal indices, 
-	// as these are multiplied and divided out by 3 respectively.
+	/* \note Do not assume that the ith normal is of unit length after this call.
+	 * \note Be careful to not mix up normal counts and normal indices, as these are multiplied and divided out by 3 respectively.
+	*/
 	void Mesh::addNormal(int i, Vector3 n){
 		normals[i*3] += n.x;
 		normals[i*3+1] += n.y;
 		normals[i*3+2] += n.z;
 	}
 
-	// Returns the ith normal.
-	// Do not assume these are of unit length.
-	// Be careful to not mix up normal counts and normal indices, 
-	// as these are multiplied and divided out by 3 respectively.
+	/* \note Do not assume that the ith normal is of unit length after this call.
+	 * \note Be careful to not mix up normal counts and normal indices, as these are multiplied and divided out by 3 respectively.
+	*/
 	Vector3 Mesh::getNormal(int i){
 		return Vector3(normals[i*3], normals[i*3+1], normals[i*3+2]);
 	}
 
-	// Sets the ith triFace to contain indices referring to vertices at positions a, b, c.
-	// It is up to you to get the winding order correct!
-	// Be careful to not mix up vertex and triangle indices for meshes containing both types of primitive.
+	/* \note T3D's GLRender backend uses counter-clockwise winding order for culling.
+	 * \note Be careful to not mix up vertex and triangle indices for meshes containing both types of primitive.
+	 */
 	void Mesh::setTriFace(int i, int a, int b, int c){
 		triIndices[i*3] = a;
 		triIndices[i*3+1] = b;
 		triIndices[i*3+2] = c;
 	}
 
-	// Sets the ith quadFace to contain indices referring to vertices at positions a, b, c, d.
-	// It is up to you to get the winding order correct!
-	// Be careful to not mix up vertex and quad indices for meshes containing both types of primitive.
+	/* \note T3D's GLRender backend uses counter-clockwise winding order for culling.
+	 * \note Be careful to not mix up vertex and quad indices for meshes containing both types of primitives.
+	 */
 	void Mesh::setQuadFace(int i, int a, int b, int c, int d){
 		quadIndices[i*4] = a;
 		quadIndices[i*4+1] = b;
@@ -232,7 +261,7 @@ namespace T3D
 		quadIndices[i*4+3] = d;
 	}
 	
-	// Sets the ith UV index to have the components u, v.
+	// \brief Sets the ith UV index to have the components u, v.
 	void Mesh::setUV(int i, float u, float v){
 		uvs[i*2] = u;
 		uvs[i*2+1] = v;
@@ -297,19 +326,16 @@ namespace T3D
 		normalise();
 	}
 
-	// Reverse the direction of each normal, i.e. if pointing 'outwards', it now points 'inwards'.
-	// Preserve unit-length normals, but doesn't introduce normalization if they are not already unit length.
-	void Mesh::invertNormals(){
+	void Mesh::invertNormals() {
 		for (uint32_t i = 0; i < numVerts; i++){
 			Vector3 n = getNormal(i);
 			setNormal(i,-n.x,-n.y,-n.z);
 		}
 	}
 
-	// Calculate the UVs required to wrap a sphere of arbitrary density and radius.
-	// NOTE(Evan): To be consistent with the inheritance hierarchy, this should probably be a member function
+	// Note: To be consistent with the inheritance hierarchy, this should probably be a member function
 	// of the Sphere subclass as it's not useful for all meshes.
-	void Mesh::calcUVSphere(){		
+	void Mesh::calcUVSphere() {
 		for (uint32_t i = 0; i < numVerts; i++){
 			Vector3 v = getVertex(i); 
 			float r = sqrt(v.x*v.x+v.z*v.z);
@@ -317,7 +343,6 @@ namespace T3D
 		}
 	}
 
-	// Calculate the UVs required to wrap an XY plane of arbitrary width and height.
 	void Mesh::calcUVPlaneXY(){
 		uint32_t xOffset = offsetof(Vector3, x) / sizeof(float);
 		uint32_t yOffset = offsetof(Vector3, y) / sizeof(float);
@@ -325,7 +350,6 @@ namespace T3D
 		calcUVPlane(xOffset, yOffset);
 	}
 
-	// Calculate the UVs required to wrap a YZ plane of arbitrary width and height.
 	void Mesh::calcUVPlaneYZ(){
 		uint32_t yOffset = offsetof(Vector3, y) / sizeof(float);
 		uint32_t zOffset = offsetof(Vector3, z) / sizeof(float);
@@ -333,7 +357,6 @@ namespace T3D
 		calcUVPlane(yOffset, zOffset);
 	}
 
-	// Calculate the UVs required to wrap a YZ plane of arbitrary width and height.
 	void Mesh::calcUVPlaneXZ(){
 		uint32_t xOffset = offsetof(Vector3, x) / sizeof(float);
 		uint32_t zOffset = offsetof(Vector3, z) / sizeof(float);
@@ -341,10 +364,14 @@ namespace T3D
 		calcUVPlane(xOffset, zOffset);
 	}
 
-	// Internal helper function. Given two offsets into a Vector3 representing the planes of interest, 
-	// this function will find the min and max absolute values for each plane, then calculate and set 
-	// the UVs for each vertex with respect to the min and max.
-	// Assumes that 0 <= (vectorOffsetOne, vectorOffsetTwo) < 3.
+	/* 
+	 * Given two offsets into a Vector3 representing the planes of interest, 
+	 * this function will find the min and max absolute values for each plane, then calculate and set 
+	 * the UVs for each vertex with respect to the min and max.
+	 *
+	 * \note Asserts 0 <= (vectorOffsetOne, vectorOffsetTwo) < 3.
+	 * 
+	 */
 	void Mesh::calcUVPlane(uint32_t vectorOffsetOne, uint32_t vectorOffsetTwo)
 	{
 		assert(vectorOffsetOne < sizeof(Vector3) / sizeof(float));
@@ -372,8 +399,7 @@ namespace T3D
 		}
 	}
 
-	// Calculates and set every vertex normal to be unit length, i.e. normalized.
-	void Mesh::normalise(){
+	void Mesh::normalise() {
 		for (uint32_t i=0; i<numVerts; i++){
 			Vector3 v = getNormal(i);
 			v.normalise();
@@ -381,8 +407,8 @@ namespace T3D
 		}
 	}
 
-	// UNIMPLEMENTED.
-	void Mesh::calcUVCube(){
-		printf("WARNING\n\t`calcUVCube()` is unimplemented!\n");
+	// \note UNIMPLEMENTED.
+	void Mesh::calcUVCube() {
+		logger::Warn("Unimplemented Mesh member function `calvUVCube()` was called!");
 	}
 }

@@ -1,22 +1,19 @@
 //
 // Author: David Pentecost
 //
-// ParticleEmitter.h
+// ParticleEmitter.cpp
 //
 // Base particle behaviour.
-// This is a pure virtual class from which a useable particle must be derived.
 
 #include "GameObject.h"
-#include "Math.h"
 #include "ParticleEmitter.h"
 #include "ParticleBehaviour.h"
 
-
 namespace T3D
 {
-	/*! stop
-	  stop and hide particle
-	  */
+	/*! 
+	 * Stops a particle. Sets the GameObject to invisible and notifies parent of inactivity.
+	 */
 	void ParticleBehaviour::stop()
 	{
 		gameObject->setVisible(false);

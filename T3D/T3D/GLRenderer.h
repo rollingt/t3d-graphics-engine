@@ -7,15 +7,10 @@
 // glrenderer.h
 //
 // Handles rendering tasks using OpenGL
-
-#ifndef GLRENDERER_H
-#define GLRENDERER_H
-
-#define WINDOW_WIDTH		1024
-#define	WINDOW_HEIGHT		640
+#pragma once
 
 #include <list>
-#include "renderer.h"
+#include "Renderer.h"
 
 namespace T3D
 {
@@ -29,24 +24,39 @@ namespace T3D
 	} overlay2D;
 
 
+	//! \brief OpenGL renderer. Manages 2D overlays, skyboxes, materials and renders meshes.
 	class GLRenderer :
 		public Renderer
 	{
 	public:
+		//! \brief Create GLRenderer (trivially).
 		GLRenderer(void)          = default;
+
+		//! \brief Destroy GLRenderer (trivially).
 		virtual ~GLRenderer(void) = default;
 
+		//! \brief Setup OpenGL state, such as clearing depth, colour and stencil buffers.
 		void prerender();
+
+		//! \brief Post-render hooks such as 2D overlays using orthographic projection.
 		void postrender();
 
+		//! \brief Set Camera to render scene from perspective of.
 		void setCamera(Camera *cam);
 
+		//! \brief Draw an Object's Mesh with respect to Material and Transform.
 		void draw(GameObject* object);
 		
+		//! \brief Register the Texture with OpenGL, setting its ID.
 		void loadTexture(Texture *tex, bool repeat = false);
+
+		//! \brief Reload the Texture. Does not retain the same ID.
 		void reloadTexture(Texture *tex);
+
+		//! \brief Unload the Texture from OpenGL.
 		void unloadTexture(Texture *tex);
 
+		//! \brief Load 6 faces of a Skybox bitmap from path.
 		void loadSkybox(std::string tex);
 
 		bool exists2DOverlay(Texture *texture);					// is there a existing 2D overlay using this texture?
@@ -70,5 +80,3 @@ namespace T3D
 
 	};
 }
-
-#endif
