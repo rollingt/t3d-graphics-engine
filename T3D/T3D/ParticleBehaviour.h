@@ -22,7 +22,11 @@ namespace T3D
 		public Component
 	{
 	public:
-		ParticleBehaviour(ParticleEmitter *emitter);
+		/*! Constructor
+		  Initialises members
+		  */
+		ParticleBehaviour::ParticleBehaviour(ParticleEmitter *emitter) : emitter(emitter),
+																	     active(0) { }
 		bool isActive() { return active; }
 
 		virtual void start(Transform *from) = 0;			// start or restart particle

@@ -19,24 +19,6 @@
 namespace T3D{
 
 	///-------------------------------------------------------------------------------------------------
-	/// @fn	Terrain::Terrain()
-	///
-	/// @brief	Default constructor.
-
-	Terrain::Terrain()
-	{
-	}
-
-	///-------------------------------------------------------------------------------------------------
-	/// @fn	Terrain::~Terrain(void)
-	///
-	/// @brief	Destructor.
-
-	Terrain::~Terrain(void)
-	{
-	}
-
-	///-------------------------------------------------------------------------------------------------
 	/// @fn	float Terrain::getHeight(Vector3 pos)
 	///
 	/// @brief	Calculates the interpolated terrain height.

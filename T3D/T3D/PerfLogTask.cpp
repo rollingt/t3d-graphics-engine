@@ -70,7 +70,7 @@ namespace T3D{
 			double currentFrameRate = sampleFrames/sampleElapsed;
 			double averageFrameRate = frameCount/elapsedTime;
 
-			if (elapsedTime > 3 * PERF_SAMPLING_PERIOD)		// allow some settling time
+			if (elapsedTime > 3.0 * PERF_SAMPLING_PERIOD)		// allow some settling time
 			{
 				// Alternate way of calculating average frame rate
 				// This is mainly used to allow a settling time by avoiding frameCount and elapsedTime 

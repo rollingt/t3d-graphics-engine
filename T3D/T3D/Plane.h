@@ -34,7 +34,7 @@ namespace T3D {
             plane normal points. The "negative side" is the other half
             space. The flag "no side" indicates the plane itself.
         */
-        enum Side
+        enum class Side
         {
             NO_SIDE,
             POSITIVE_SIDE,
@@ -42,7 +42,7 @@ namespace T3D {
             BOTH_SIDE
         };
 
-        Side getSide (const Vector3& p) const;
+		Plane::Side getSide (const Vector3& p) const;
 
         /** This is a pseudodistance. The sign of the return value is
             positive if the point is on the positive side of the plane,

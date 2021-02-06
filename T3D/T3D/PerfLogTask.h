@@ -15,7 +15,7 @@
 
 namespace T3D{
 
-	#define PERF_SAMPLING_PERIOD	0.15f			// calculation/update time period
+	#define PERF_SAMPLING_PERIOD	0.15			// calculation/update time period
 
 	class PerfLogTask :
 		public Task

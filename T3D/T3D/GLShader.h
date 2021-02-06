@@ -17,8 +17,13 @@ namespace T3D{
 	class GLShader : public Shader
 	{
 	public:
-		GLShader(std::string vertFilename, std::string fragFilename);
-		~GLShader(void);
+		GLShader(std::string vertFilename, std::string fragFilename) 
+			: Shader(vertFilename, fragFilename),
+		      vertID(0),
+		      fragID(0),
+		      id    (0) { }
+
+		~GLShader(void) = default;
 		
 		virtual void compileShader();
 		virtual void bindShader();

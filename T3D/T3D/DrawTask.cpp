@@ -10,6 +10,7 @@
 
 #include <math.h>
 #include "DrawTask.h"
+#include "Logger.h"
 
 namespace T3D {
 
@@ -45,6 +46,8 @@ namespace T3D {
 	// Otherwise, the pixel is written to the surface.
 	void DrawTask::flushPixelQueue()
 	{
+		const uint32_t MaxOutOfBoundsCount = 10u;
+		uint32_t OutOfBoundsCount = 0u;
 		for (auto &Pixel : pixelPlotQueue)
 		{
 			bool PixelWithinWidth  = (Pixel.x >= 0 && Pixel.x < drawArea->getWidth());
@@ -55,21 +58,36 @@ namespace T3D {
 			{
 				drawArea->plotPixel(Pixel.x, Pixel.y, Pixel.colour);
 			}
-			else
+			else 
 			{
-				printf("Pixel out of bounds!\n"
-					   "\tWidth  :: [0 <= X <= %4u :: %4d :: %5s]\n"
-					   "%s"
-					   "\tHeight :: [0 <= Y <= %4u :: %4d :: %5s]\n"
-					   "%s"
-					   ,
-					   T3D::WindowWidth,
-					   Pixel.x, PixelWithinWidth  ? "OK" : "ERROR",
-					   PixelWithinWidth  ?   ""  : "                                      ^^^\n",
-					   T3D::WindowHeight,
-					   Pixel.y, PixelWithinHeight ? "OK" : "ERROR",
-					   PixelWithinHeight  ?  ""  : "                                      ^^^\n");
+				if (OutOfBoundsCount < MaxOutOfBoundsCount)
+				{
+					logger::Log(priority::Tracing,
+							    output_stream::All,
+							    category::Debug,
+							   "Pixel out of bounds!\n"
+							   "\tWidth  :: [0 <= X <= %4u :: %4d :: %5s]%s\n"
+							   "\tHeight :: [0 <= Y <= %4u :: %4d :: %5s]%s\n"
+							   ,
+							   T3D::WindowWidth,
+							   Pixel.x, PixelWithinWidth  ? "OK" : "ERROR",
+							   PixelWithinWidth  ?   ""  : " <<<\n",
+							   T3D::WindowHeight,
+							   Pixel.y, PixelWithinHeight ? "OK" : "ERROR",
+							   PixelWithinHeight  ?  ""  : " <<<\n");
+				}
+				OutOfBoundsCount++;
 			}
+		}
+
+		if (OutOfBoundsCount >= MaxOutOfBoundsCount)
+		{
+			logger::Log(priority::Tracing,
+						output_stream::All,
+						category::Debug,
+					   "... Repeats %u times ...\n"
+					   ,
+					   OutOfBoundsCount - MaxOutOfBoundsCount);
 		}
 
 		pixelPlotQueue.clear();
@@ -77,7 +95,6 @@ namespace T3D {
 
 
 	// Ensures all pre-conditions are met for following calls to the `update` function.
-	// NOTE(Evan): This should really be inlined into the constructor or at least made private.
 	void DrawTask::init	(){		
 		drawArea->clear(Colour(255,255,255,255));
 		drawDDALine(100,100,200,200,Colour(0,0,0,255));

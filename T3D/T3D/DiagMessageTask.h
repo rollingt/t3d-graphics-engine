@@ -32,11 +32,12 @@ namespace T3D{
 
 	protected:
 		std::string message;
-		int x,y;
-		bool refresh;
-		bool timed;
-		float time;
-		Texture *diagOverlay;
+		int x = 0;
+		int y = 0;
+		bool refresh = false;
+		bool timed = false;
+		float time = 0;
+		Texture *diagOverlay = nullptr;
 	};
 }
 

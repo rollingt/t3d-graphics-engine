@@ -12,17 +12,6 @@
 
 namespace T3D{
 
-	Sound::Sound(SoundManager* sm) : soundManager(sm)
-	{
-		channel = NULL;
-		volume = 0.01f; 
-	}
-
-
-	Sound::~Sound(void)
-	{
-	}
-
 	void Sound::play(){
 		soundManager->system->playSound(FMOD_CHANNEL_FREE, theSound, true, &channel);
 		channel->setVolume(volume); 

@@ -55,7 +55,7 @@ namespace T3D
 		float lastFrame, dt;
 
 	private:
-		list<Task*> tasks;
+		std::list<Task*> tasks;
 	};
 
 }
