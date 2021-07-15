@@ -28,9 +28,10 @@ namespace T3D
 	{
 		drawArea = tex;
 
+		// @BoundsCheck - requires using pushPixel
 		// Reserve some space for the buffer, as its unlikely only few pixels will be plotted
-		const uint32_t pixelsToReserve = 512;
-		pixelPlotQueue.reserve(pixelsToReserve);
+		// const uint32_t pixelsToReserve = 512;
+		// pixelPlotQueue.reserve(pixelsToReserve);
 
 		init();
 		logger::Log(priority::Info, output_stream::All, category::Task, "Initialised DrawTask");
@@ -60,7 +61,7 @@ namespace T3D
 		float y = float(y1);
 
 		for (int x = x1; x < x2; x++){
-			pushPixel(x, int(y), c);
+			drawArea->plotPixel(x, int(y), c);
 			y += ystep;
 		}
 	}
@@ -88,8 +89,9 @@ namespace T3D
 		drawArea->clear(Colour(255, 255, 255, 255));
 		drawDDALine(100, 1000, 200, 200, Colour(255,0,0,255));
 
+		// @BoundsCheck- requires using pushPixel
 		// Plots pixels made to the drawArea this frame, clearing the pixel queue.
-		flushPixelQueue();
+		// flushPixelQueue();
 		app->getRenderer()->reloadTexture(drawArea);
 	}
 
