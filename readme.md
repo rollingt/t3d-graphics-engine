@@ -1,5 +1,13 @@
 # T3D Graphics Engine
 
+## API Documentation
+Open the generated documentation in a browser -- `T3D/T3D/API_Documentation/html/index.html`;
+
+## Getting Started
+- Open the Visual Studio `.sln`
+- Build the project -- preferably in Debug mode 
+- Check out `T3DTest.cpp` for a complex 3D scene to get started.
+
 ## Overall Structure
 The main components are the application framework (red), the renderer (blue), the scene graph (green), the component system (orange), and various helper classes (grey). The T3DApplication class is an abstract base class that provides a wrapper for all of the application level functionality. 
 Subclasses of this provide the concrete implementation based on operating system and renderer. So far there is a Windows/OpenGL and an OSX/OpenGL version (This class is currently out of date and is not in the repository, but is available upon request).  To create a T3D application you make a subclass of the appropriate application type (e.g. a subclass of WinGLApplication).
@@ -61,10 +69,3 @@ Another difference between T3D and the KXG262 code is that T3D uses SDL (Simple 
 ## Note on Orientations
 T3D uses Quaternions to represent orientations.  These are not as complex as they seem, but in any case, you can deal with them using Euler angles (Yaw, Pitch, and Roll) through helper functions (similar to Unity3D).  
 
-## API Documentation
-Open the generated documentation in a browser -- `T3D/T3D/API_Documentation/html/index.html`;
-
-## Getting Started
-- Open the Visual Studio `.sln`
-- Build the project -- preferably in Debug mode 
-- Check out `T3DTest.cpp` for a complex 3D scene to get started.
