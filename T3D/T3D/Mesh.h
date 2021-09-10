@@ -122,8 +122,20 @@ namespace T3D
 		// \brief Sets the ith triFace to contain indices referring to vertices at positions a, b, c.
 		virtual void setTriFace(int i, int a, int b, int c);
 
+		// \brief Sets the ith triFace to contain indices referring to vertices at positions a, b, c.
+		void Mesh::setTriFaceWithDuplication(int* index_counter, int* tri_counter, int a, int b, int c);
+
+		// \brief Sets the ith triFace to contain indices referring to optionally duplicated vertices at positions a, b, c.
+		void Mesh::setTriFaceWithDuplication(int* index_counter, int* tri_counter, int a, int b, int c, bool duplicate_a, bool duplicate_b, bool duplicate_c);
+
 		// \brief Sets the ith quadFace to contain indices referring to vertices at positions a, b, c, d.
 		virtual void setQuadFace(int i, int a, int b, int c, int d);
+
+		// \brief Sets the ith quadFace to contain indices referring to duplicated vertices of positions a, b, c, d.
+		void Mesh::setQuadFaceWithDuplication(int* index_counter, int* quad_counter, int a, int b, int c, int d);
+
+		// \brief Sets the ith quadFace to contain indices referring to optionally duplicated vertices of positions a, b, c, d.
+		void Mesh::setQuadFaceWithDuplication(int* index_counter, int* quad_counter, int a, int b, int c, int d, bool duplicate_a, bool duplicate_b, bool duplicate_c, bool duplicate_d);
 
 		//! \brief Sets the ith UV.
 		virtual void setUV(int i, float u, float v);

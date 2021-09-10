@@ -251,6 +251,46 @@ namespace T3D
 		triIndices[i*3+2] = c;
 	}
 
+	/*
+	 * Creates tri face from duplicates of given vertex indexes
+	 */
+	void Mesh::setTriFaceWithDuplication(int* index_counter, int* tri_counter, int a, int b, int c) {
+		setTriFaceWithDuplication(index_counter, tri_counter, a, b, c, true, true, true);
+	}
+
+	/*
+	 * Creates tri face from either the original or a duplicate of given vertices indexes
+	 */
+	void Mesh::setTriFaceWithDuplication(int* index_counter, int* tri_counter, int a, int b, int c, bool duplicate_a, bool duplicate_b, bool duplicate_c) {
+		int one, two, three;
+		Vector3 temp;
+		if (duplicate_a) {
+			one = *index_counter;
+			temp = getVertex(a);
+			setVertex((*index_counter)++, temp.x, temp.y, temp.z);
+		}
+		else {
+			one = a;
+		}
+		if (duplicate_b) {
+			two = *index_counter;
+			temp = getVertex(b);
+			setVertex((*index_counter)++, temp.x, temp.y, temp.z);
+		}
+		else {
+			two = b;
+		}
+		if (duplicate_c) {
+			three = *index_counter;
+			temp = getVertex(c);
+			setVertex((*index_counter)++, temp.x, temp.y, temp.z);
+		}
+		else {
+			three = c;
+		}
+		setTriFace((*tri_counter)++, three, two, one);
+	}
+
 	/* \note T3D's GLRender backend uses counter-clockwise winding order for culling.
 	 * \note Be careful to not mix up vertex and quad indices for meshes containing both types of primitives.
 	 */
@@ -259,6 +299,54 @@ namespace T3D
 		quadIndices[i*4+1] = b;
 		quadIndices[i*4+2] = c;
 		quadIndices[i*4+3] = d;
+	}
+
+	/*
+	 * Creates quad face from duplicates of given vertex indexes
+	 */
+	void Mesh::setQuadFaceWithDuplication(int* index_counter, int* quad_counter, int a, int b, int c, int d) {
+		setQuadFaceWithDuplication(index_counter, quad_counter, a, b, c, d, true, true, true, true);
+	}
+
+	/*
+	 * Creates quad face from either the original or a duplicate of given vertices indexes
+	 */
+	void Mesh::setQuadFaceWithDuplication(int* index_counter, int* quad_counter, int a, int b, int c, int d, bool duplicate_a, bool duplicate_b, bool duplicate_c, bool duplicate_d) {
+		int one, two, three, four;
+		Vector3 temp;
+		if (duplicate_a) {
+			one = *index_counter;
+			temp = getVertex(a);
+			setVertex((*index_counter)++, temp.x, temp.y, temp.z);
+		}
+		else {
+			one = a;
+		}
+		if (duplicate_b) {
+			two = *index_counter;
+			temp = getVertex(b);
+			setVertex((*index_counter)++, temp.x, temp.y, temp.z);
+		}
+		else {
+			two = b;
+		}
+		if (duplicate_c) {
+			three = *index_counter;
+			temp = getVertex(c);
+			setVertex((*index_counter)++, temp.x, temp.y, temp.z);
+		}
+		else {
+			three = c;
+		}
+		if (duplicate_d) {
+			four = *index_counter;
+			temp = getVertex(d);
+			setVertex((*index_counter)++, temp.x, temp.y, temp.z);
+		}
+		else {
+			four = d;
+		}
+		setQuadFace((*quad_counter)++, one, two, three, four);
 	}
 	
 	// \brief Sets the ith UV index to have the components u, v.
