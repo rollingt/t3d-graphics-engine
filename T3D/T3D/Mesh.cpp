@@ -270,33 +270,33 @@ namespace T3D
 	/*
 	 * Check allocation, if you have the incorrect amount of vertices, tris or quads allocated, this function will output which are off, and by how much.
 	 */
-	void Mesh::checkArrayAllocation(int* vert_counter, int* tri_counter, int* quad_counter) {
+	void Mesh::checkArrayAllocation(int vert_counter, int tri_counter, int quad_counter) {
 		printf("total::[vert:%d][tri:%d][quad:%d]\n", numVerts, numTris, numQuads);
 		//Vertices
-		if (*vert_counter != numVerts) {
-			if (numVerts > *vert_counter) {
-				printf("verts: Over-allocated by %d.\n", numVerts - *vert_counter);
+		if (vert_counter != numVerts) {
+			if (numVerts > vert_counter) {
+				printf("verts: Over-allocated by %d.\n", numVerts - vert_counter);
 			}
 			else {
-				printf("verts: Under-allocated by %d.\n", *vert_counter - numVerts);
+				printf("verts: Under-allocated by %d.\n", vert_counter - numVerts);
 			}
 		}
 		//Tris
-		if (*tri_counter != numTris) {
-			if (numTris > *tri_counter) {
-				printf("tris: Over-allocated by %d.\n", numTris - *tri_counter);
+		if (tri_counter != numTris) {
+			if (numTris > tri_counter) {
+				printf("tris: Over-allocated by %d.\n", numTris - tri_counter);
 			}
 			else {
-				printf("tris: Under-allocated by %d.\n", *tri_counter - numTris);
+				printf("tris: Under-allocated by %d.\n", tri_counter - numTris);
 			}
 		}
 		//Quads
-		if (*quad_counter != numQuads) {
-			if (numQuads > *quad_counter) {
-				printf("quads: Over-allocated by %d.\n", numQuads - *quad_counter);
+		if (quad_counter != numQuads) {
+			if (numQuads > quad_counter) {
+				printf("quads: Over-allocated by %d.\n", numQuads - quad_counter);
 			}
 			else {
-				printf("quads: Under-allocated by %d.\n", *quad_counter - numQuads);
+				printf("quads: Under-allocated by %d.\n", quad_counter - numQuads);
 			}
 		}
 	}

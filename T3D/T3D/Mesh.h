@@ -93,7 +93,7 @@ namespace T3D
 		void calcUVCube();
 
 		// \brief Compares the amount of actual vertices, trifaces and quadfaces created, with the amount allocated, giving useful debug output.
-		void Mesh::checkArrayAllocation(int* vert_counter, int* tri_counter, int* quad_counter);
+		void Mesh::checkArrayAllocation(int vert_counter, int tri_counter, int quad_counter);
 
 		//! \brief Sets the ith vertex to have components x, y, z.
 		virtual void setVertex(int i, float x, float y, float z);
